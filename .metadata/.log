@@ -9743,3 +9743,22 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\STM32CubeIDE\Electr
 
 !ENTRY org.eclipse.cdt.core 1 0 2023-12-06 23:50:53.647
 !MESSAGE Indexed 'vroom_motorcycle' (105 sources, 655 headers) in 15.8 sec: 67,175 declarations; 201,364 references; 10 unresolved inclusions; 813 syntax errors; 1,296 unresolved names (0.48%)
+!SESSION 2023-12-07 09:20:09.586 -----------------------------------------------
+eclipse.buildId=Version 1.14.0
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  C:\STM32CubeIDE\Electrium\vroom_motorcycle\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\STM32CubeIDE\Electrium\vroom_motorcycle\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-12-07 09:20:23.989
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-12-07 09:20:23.997
+!MESSAGE Log4j2 initialized with config file C:\STM32CubeIDE\Electrium\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-12-07 09:20:30.939
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-12-07 09:20:48.333
+!MESSAGE Indexed 'vroom_motorcycle' (105 sources, 655 headers) in 16.9 sec: 67,167 declarations; 201,342 references; 10 unresolved inclusions; 813 syntax errors; 1,296 unresolved names (0.48%)
