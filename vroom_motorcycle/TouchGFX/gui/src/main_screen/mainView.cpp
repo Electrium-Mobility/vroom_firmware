@@ -14,3 +14,8 @@ void mainView::tearDownScreen()
 {
     mainViewBase::tearDownScreen();
 }
+
+void mainView::handleTickEvent()
+{
+	speedometer.updateValue(speedometer.getValue() + 1, 0);
+}
