@@ -1,0 +1,11 @@
+18:47:31 **** Incremental Build of configuration Debug for project STM32F469I-DISCO ****
+make -j12 all 
+arm-none-eabi-g++ -o "STM32F469I-DISCO.elf" @"objects.list"  -l:libtouchgfx-float-abi-hard.a -mcpu=cortex-m4 -T"C:\TouchGFXProjects\vroom_motorcycle\STM32CubeIDE\STM32F469NIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32F469I-DISCO.map" -Wl,--gc-sections -static -LC:/git/STM32F469-dk/stm32f469i_disco/STM32F469I-DISCO/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc -LC:/git/stm32f469i_disco/STM32F469I-DISCO/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc -LC:/TouchGFXProjects/vroom_motorcycle/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+C:/STM32CubeIDE_1.14.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.100.202309141235/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/bin/ld.exe: ./Application/User/main.o: in function `MX_CAN2_Init':
+C:/TouchGFXProjects/vroom_motorcycle/Core/Src/main.c:278: undefined reference to `HAL_CAN_Init'
+collect2.exe: error: ld returned 1 exit status
+make: *** [makefile:100: STM32F469I-DISCO.elf] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+
+18:47:32 Build Failed. 2 errors, 0 warnings. (took 1s.323ms)
+

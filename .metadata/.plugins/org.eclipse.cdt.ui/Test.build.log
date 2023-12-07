@@ -1,0 +1,11 @@
+17:19:41 **** Incremental Build of configuration Debug for project Test ****
+make -j12 all 
+arm-none-eabi-g++ -o "Test.elf" @"objects.list"  -l:libtouchgfx-float-abi-hard.a -mcpu=cortex-m4 -T"C:\STM32CubeIDE\Electrium\Test\STM32F469NIHX_FLASH.ld" -Wl,-Map="Test.map" -Wl,--gc-sections -static -L"C:\STM32CubeIDE\Electrium\Test\Middlewares\ST\touchgfx\lib\core\cortex_m4f\gcc" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+C:/STM32CubeIDE_1.14.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.100.202309141235/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/bin/ld.exe: Test.elf section `TouchGFX_Framebuffer' will not fit in region `RAM'
+C:/STM32CubeIDE_1.14.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.100.202309141235/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/bin/ld.exe: region `RAM' overflowed by 99424 bytes
+collect2.exe: error: ld returned 1 exit status
+make: *** [makefile:112: Test.elf] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+
+17:19:42 Build Failed. 3 errors, 0 warnings. (took 1s.690ms)
+
