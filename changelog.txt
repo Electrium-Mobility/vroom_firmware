@@ -1,0 +1,11 @@
+3.0.3
+- Updated to CubeMX 6.9.1
+
+3.0.2
+- Upgraded to TouchGFX 4.22.0
+
+3.0.1
+- Upgraded to STM32CubeMX 6.8.0
+
+3.0.0
+- Initial version
