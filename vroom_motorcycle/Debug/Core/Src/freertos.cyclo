@@ -1,3 +1,0 @@
-../Core/Src/freertos.c:61:13:vApplicationIdleHook	1
-../Core/Src/freertos.c:76:13:vApplicationStackOverflowHook	1
-../Core/Src/freertos.c:85:13:vApplicationMallocFailedHook	1
