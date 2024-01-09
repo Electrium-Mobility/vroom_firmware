@@ -2,7 +2,8 @@
   "Application": {
     "Screens": [
       {
-        "Name": "Screen1",
+        "Name": "main_screen",
+        "CanvasBufferSize": 12000,
         "Components": [
           {
             "Type": "Image",
@@ -12,43 +13,107 @@
             "RelativeFilename": "__generated\\alternate_theme_images_backgrounds_800x480_lines.png"
           },
           {
-            "Type": "ToggleButton",
-            "Name": "toggleButton1",
-            "X": 345,
-            "Y": 350,
-            "Width": 110,
-            "Height": 50,
-            "Pressed": "__generated\\alternate_theme_images_widgets_togglebutton_medium_rounded_off_light.png",
-            "Released": "__generated\\alternate_theme_images_widgets_togglebutton_medium_rounded_on_normal.png",
-            "Preset": "alternate_theme\\presets\\togglebutton\\medium\\rounded.json"
-          },
-          {
-            "Type": "Gauge",
-            "Name": "gauge1",
-            "X": 280,
-            "Y": 104,
-            "Width": 240,
-            "Height": 240,
-            "Preset": "alternate_theme\\presets\\gauges\\medium\\active.json",
-            "FileNameBackground": "__generated\\alternate_theme_images_widgets_gauge_medium_backgrounds_active.png",
-            "RotationCenterX": 120.0,
-            "RotationCenterY": 120.0,
-            "StartAngle": -113.0,
-            "EndAngle": 112.0,
-            "RangeMax": 100.0,
-            "Easing": "Linear",
-            "EasingOption": "In",
-            "FileNameNeedle": "__generated\\alternate_theme_images_widgets_gauge_medium_needles_smooth.png",
-            "NeedleRotationCenterX": 7.0,
-            "NeedleRotationCenterY": 67.0,
-            "NeedleMovingRenderingAlgorithm": "Bilinear Interpolation",
-            "NeedleSteadyRenderingAlgorithm": "Bilinear Interpolation",
-            "ArcColor": {
-              "Red": 20,
-              "Green": 151,
-              "Blue": 197
-            },
-            "ArcCapStyle": "Butt"
+            "Type": "SwipeContainer",
+            "Name": "swipe_container",
+            "Width": 800,
+            "Height": 480,
+            "SwipeCutoff": 50,
+            "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
+            "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
+            "EndSwipeElasticWidth": 50,
+            "SelectedPage": "main_page",
+            "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
+            "Components": [
+              {
+                "Type": "Container",
+                "Name": "motor_page",
+                "Width": 800,
+                "Height": 480,
+                "Components": [
+                  {
+                    "Type": "Button",
+                    "Name": "button1",
+                    "X": 280,
+                    "Y": 215,
+                    "Width": 240,
+                    "Height": 50,
+                    "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_pressed.png",
+                    "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_normal.png",
+                    "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
+                  }
+                ]
+              },
+              {
+                "Type": "Container",
+                "Name": "main_page",
+                "Width": 800,
+                "Height": 480,
+                "Components": [
+                  {
+                    "Type": "CircleProgress",
+                    "Name": "battery_circle",
+                    "X": 305,
+                    "Y": 145,
+                    "Width": 190,
+                    "Height": 190,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "CenterX": 95.0,
+                    "CenterY": 95.0,
+                    "Radius": 85.0,
+                    "LineWidth": 20.0,
+                    "EndAngle": 360.0,
+                    "CapPrecision": "Triangle",
+                    "FileNameBackground": "__generated\\dark_theme_images_widgets_circleprogress_backgrounds_large.png",
+                    "ProgressRangeMax": 100,
+                    "ProgressInitialValue": 60
+                  },
+                  {
+                    "Type": "TextProgress",
+                    "Name": "battery_text",
+                    "X": 325,
+                    "Y": 165,
+                    "Width": 150,
+                    "Height": 150,
+                    "TextId": "__SingleUse_NFA2",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_round_neutral.png",
+                    "IndicatorPositionX": 12,
+                    "IndicatorPositionY": 50,
+                    "IndicatorPositionWidth": 130,
+                    "IndicatorPositionHeight": 60,
+                    "ProgressRangeMax": 100,
+                    "ProgressInitialValue": 60
+                  }
+                ]
+              },
+              {
+                "Type": "Container",
+                "Name": "bms_page",
+                "Width": 800,
+                "Height": 480,
+                "Components": [
+                  {
+                    "Type": "Button",
+                    "Name": "button2",
+                    "X": 280,
+                    "Y": 215,
+                    "Width": 240,
+                    "Height": 50,
+                    "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_pressed.png",
+                    "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_normal.png",
+                    "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
+                  }
+                ]
+              }
+            ]
           }
         ],
         "Interactions": []
@@ -61,7 +126,7 @@
       "Height": 480
     },
     "SelectedColorDepth": 16,
-    "StartupScreenName": "Screen1",
+    "StartupScreenName": "main_screen",
     "SelectedStartupLanguage": "GB",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",
     "UIPath": ".",

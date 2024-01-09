@@ -17,7 +17,6 @@ public:
 
 protected:
     ModelListener* modelListener;
-    int ADC_value;
 };
 
 #endif // MODEL_HPP

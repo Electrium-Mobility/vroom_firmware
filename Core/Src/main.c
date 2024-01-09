@@ -46,9 +46,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-ADC_HandleTypeDef hadc3;
-DMA_HandleTypeDef hdma_adc3;
-
 CAN_HandleTypeDef hcan2;
 
 CRC_HandleTypeDef hcrc;
@@ -79,18 +76,6 @@ const osThreadAttr_t TouchGFXTask_attributes = {
   .stack_size = 4096 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for Gauge */
-osThreadId_t GaugeHandle;
-const osThreadAttr_t Gauge_attributes = {
-  .name = "Gauge",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
-/* Definitions for ADCQueue */
-osMessageQueueId_t ADCQueueHandle;
-const osMessageQueueAttr_t ADCQueue_attributes = {
-  .name = "ADCQueue"
-};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -98,7 +83,6 @@ const osMessageQueueAttr_t ADCQueue_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
 static void MX_CRC_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_DSIHOST_DSI_Init(void);
@@ -107,10 +91,8 @@ static void MX_LTDC_Init(void);
 static void MX_QUADSPI_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_CAN2_Init(void);
-static void MX_ADC3_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
-void handle_speedometer(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -119,12 +101,6 @@ void handle_speedometer(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint16_t ADC_value = 0;
-
-long map(long x, long in_min, long in_max, long out_min, long out_max)
-{
-	return (x - in_min) * (out_max - out_min + 1) / (in_max - in_min + 1) + out_min;
-}
 
 /* USER CODE END 0 */
 
@@ -156,7 +132,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_CRC_Init();
   MX_DMA2D_Init();
   MX_DSIHOST_DSI_Init();
@@ -165,7 +140,6 @@ int main(void)
   MX_QUADSPI_Init();
   MX_I2C1_Init();
   MX_CAN2_Init();
-  MX_ADC3_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -188,10 +162,6 @@ int main(void)
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
-  /* Create the queue(s) */
-  /* creation of ADCQueue */
-  ADCQueueHandle = osMessageQueueNew (5, sizeof(uint16_t), &ADCQueue_attributes);
-
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -202,9 +172,6 @@ int main(void)
 
   /* creation of TouchGFXTask */
   TouchGFXTaskHandle = osThreadNew(TouchGFX_Task, NULL, &TouchGFXTask_attributes);
-
-  /* creation of Gauge */
-  GaugeHandle = osThreadNew(handle_speedometer, NULL, &Gauge_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -280,58 +247,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief ADC3 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ADC3_Init(void)
-{
-
-  /* USER CODE BEGIN ADC3_Init 0 */
-
-  /* USER CODE END ADC3_Init 0 */
-
-  ADC_ChannelConfTypeDef sConfig = {0};
-
-  /* USER CODE BEGIN ADC3_Init 1 */
-
-  /* USER CODE END ADC3_Init 1 */
-
-  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-  */
-  hadc3.Instance = ADC3;
-  hadc3.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-  hadc3.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc3.Init.ScanConvMode = DISABLE;
-  hadc3.Init.ContinuousConvMode = ENABLE;
-  hadc3.Init.DiscontinuousConvMode = DISABLE;
-  hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc3.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc3.Init.NbrOfConversion = 1;
-  hadc3.Init.DMAContinuousRequests = ENABLE;
-  hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  if (HAL_ADC_Init(&hadc3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
-  sConfig.Channel = ADC_CHANNEL_11;
-  sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
-  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN ADC3_Init 2 */
-
-  /* USER CODE END ADC3_Init 2 */
-
 }
 
 /**
@@ -712,22 +627,6 @@ static void MX_QUADSPI_Init(void)
 
 }
 
-/**
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void)
-{
-
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA2_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA2_Stream0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
-
-}
-
 /* FMC initialization function */
 static void MX_FMC_Init(void)
 {
@@ -867,30 +766,6 @@ void StartDefaultTask(void *argument)
     osDelay(100);
   }
   /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_handle_speedometer */
-/**
-* @brief Function implementing the Gauge thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_handle_speedometer */
-void handle_speedometer(void *argument)
-{
-  /* USER CODE BEGIN handle_speedometer */
-  /* Infinite loop */
-  for(;;)
-  {
-	  HAL_ADC_Start(&hadc3);
-	  HAL_ADC_PollForConversion(&hadc3, 10);
-	  uint16_t value = HAL_ADC_GetValue(&hadc3);
-	  HAL_ADC_Stop(&hadc3);
-	  ADC_value = map(value, 0, 4095, 0, 100);
-	  osMessageQueuePut(ADCQueueHandle, &ADC_value, 0, 0);
-	  osDelay(10);
-  }
-  /* USER CODE END handle_speedometer */
 }
 
 /**
