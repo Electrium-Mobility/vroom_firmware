@@ -103,6 +103,13 @@ extern void TouchGFX_Task(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+CAN_TxHeaderTypeDef tx_header;
+CAN_RxHeaderTypeDef rx_header;
+
+uint8_t tx_data[8];
+uint8_t rx_data[8];
+
+uint32_t tx_mailbox;
 
 /* USER CODE END 0 */
 
@@ -146,6 +153,8 @@ int main(void)
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
+
+  HAL_CAN_Start(&hcan2);
 
   /* USER CODE END 2 */
 
@@ -267,11 +276,11 @@ static void MX_CAN2_Init(void)
 
   /* USER CODE END CAN2_Init 1 */
   hcan2.Instance = CAN2;
-  hcan2.Init.Prescaler = 16;
+  hcan2.Init.Prescaler = 15;
   hcan2.Init.Mode = CAN_MODE_NORMAL;
   hcan2.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan2.Init.TimeSeg1 = CAN_BS1_1TQ;
-  hcan2.Init.TimeSeg2 = CAN_BS2_1TQ;
+  hcan2.Init.TimeSeg1 = CAN_BS1_2TQ;
+  hcan2.Init.TimeSeg2 = CAN_BS2_3TQ;
   hcan2.Init.TimeTriggeredMode = DISABLE;
   hcan2.Init.AutoBusOff = DISABLE;
   hcan2.Init.AutoWakeUp = DISABLE;
