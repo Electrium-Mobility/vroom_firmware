@@ -27,6 +27,8 @@
 #include "../Components/nt35510/nt35510.h"
 #include "stm32469i_discovery_sdram.h"
 #include "stm32469i_discovery_qspi.h"
+
+#include "motor_can.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
