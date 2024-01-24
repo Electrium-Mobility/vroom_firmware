@@ -6,13 +6,18 @@
  */
 
 #include <stdint.h>
-#include "motor_can.h"
+#include "motor.h"
+#include "main.h"
+#include <stdio.h>
+#include <string.h>
 
 // Implementation for sending extended ID CAN-frames
-void can_transmit_eid(uint32_t id, const uint8_t *data, uint8_t len) {
+void can_transmit_eid(uint32_t id, const uint8_t *data, uint8_t len)
+{
 }
 
-typedef enum {
+typedef enum
+{
 	CAN_PACKET_SET_DUTY = 0,
 	CAN_PACKET_SET_CURRENT,
 	CAN_PACKET_SET_CURRENT_BRAKE,
@@ -138,4 +143,44 @@ void comm_can_set_handbrake_rel(uint8_t controller_id, float current_rel) {
 			((uint32_t)CAN_PACKET_SET_CURRENT_HANDBRAKE_REL << 8), buffer, send_index);
 }
 
+
+extern uint16_t threshold; // Variable for max sensitivity difference in analog values
+extern uint8_t tx_msg;
+extern UART_HandleTypeDef huart3;
+
+uint16_t previous_value = 0; // Variable to store the previous analog value
+
+void handle_throttle(uint16_t sensor_data, uint16_t *filtered_data, int32_t *acceleration)
+{
+	const float smoothingFactor = 0.175; //Variable for factor of smoothing of analog readings, if lower, filtering is more intense
+	(*acceleration) = (uint32_t)(sensor_data - previous_value) / 100; // change in sensor_data / time
+	int32_t change = abs(sensor_data - previous_value); // Calculate the absolute change in analog signal
+
+	// Smoothen the analog value
+	(*filtered_data) = (smoothingFactor * (float)sensor_data) + ((1 - smoothingFactor) * (float)(*filtered_data)); //EMA filtering formula
+
+	// Check if the change of throttle data is very fast (exceeds the threshold)
+	// TODO: Either we use the filtered_data or the raw change, we must choose
+	if (abs((*filtered_data) - previous_value) > threshold)
+	{
+		// limit the smoothed_value from changing faster than the threshold
+		if((*acceleration) > 0)
+		{
+			(*filtered_data) = previous_value + threshold;
+		}
+		else
+		{
+			(*filtered_data) = previous_value - threshold;
+		}
+	}
+	//print current values that is compatible with serial plotter
+	sprintf(tx_msg, "Raw : %hu\r\n", sensor_data);
+	HAL_UART_Transmit(&huart3, (uint8_t*)tx_msg, strlen(tx_msg), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
+	sprintf(tx_msg, "Filtered : %hu\r\n", (*filtered_data));
+	HAL_UART_Transmit(&huart3, (uint8_t*)tx_msg, strlen(tx_msg), HAL_MAX_DELAY);
+
+
+	previous_value = sensor_data; // Update the previous value for the next iteration
+	HAL_Delay(100); // Adjust the delay based on needs
+}
 
