@@ -122,9 +122,6 @@ void StartMotorTask(void *argument);
 CAN_TxHeaderTypeDef tx_header;
 CAN_RxHeaderTypeDef rx_header;
 
-uint8_t tx_data[8];
-uint8_t rx_data[8];
-
 uint32_t tx_mailbox;
 
 // Throttle sensor sensitivity threshold variable
@@ -176,6 +173,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   HAL_CAN_Start(&hcan2);
+  HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 
   /* USER CODE END 2 */
 
@@ -867,8 +865,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-uint16_t raw;
-uint8_t tx_msg[64];
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -885,6 +881,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
+	// TODO: Create Switch case for Serial communication via UART to test CAN commands
     osDelay(100);
   }
   /* USER CODE END 5 */
@@ -896,10 +893,11 @@ void StartDefaultTask(void *argument)
 * @param argument: Not used
 * @retval None
 */
-uint16_t throttle_data;
-uint16_t filtered_data;
+uint32_t throttle_data;
+uint32_t filtered_data;
 int32_t acceleration;
 uint8_t brake_sensor = 1;
+char tx_msg[64];
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {

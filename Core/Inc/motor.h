@@ -14,7 +14,7 @@
  *
  */
 
-void can_transmit_eid(uint32_t id, const uint8_t *data, uint8_t len);
+void can_transmit_eid(uint32_t id, uint8_t *data, uint8_t len);
 
 void buffer_append_int16(uint8_t* buffer, int16_t number, int32_t *index);
 void buffer_append_int32(uint8_t* buffer, int32_t number, int32_t *index);
@@ -39,6 +39,6 @@ void comm_can_set_handbrake_rel(uint8_t controller_id, float current_rel);
  * Sensor Collection and Filtering Commands
  *
  */
-void handle_throttle(uint16_t sensor_data, uint16_t *filtered_data, int32_t *acceleration);
+void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration);
 
 #endif /* APPLICATION_USER_MOTOR_CAN_H_ */
