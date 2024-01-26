@@ -919,7 +919,7 @@ void StartMotorTask(void *argument)
 		HAL_ADC_Stop(&hadc1);
 
 		// ensure the sensor value is reasonable to send to the motor
-		handle_throttle(throttle_data, filtered_data, acceleration);
+		handle_throttle(throttle_data, &filtered_data, &acceleration);
 
 		if(acceleration > 0)
 		{
