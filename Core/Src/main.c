@@ -89,7 +89,7 @@ osThreadId_t motorTaskHandle;
 const osThreadAttr_t motorTask_attributes = {
   .name = "motorTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityAboveNormal,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
 
@@ -120,12 +120,22 @@ void StartMotorTask(void *argument);
 /* USER CODE BEGIN 0 */
 
 CAN_TxHeaderTypeDef tx_header;
-CAN_RxHeaderTypeDef rx_header;
+volatile CAN_RxHeaderTypeDef rx_header;
+volatile uint8_t rx_data[8];
+volatile uint8_t can_rx = 0; // boolean signifier for CAN reception
 
 uint32_t tx_mailbox;
 
 // Throttle sensor sensitivity threshold variable
 uint16_t threshold = 100;
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
+	can_rx = 1;
+}
+
+
 
 /* USER CODE END 0 */
 
@@ -873,6 +883,9 @@ static void MX_GPIO_Init(void)
   * @param  argument: Not used
   * @retval None
   */
+
+char tx_msg2[64];
+uint8_t uart_buffer[1];
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
@@ -882,6 +895,50 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
 	// TODO: Create Switch case for Serial communication via UART to test CAN commands
+	HAL_UART_Receive(&huart3, uart_buffer, 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart3, "received: ", strlen("received: "), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart3, uart_buffer, 1, HAL_MAX_DELAY);
+
+	switch(uart_buffer[0])
+	{
+	case '0':
+	{
+		HAL_UART_Transmit(&huart3, "here1", strlen("here1"), HAL_MAX_DELAY);
+		break;
+	}
+	case '1':
+	{
+		HAL_UART_Transmit(&huart3, "here2", strlen("here2"), HAL_MAX_DELAY);
+		break;
+	}
+	case '2':
+	{
+		HAL_UART_Transmit(&huart3, "here3", strlen("here3"), HAL_MAX_DELAY);
+		break;
+	}
+	case '3':
+	{
+		HAL_UART_Transmit(&huart3, "here4", strlen("here4"), HAL_MAX_DELAY);
+		break;
+	}
+	case '4':
+	{
+		HAL_UART_Transmit(&huart3, "here5", strlen("here5"), HAL_MAX_DELAY);
+		break;
+	}
+	default:
+	{
+		HAL_UART_Transmit(&huart3, ", Invalid Command", strlen(", Invalid Command"), HAL_MAX_DELAY);
+	}
+	}
+	HAL_UART_Transmit(&huart3, "\r\n", strlen("\r\n"), HAL_MAX_DELAY);
+
+	if(can_rx)
+	{
+		sprintf((char*)tx_msg2, "RX : ");
+		HAL_UART_Transmit(&huart3, tx_msg2, strlen(tx_msg2), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart3, rx_data, rx_header.DLC, HAL_MAX_DELAY);
+	}
     osDelay(100);
   }
   /* USER CODE END 5 */
@@ -897,7 +954,6 @@ uint32_t throttle_data;
 uint32_t filtered_data;
 int32_t acceleration;
 uint8_t brake_sensor = 1;
-char tx_msg[64];
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
@@ -913,13 +969,13 @@ void StartMotorTask(void *argument)
 	else
 	{
 		// read the throttle sensor
-		HAL_ADC_Start(&hadc1);
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-		throttle_data = HAL_ADC_GetValue(&hadc1);
-		HAL_ADC_Stop(&hadc1);
+//		HAL_ADC_Start(&hadc1);
+//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//		throttle_data = HAL_ADC_GetValue(&hadc1);
+//		HAL_ADC_Stop(&hadc1);
 
 		// ensure the sensor value is reasonable to send to the motor
-		handle_throttle(throttle_data, &filtered_data, &acceleration);
+		//handle_throttle(throttle_data, &filtered_data, &acceleration);
 
 		if(acceleration > 0)
 		{

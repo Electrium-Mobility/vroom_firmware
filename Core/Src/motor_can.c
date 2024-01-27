@@ -158,9 +158,9 @@ void comm_can_set_handbrake_rel(uint8_t controller_id, float current_rel) {
 
 
 extern uint16_t threshold; // Variable for max sensitivity difference in analog values
-extern char tx_msg[64];
 extern UART_HandleTypeDef huart3;
 uint16_t previous_value = 0; // Variable to store the previous analog value
+char tx_msg1[64];
 
 void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
 {
@@ -186,10 +186,10 @@ void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acc
 		}
 	}
 	//print current values that is compatible with serial plotter
-	sprintf((char*)tx_msg, "Raw : %ld\r\n", sensor_data);
-	HAL_UART_Transmit(&huart3, tx_msg, strlen(tx_msg), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
-	sprintf((char*)tx_msg, "Filtered : %ld\r\n", (*filtered_data));
-	HAL_UART_Transmit(&huart3, tx_msg, strlen(tx_msg), HAL_MAX_DELAY);
+	sprintf((char*)tx_msg1, "Raw : %ld\r\n", sensor_data);
+	HAL_UART_Transmit(&huart3, tx_msg1, strlen(tx_msg1), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
+	sprintf((char*)tx_msg1, "Filtered : %ld\r\n", (*filtered_data));
+	HAL_UART_Transmit(&huart3, tx_msg1, strlen(tx_msg1), HAL_MAX_DELAY);
 
 
 	previous_value = sensor_data; // Update the previous value for the next iteration
