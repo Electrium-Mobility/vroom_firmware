@@ -52,6 +52,7 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 
+CAN_HandleTypeDef hcan1;
 CAN_HandleTypeDef hcan2;
 
 CRC_HandleTypeDef hcrc;
@@ -108,6 +109,7 @@ static void MX_I2C1_Init(void);
 static void MX_CAN2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_CAN1_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartMotorTask(void *argument);
@@ -120,20 +122,17 @@ void StartMotorTask(void *argument);
 /* USER CODE BEGIN 0 */
 
 CAN_TxHeaderTypeDef tx_header;
-volatile CAN_RxHeaderTypeDef rx_header;
-volatile uint8_t rx_data[8];
-volatile uint8_t can_rx = 0; // boolean signifier for CAN reception
+uint8_t tx_data[8];
+uint32_t tx_mailbox[4];
 
-uint32_t tx_mailbox;
+CAN_RxHeaderTypeDef rx_header;
+uint8_t rx_data[8];
 
 // Throttle sensor sensitivity threshold variable
 uint16_t threshold = 100;
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
-{
-	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
-	can_rx = 1;
-}
+// UART transmission buffer
+char uart_tx[64];
 
 
 
@@ -177,13 +176,35 @@ int main(void)
   MX_CAN2_Init();
   MX_ADC1_Init();
   MX_USART3_UART_Init();
+  MX_CAN1_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
 
-  HAL_CAN_Start(&hcan2);
-  HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
+  // CAN1 is the main CAN peripheral, it must be activated for CAN2 to work
+  if(HAL_CAN_Start(&hcan2) != HAL_OK)
+  {
+	  Error_Handler();
+  }
+
+  tx_header.DLC = 4;
+  tx_header.ExtId = 0;
+  tx_header.IDE = CAN_ID_STD;
+  tx_header.RTR = CAN_RTR_DATA;
+  tx_header.StdId = 0;
+  tx_header.TransmitGlobalTime = DISABLE;
+
+  // CAN transmission test function
+//  tx_data[0] = 1;
+//  tx_data[1] = 2;
+//  tx_data[2] = 3;
+//  tx_data[3] = 4;
+//  HAL_CAN_AddTxMessage(&hcan2, &tx_header, tx_data, tx_mailbox);
+
+  sprintf(uart_tx, "Init");
+  HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 4, HAL_MAX_DELAY);
+
 
   /* USER CODE END 2 */
 
@@ -345,6 +366,43 @@ static void MX_ADC1_Init(void)
 }
 
 /**
+  * @brief CAN1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_CAN1_Init(void)
+{
+
+  /* USER CODE BEGIN CAN1_Init 0 */
+
+  /* USER CODE END CAN1_Init 0 */
+
+  /* USER CODE BEGIN CAN1_Init 1 */
+
+  /* USER CODE END CAN1_Init 1 */
+  hcan1.Instance = CAN1;
+  hcan1.Init.Prescaler = 15;
+  hcan1.Init.Mode = CAN_MODE_SILENT_LOOPBACK;
+  hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
+  hcan1.Init.TimeSeg1 = CAN_BS1_4TQ;
+  hcan1.Init.TimeSeg2 = CAN_BS2_1TQ;
+  hcan1.Init.TimeTriggeredMode = DISABLE;
+  hcan1.Init.AutoBusOff = DISABLE;
+  hcan1.Init.AutoWakeUp = DISABLE;
+  hcan1.Init.AutoRetransmission = DISABLE;
+  hcan1.Init.ReceiveFifoLocked = DISABLE;
+  hcan1.Init.TransmitFifoPriority = DISABLE;
+  if (HAL_CAN_Init(&hcan1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN CAN1_Init 2 */
+
+  /* USER CODE END CAN1_Init 2 */
+
+}
+
+/**
   * @brief CAN2 Initialization Function
   * @param None
   * @retval None
@@ -363,8 +421,8 @@ static void MX_CAN2_Init(void)
   hcan2.Init.Prescaler = 15;
   hcan2.Init.Mode = CAN_MODE_NORMAL;
   hcan2.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan2.Init.TimeSeg1 = CAN_BS1_2TQ;
-  hcan2.Init.TimeSeg2 = CAN_BS2_3TQ;
+  hcan2.Init.TimeSeg1 = CAN_BS1_4TQ;
+  hcan2.Init.TimeSeg2 = CAN_BS2_1TQ;
   hcan2.Init.TimeTriggeredMode = DISABLE;
   hcan2.Init.AutoBusOff = DISABLE;
   hcan2.Init.AutoWakeUp = DISABLE;
@@ -376,6 +434,25 @@ static void MX_CAN2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN2_Init 2 */
+
+  // Must be configured to determine the FIFO to add received messages to
+  CAN_FilterTypeDef filter;
+  // Default configuration for no filtering, all messages will be accepted by the controller
+  filter.FilterIdHigh = 0;
+  filter.FilterIdLow = 0x0000;
+  filter.FilterMaskIdHigh = 0;
+  filter.FilterMaskIdLow = 0x0000;
+  filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+  filter.FilterBank = 1;
+  filter.FilterMode = CAN_FILTERMODE_IDMASK;
+  filter.FilterScale = CAN_FILTERSCALE_32BIT;
+  filter.FilterActivation = ENABLE;
+  filter.SlaveStartFilterBank = 0;
+  // CAN_HandleTypeDef irrelevant for this function
+  if(HAL_CAN_ConfigFilter(&hcan2, &filter) != HAL_OK)
+  {
+	 Error_Handler();
+  }
 
   /* USER CODE END CAN2_Init 2 */
 
@@ -822,12 +899,12 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOI_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOK_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOJ_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
@@ -884,46 +961,45 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 
-char tx_msg2[64];
-uint8_t uart_buffer[1];
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
 
+  uint8_t uart_buffer[1];
+
   /* Infinite loop */
   for(;;)
   {
-	// TODO: Create Switch case for Serial communication via UART to test CAN commands
 	HAL_UART_Receive(&huart3, uart_buffer, 1, HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart3, "received: ", strlen("received: "), HAL_MAX_DELAY);
+	sprintf(uart_tx, "received: %u", uart_buffer[0]);
 	HAL_UART_Transmit(&huart3, uart_buffer, 1, HAL_MAX_DELAY);
 
 	switch(uart_buffer[0])
 	{
 	case '0':
 	{
-		HAL_UART_Transmit(&huart3, "here1", strlen("here1"), HAL_MAX_DELAY);
+		comm_can_set_duty(2, 0.1);
 		break;
 	}
 	case '1':
 	{
-		HAL_UART_Transmit(&huart3, "here2", strlen("here2"), HAL_MAX_DELAY);
+		comm_can_set_rpm(2, 2600);
 		break;
 	}
 	case '2':
 	{
-		HAL_UART_Transmit(&huart3, "here3", strlen("here3"), HAL_MAX_DELAY);
+		comm_can_set_pos(2, 100);
 		break;
 	}
 	case '3':
 	{
-		HAL_UART_Transmit(&huart3, "here4", strlen("here4"), HAL_MAX_DELAY);
+		comm_can_set_current(2, 1);
 		break;
 	}
 	case '4':
 	{
-		HAL_UART_Transmit(&huart3, "here5", strlen("here5"), HAL_MAX_DELAY);
+
 		break;
 	}
 	default:
@@ -933,12 +1009,17 @@ void StartDefaultTask(void *argument)
 	}
 	HAL_UART_Transmit(&huart3, "\r\n", strlen("\r\n"), HAL_MAX_DELAY);
 
-	if(can_rx)
+	while(HAL_CAN_IsTxMessagePending(&hcan2, tx_mailbox[0]))
 	{
-		sprintf((char*)tx_msg2, "RX : ");
-		HAL_UART_Transmit(&huart3, tx_msg2, strlen(tx_msg2), HAL_MAX_DELAY);
-		HAL_UART_Transmit(&huart3, rx_data, rx_header.DLC, HAL_MAX_DELAY);
+		sprintf(uart_tx, "pending");
+		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, strlen(uart_tx), HAL_MAX_DELAY);
 	}
+//	if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
+//	{
+//		HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
+//		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
+//		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
+//	}
     osDelay(100);
   }
   /* USER CODE END 5 */
@@ -1020,6 +1101,8 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+	sprintf(uart_tx, "ERROR");
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 5, HAL_MAX_DELAY);
 
   /* USER CODE END Error_Handler_Debug */
 }
