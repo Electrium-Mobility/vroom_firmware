@@ -1,0 +1,7 @@
+[ProjectFiles]
+HeaderPath=../Drivers/BSP/Components/Common;../Drivers/BSP/STM32F7508-Discovery
+[Groups]
+Drivers/BSP/STM32F7508-Discovery=../Drivers/BSP/STM32F7508-Discovery/stm32f7508_discovery.c;../Drivers/BSP/STM32F7508-Discovery/stm32f7508_discovery_sdram.c;../Drivers/BSP/STM32F7508-Discovery/stm32f7508_discovery_ts.c
+Drivers/BSP/Components=../Drivers/BSP/Components/ft5336/ft5336.c
+Application/User/TouchGFX/target=../TouchGFX/target/CortexMMCUInstrumentation.cpp
+[Others]
