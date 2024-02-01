@@ -28,9 +28,10 @@
 #include "stm32469i_discovery_sdram.h"
 #include "stm32469i_discovery_qspi.h"
 
-#include "motor.h"
+#include "motor_can.h"
 #include <string.h>
 #include <stdio.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -76,7 +77,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for TouchGFXTask */
 osThreadId_t TouchGFXTaskHandle;
@@ -989,7 +990,7 @@ void StartDefaultTask(void *argument)
 	}
 	case '2':
 	{
-		comm_can_set_pos(2, 100);
+
 		break;
 	}
 	case '3':
@@ -1067,7 +1068,7 @@ void StartMotorTask(void *argument)
 			// Activate regenerative breaking to slow the bike down to the appropriate speed
 		}
 	}
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END StartMotorTask */
 }
