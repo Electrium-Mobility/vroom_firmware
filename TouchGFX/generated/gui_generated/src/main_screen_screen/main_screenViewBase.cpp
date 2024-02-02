@@ -7,7 +7,8 @@
 #include <images/BitmapDatabase.hpp>
 #include <texts/TextKeysAndLanguages.hpp>
 
-main_screenViewBase::main_screenViewBase()
+main_screenViewBase::main_screenViewBase() :
+    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler)
 {
     touchgfx::CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
     
@@ -31,32 +32,65 @@ main_screenViewBase::main_screenViewBase()
 
     swipe_container.add(motor_page);
 
-    main_page.setWidth(800);
-    main_page.setHeight(480);
-    battery_circle.setXY(305, 145);
-    battery_circle.setProgressIndicatorPosition(0, 0, 190, 190);
-    battery_circle.setRange(0, 100);
-    battery_circle.setCenter(95, 95);
-    battery_circle.setRadius(85);
-    battery_circle.setLineWidth(20);
-    battery_circle.setStartEndAngle(0, 360);
-    battery_circle.setCapPrecision(90);
-    battery_circle.setBackground(touchgfx::Bitmap(BITMAP_DARK_THEME_IMAGES_WIDGETS_CIRCLEPROGRESS_BACKGROUNDS_LARGE_ID));
-    battery_circlePainter.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    battery_circle.setPainter(battery_circlePainter);
-    battery_circle.setValue(60);
-    main_page.add(battery_circle);
+    throttle_sensor.setWidth(800);
+    throttle_sensor.setHeight(480);
+    throttle_box.setPosition(300, 20, 200, 93);
+    throttle_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    throttle_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    throttle_box.setBorderSize(5);
+    throttle_sensor.add(throttle_box);
 
-    battery_text.setXY(325, 165);
-    battery_text.setProgressIndicatorPosition(12, 50, 130, 60);
-    battery_text.setRange(0, 100);
-    battery_text.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    battery_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_NFA2));
-    battery_text.setBackground(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TEXTPROGRESS_BACKGROUNDS_ROUND_NEUTRAL_ID));
-    battery_text.setValue(60);
-    main_page.add(battery_text);
+    current_throttle.setPosition(375, 46, 50, 41);
+    current_throttle.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    current_throttle.setLinespacing(0);
+    current_throttle.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MW1J));
+    throttle_sensor.add(current_throttle);
 
-    swipe_container.add(main_page);
+    keypad_blank.setBitmap(touchgfx::Bitmap(BITMAP_KEYPAD_BLANK_ID));
+    keypad_blank.setPosition(263, 126, 275, 325);
+    keypad_blank.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
+    throttle_sensor.add(keypad_blank);
+
+    enter_button.setBoxWithBorderPosition(0, 0, 55, 55);
+    enter_button.setBorderSize(5);
+    enter_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    enter_button.setAction(flexButtonCallback);
+    enter_button.setPosition(457, 375, 55, 55);
+    throttle_sensor.add(enter_button);
+
+    enter_icon.setBitmap(touchgfx::Bitmap(BITMAP_ENTER_ID));
+    enter_icon.setPosition(457, 375, 55, 55);
+    enter_icon.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
+    throttle_sensor.add(enter_icon);
+
+    swipe_container.add(throttle_sensor);
+
+    main_page_1.setWidth(800);
+    main_page_1.setHeight(480);
+    battery_circle_1.setXY(305, 145);
+    battery_circle_1.setProgressIndicatorPosition(0, 0, 190, 190);
+    battery_circle_1.setRange(0, 100);
+    battery_circle_1.setCenter(95, 95);
+    battery_circle_1.setRadius(85);
+    battery_circle_1.setLineWidth(20);
+    battery_circle_1.setStartEndAngle(0, 360);
+    battery_circle_1.setCapPrecision(90);
+    battery_circle_1.setBackground(touchgfx::Bitmap(BITMAP_DARK_THEME_IMAGES_WIDGETS_CIRCLEPROGRESS_BACKGROUNDS_LARGE_ID));
+    battery_circle_1Painter.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    battery_circle_1.setPainter(battery_circle_1Painter);
+    battery_circle_1.setValue(60);
+    main_page_1.add(battery_circle_1);
+
+    battery_text_1.setXY(325, 165);
+    battery_text_1.setProgressIndicatorPosition(12, 50, 130, 60);
+    battery_text_1.setRange(0, 100);
+    battery_text_1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    battery_text_1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_C37D));
+    battery_text_1.setBackground(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TEXTPROGRESS_BACKGROUNDS_ROUND_NEUTRAL_ID));
+    battery_text_1.setValue(60);
+    main_page_1.add(battery_text_1);
+
+    swipe_container.add(main_page_1);
 
     bms_page.setWidth(800);
     bms_page.setHeight(480);
@@ -78,4 +112,15 @@ main_screenViewBase::~main_screenViewBase()
 void main_screenViewBase::setupScreen()
 {
 
+}
+
+void main_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
+{
+    if (&src == &enter_button)
+    {
+        //updateThrottle
+        //When enter_button clicked call virtual function
+        //Call updateThrottle
+        updateThrottle();
+    }
 }

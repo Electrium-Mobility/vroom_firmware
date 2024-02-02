@@ -12,6 +12,10 @@
 #include <touchgfx/containers/SwipeContainer.hpp>
 #include <touchgfx/containers/Container.hpp>
 #include <touchgfx/widgets/Button.hpp>
+#include <touchgfx/widgets/BoxWithBorder.hpp>
+#include <touchgfx/widgets/TextArea.hpp>
+#include <touchgfx/widgets/ScalableImage.hpp>
+#include <touchgfx/containers/buttons/Buttons.hpp>
 #include <touchgfx/containers/progress_indicators/CircleProgress.hpp>
 #include <touchgfx/widgets/canvas/PainterRGB565.hpp>
 #include <touchgfx/containers/progress_indicators/TextProgress.hpp>
@@ -22,6 +26,14 @@ public:
     main_screenViewBase();
     virtual ~main_screenViewBase();
     virtual void setupScreen();
+
+    /*
+     * Virtual Action Handlers
+     */
+    virtual void updateThrottle()
+    {
+        // Override and implement this function in main_screen
+    }
 
 protected:
     FrontendApplication& application() {
@@ -36,10 +48,16 @@ protected:
     touchgfx::SwipeContainer swipe_container;
     touchgfx::Container motor_page;
     touchgfx::Button button1;
-    touchgfx::Container main_page;
-    touchgfx::CircleProgress battery_circle;
-    touchgfx::PainterRGB565 battery_circlePainter;
-    touchgfx::TextProgress battery_text;
+    touchgfx::Container throttle_sensor;
+    touchgfx::BoxWithBorder throttle_box;
+    touchgfx::TextArea current_throttle;
+    touchgfx::ScalableImage keypad_blank;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
+    touchgfx::ScalableImage enter_icon;
+    touchgfx::Container main_page_1;
+    touchgfx::CircleProgress battery_circle_1;
+    touchgfx::PainterRGB565 battery_circle_1Painter;
+    touchgfx::TextProgress battery_text_1;
     touchgfx::Container bms_page;
     touchgfx::Button button2;
 
@@ -50,6 +68,16 @@ private:
      */
     static const uint32_t CANVAS_BUFFER_SIZE = 12000;
     uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
+
+    /*
+     * Callback Declarations
+     */
+    touchgfx::Callback<main_screenViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
+
+    /*
+     * Callback Handler Declarations
+     */
+    void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
 
 };
 

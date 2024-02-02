@@ -6,7 +6,10 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
-      <Text Id="__SingleUse_NFA2" Alignment="Center" TypographyId="Large">
+      <Text Id="__SingleUse_MW1J" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">50</Translation>
+      </Text>
+      <Text Id="__SingleUse_C37D" Alignment="Center" TypographyId="Large">
         <Translation Language="GB">&lt;&gt; %</Translation>
       </Text>
     </TextGroup>

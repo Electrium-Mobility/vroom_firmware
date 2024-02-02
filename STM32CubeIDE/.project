@@ -50,11 +50,6 @@
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Core/Src/main.c</locationURI>
 		</link>
 		<link>
-			<name>Application/User/motor_can.c</name>
-			<type>1</type>
-			<location>C:/TouchGFXProjects/vroom_motorcycle/Core/Src/motor_can.c</location>
-		</link>
-		<link>
 			<name>Application/User/stm32f4xx_hal_msp.c</name>
 			<type>1</type>
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Core/Src/stm32f4xx_hal_msp.c</locationURI>
@@ -413,6 +408,16 @@
 			<name>Application/User/generated/image_dark_theme_images_widgets_circleprogress_backgrounds_large.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_dark_theme_images_widgets_circleprogress_backgrounds_large.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_enter.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_enter.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_keypad_blank.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_keypad_blank.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/main_screenViewBase.cpp</name>

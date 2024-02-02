@@ -28,7 +28,7 @@
 #include "stm32469i_discovery_sdram.h"
 #include "stm32469i_discovery_qspi.h"
 
-#include "motor_can.h"
+#include "motor.h"
 #include <string.h>
 #include <stdio.h>
 

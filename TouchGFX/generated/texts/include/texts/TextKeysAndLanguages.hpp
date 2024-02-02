@@ -12,7 +12,8 @@ enum LANGUAGES
 
 enum TEXTS
 {
-    T___SINGLEUSE_NFA2,
+    T___SINGLEUSE_MW1J,
+    T___SINGLEUSE_C37D,
     NUMBER_OF_TEXT_KEYS
 };
 

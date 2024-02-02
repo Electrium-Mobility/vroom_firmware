@@ -21,7 +21,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "main_page",
+            "SelectedPage": "throttle_sensor",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -45,13 +45,102 @@
               },
               {
                 "Type": "Container",
-                "Name": "main_page",
+                "Name": "throttle_sensor",
+                "Width": 800,
+                "Height": 480,
+                "Components": [
+                  {
+                    "Type": "BoxWithBorder",
+                    "Name": "throttle_box",
+                    "X": 300,
+                    "Y": 20,
+                    "Width": 200,
+                    "Height": 93,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "BorderSize": 5
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "current_throttle",
+                    "X": 375,
+                    "Y": 46,
+                    "Width": 50,
+                    "Height": 41,
+                    "TextId": "__SingleUse_MW1J",
+                    "TextRotation": "0"
+                  },
+                  {
+                    "Type": "ScalableImage",
+                    "Name": "keypad_blank",
+                    "X": 263,
+                    "Y": 126,
+                    "Width": 275,
+                    "Height": 325,
+                    "Filename": "keypad_blank.png",
+                    "ScalingAlgorithm": "Nearest-neighbor"
+                  },
+                  {
+                    "Type": "FlexButton",
+                    "Name": "enter_button",
+                    "X": 457,
+                    "Y": 375,
+                    "Width": 55,
+                    "Height": 55,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 55,
+                        "Height": 55,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 5,
+                        "ColorReleased": {
+                          "Green": 102,
+                          "Blue": 153
+                        },
+                        "ColorPressed": {
+                          "Green": 153,
+                          "Blue": 204
+                        },
+                        "ColorBorderReleased": {
+                          "Green": 51,
+                          "Blue": 102
+                        },
+                        "ColorBorderPressed": {
+                          "Red": 51,
+                          "Green": 102,
+                          "Blue": 153
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "ScalableImage",
+                    "Name": "enter_icon",
+                    "X": 457,
+                    "Y": 375,
+                    "Width": 55,
+                    "Height": 55,
+                    "Filename": "enter.png",
+                    "ScalingAlgorithm": "Nearest-neighbor"
+                  }
+                ]
+              },
+              {
+                "Type": "Container",
+                "Name": "main_page_1",
                 "Width": 800,
                 "Height": 480,
                 "Components": [
                   {
                     "Type": "CircleProgress",
-                    "Name": "battery_circle",
+                    "Name": "battery_circle_1",
                     "X": 305,
                     "Y": 145,
                     "Width": 190,
@@ -73,12 +162,12 @@
                   },
                   {
                     "Type": "TextProgress",
-                    "Name": "battery_text",
+                    "Name": "battery_text_1",
                     "X": 325,
                     "Y": 165,
                     "Width": 150,
                     "Height": 150,
-                    "TextId": "__SingleUse_NFA2",
+                    "TextId": "__SingleUse_C37D",
                     "Color": {
                       "Red": 255,
                       "Green": 255,
@@ -116,7 +205,19 @@
             ]
           }
         ],
-        "Interactions": []
+        "Interactions": [
+          {
+            "InteractionName": "updateThrottle",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "enter_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "updateThrottle"
+            }
+          }
+        ]
       }
     ],
     "CustomContainerDefinitions": [],
