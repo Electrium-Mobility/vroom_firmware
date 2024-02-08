@@ -437,20 +437,7 @@ static void MX_CAN2_Init(void)
   /* USER CODE BEGIN CAN2_Init 2 */
 
   // Must be configured to determine the FIFO to add received messages to
-  CAN_FilterTypeDef filter;
-  // Default configuration for no filtering, all messages will be accepted by the controller
-  filter.FilterIdHigh = 0;
-  filter.FilterIdLow = 0x0000;
-  filter.FilterMaskIdHigh = 0;
-  filter.FilterMaskIdLow = 0x0000;
-  filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
-  filter.FilterBank = 1;
-  filter.FilterMode = CAN_FILTERMODE_IDMASK;
-  filter.FilterScale = CAN_FILTERSCALE_32BIT;
-  filter.FilterActivation = ENABLE;
-  filter.SlaveStartFilterBank = 0;
-  // CAN_HandleTypeDef irrelevant for this function
-  if(HAL_CAN_ConfigFilter(&hcan2, &filter) != HAL_OK)
+
   {
 	 Error_Handler();
   }
