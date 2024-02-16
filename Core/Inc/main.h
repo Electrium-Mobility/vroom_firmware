@@ -60,6 +60,9 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define MCU_ACTIVE_Pin GPIO_PIN_12
 #define MCU_ACTIVE_GPIO_Port GPIOG
+#define BRAKE_Pin GPIO_PIN_10
+#define BRAKE_GPIO_Port GPIOG
+#define BRAKE_EXTI_IRQn EXTI15_10_IRQn
 #define FRAME_RATE_Pin GPIO_PIN_1
 #define FRAME_RATE_GPIO_Port GPIOA
 #define VSYNC_FREQ_Pin GPIO_PIN_2

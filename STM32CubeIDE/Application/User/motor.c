@@ -158,7 +158,6 @@ void comm_can_set_current_brake(uint8_t controller_id, float current) {
 			((uint32_t)CAN_PACKET_SET_CURRENT_BRAKE << 8), buffer, send_index);
 }
 
-// Set the electrical RPM (ERPM) of the motor, range unknown
 void comm_can_set_rpm(uint8_t controller_id, float rpm) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -167,7 +166,6 @@ void comm_can_set_rpm(uint8_t controller_id, float rpm) {
 			((uint32_t)CAN_PACKET_SET_RPM << 8), buffer, send_index);
 }
 
-// Designed for Servo Motors, range 0 - 360
 void comm_can_set_pos(uint8_t controller_id, float pos) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -176,7 +174,6 @@ void comm_can_set_pos(uint8_t controller_id, float pos) {
 			((uint32_t)CAN_PACKET_SET_POS << 8), buffer, send_index);
 }
 
-// Set current relative to minimum and maximum limits as a decimal percentage, range -1 to 1
 void comm_can_set_current_rel(uint8_t controller_id, float current_rel) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -185,9 +182,6 @@ void comm_can_set_current_rel(uint8_t controller_id, float current_rel) {
 			((uint32_t)CAN_PACKET_SET_CURRENT_REL << 8), buffer, send_index);
 }
 
-/**
- * Same as above, but also sets the off delay. Note that this command uses 6 bytes now. The off delay is useful to set to keep the current controller running for a while even after setting currents below the minimum current.
- */
 void comm_can_set_current_rel_off_delay(uint8_t controller_id, float current_rel, float off_delay) {
 	int32_t send_index = 0;
 	uint8_t buffer[6];
@@ -197,7 +191,6 @@ void comm_can_set_current_rel_off_delay(uint8_t controller_id, float current_rel
 			((uint32_t)CAN_PACKET_SET_CURRENT_REL << 8), buffer, send_index);
 }
 
-// Set braking current relative to minimum current limit as a decimal percentage, range 0 to 1
 void comm_can_set_current_brake_rel(uint8_t controller_id, float current_rel) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -206,7 +199,6 @@ void comm_can_set_current_brake_rel(uint8_t controller_id, float current_rel) {
 			((uint32_t)CAN_PACKET_SET_CURRENT_BRAKE_REL << 8), buffer, send_index);
 }
 
-// Set handbrake as a percentage, 0 to 1
 void comm_can_set_handbrake(uint8_t controller_id, float current) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -215,7 +207,6 @@ void comm_can_set_handbrake(uint8_t controller_id, float current) {
 			((uint32_t)CAN_PACKET_SET_CURRENT_HANDBRAKE << 8), buffer, send_index);
 }
 
-// Set the handbrake relative to minimum current limit as a percentage, range 0 to 1
 void comm_can_set_handbrake_rel(uint8_t controller_id, float current_rel) {
 	int32_t send_index = 0;
 	uint8_t buffer[4];
@@ -312,6 +303,7 @@ void comm_can_shutdown(uint8_t controller_id)
  * Functions for Testing CAN Protocol
  *
  */
+
 uint8_t comm_can_ping(uint8_t controller_id)
 {
 	uint8_t buffer[1];
@@ -334,7 +326,7 @@ uint16_t previous_value = 0; // Variable to store the previous analog value
 
 void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
 {
-	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time STILL NEED TO ADD TIME DELAY
+	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
 
 	sprintf(uart_tx_2, "%d, ", abs(*acceleration));
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
@@ -359,7 +351,12 @@ void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acc
 	//print current values that is compatible with serial plotter
 	sprintf(uart_tx_2, "%ld, ", sensor_data);
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
-	sprintf(uart_tx_2, "%ld\r\n", (*filtered_data));
+	sprintf(uart_tx_2, "%ld, ", (*filtered_data));
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
+}
+
+int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 

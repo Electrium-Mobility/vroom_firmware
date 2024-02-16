@@ -43,6 +43,8 @@
 /* USER CODE BEGIN PD */
 /* DISPLAY */
 #define LCD_ORIENTATION_LANDSCAPE 0x01
+
+#define MOTOR_CAN_ID 2
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -129,13 +131,32 @@ uint32_t tx_mailbox[4];
 CAN_RxHeaderTypeDef rx_header;
 uint8_t rx_data[8];
 
+// TouchGFX CONFIGURABLE VARIABLES
 // Throttle sensor sensitivity threshold variable
 uint16_t threshold = 100;
+uint16_t throttle_min = 1085;
+uint16_t throttle_max = 3205;
+
 
 // UART transmission buffer
 char uart_tx[64];
 
+volatile uint8_t brake_sensor = 0;
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == BRAKE_Pin)
+	{
+		if(HAL_GPIO_ReadPin(BRAKE_GPIO_Port, BRAKE_Pin) == GPIO_PIN_SET)
+		{
+			brake_sensor = 0;
+		}
+		else
+		{
+			brake_sensor = 1;
+		}
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -914,6 +935,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(MCU_ACTIVE_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : BRAKE_Pin */
+  GPIO_InitStruct.Pin = BRAKE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(BRAKE_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : PK3 */
   GPIO_InitStruct.Pin = GPIO_PIN_3;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -934,6 +961,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
@@ -967,12 +998,12 @@ void StartDefaultTask(void *argument)
 	{
 	case '0':
 	{
-		comm_can_set_duty(2, 0.1);
+		comm_can_set_duty(MOTOR_CAN_ID, 0.1);
 		break;
 	}
 	case '1':
 	{
-		comm_can_set_rpm(2, 2600);
+		comm_can_set_rpm(MOTOR_CAN_ID, 2600);
 		break;
 	}
 	case '2':
@@ -982,7 +1013,7 @@ void StartDefaultTask(void *argument)
 	}
 	case '3':
 	{
-		comm_can_set_current(2, 1);
+		comm_can_set_current(MOTOR_CAN_ID, 1);
 		break;
 	}
 	case '4':
@@ -1008,7 +1039,7 @@ void StartDefaultTask(void *argument)
 //		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
 //		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
 //	}
-    osDelay(100);
+    osDelay(1);
   }
   /* USER CODE END 5 */
 }
@@ -1021,8 +1052,8 @@ void StartDefaultTask(void *argument)
 */
 uint32_t throttle_data;
 uint32_t filtered_data;
+uint32_t duty_cycle = 0;
 int32_t acceleration;
-uint8_t brake_sensor = 1;
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
@@ -1034,17 +1065,25 @@ void StartMotorTask(void *argument)
 	if(brake_sensor)
 	{
 		// Activate regenerative breaking to slow the bike down to the appropriate speed
+		comm_can_set_current(MOTOR_CAN_ID, 0.0);
+		HAL_UART_Transmit(&huart3, "Succ-seed\r\n", strlen("Succ-seed\r\n"), HAL_MAX_DELAY);
 	}
 	else
 	{
 		// read the throttle sensor
-//		HAL_ADC_Start(&hadc1);
-//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-//		throttle_data = HAL_ADC_GetValue(&hadc1);
-//		HAL_ADC_Stop(&hadc1);
+		HAL_ADC_Start(&hadc1);
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+		throttle_data = HAL_ADC_GetValue(&hadc1);
+		HAL_ADC_Stop(&hadc1);
 
 		// ensure the sensor value is reasonable to send to the motor
-		//handle_throttle(throttle_data, &filtered_data, &acceleration);
+		handle_throttle(throttle_data, &filtered_data, &acceleration);
+		duty_cycle = map(filtered_data, throttle_min, throttle_max, 0, 100);
+
+		sprintf(uart_tx, "%ld\r\n", duty_cycle);
+		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+//		sprintf(uart_tx, "filtered: %lu\r\n", filtered_data);
+//		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
 
 		if(acceleration > 0)
 		{
@@ -1055,7 +1094,7 @@ void StartMotorTask(void *argument)
 			// Activate regenerative breaking to slow the bike down to the appropriate speed
 		}
 	}
-    osDelay(100);
+    osDelay(1);
   }
   /* USER CODE END StartMotorTask */
 }
