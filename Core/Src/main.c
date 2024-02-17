@@ -70,6 +70,8 @@ LTDC_HandleTypeDef hltdc;
 
 QSPI_HandleTypeDef hqspi;
 
+TIM_HandleTypeDef htim14;
+
 UART_HandleTypeDef huart3;
 
 SDRAM_HandleTypeDef hsdram1;
@@ -113,6 +115,7 @@ static void MX_CAN2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_CAN1_Init(void);
+static void MX_TIM14_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartMotorTask(void *argument);
@@ -137,6 +140,8 @@ uint16_t threshold = 100;
 uint16_t throttle_min = 1085;
 uint16_t throttle_max = 3205;
 
+volatile uint16_t time;
+volatile uint16_t time_delay = 50000;
 
 // UART transmission buffer
 char uart_tx[64];
@@ -147,6 +152,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == BRAKE_Pin)
 	{
+		// reverse time to make the motor immediately deactivate or activate upon interrupt
+		time = (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time_delay);
+
 		if(HAL_GPIO_ReadPin(BRAKE_GPIO_Port, BRAKE_Pin) == GPIO_PIN_SET)
 		{
 			brake_sensor = 0;
@@ -199,6 +207,7 @@ int main(void)
   MX_ADC1_Init();
   MX_USART3_UART_Init();
   MX_CAN1_Init();
+  MX_TIM14_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -210,23 +219,13 @@ int main(void)
 	  Error_Handler();
   }
 
-  tx_header.DLC = 4;
-  tx_header.ExtId = 0;
-  tx_header.IDE = CAN_ID_STD;
-  tx_header.RTR = CAN_RTR_DATA;
-  tx_header.StdId = 0;
-  tx_header.TransmitGlobalTime = DISABLE;
-
-  // CAN transmission test function
-//  tx_data[0] = 1;
-//  tx_data[1] = 2;
-//  tx_data[2] = 3;
-//  tx_data[3] = 4;
-//  HAL_CAN_AddTxMessage(&hcan2, &tx_header, tx_data, tx_mailbox);
-
   sprintf(uart_tx, "Init");
   HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 4, HAL_MAX_DELAY);
 
+  if(HAL_TIM_Base_Start(&htim14) != HAL_OK)
+  {
+	  Error_Handler();
+  }
 
   /* USER CODE END 2 */
 
@@ -809,6 +808,37 @@ static void MX_QUADSPI_Init(void)
 }
 
 /**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 900-1;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 65535;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+
+}
+
+/**
   * @brief USART3 Initialization Function
   * @param None
   * @retval None
@@ -990,6 +1020,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
+
 	HAL_UART_Receive(&huart3, uart_buffer, 1, HAL_MAX_DELAY);
 	sprintf(uart_tx, "received: %u", uart_buffer[0]);
 	HAL_UART_Transmit(&huart3, uart_buffer, 1, HAL_MAX_DELAY);
@@ -1054,35 +1085,55 @@ uint32_t throttle_data;
 uint32_t filtered_data;
 uint32_t duty_cycle = 0;
 int32_t acceleration;
+
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
   /* USER CODE BEGIN StartMotorTask */
+  time = __HAL_TIM_GET_COUNTER(&htim14);
   /* Infinite loop */
   for(;;)
   {
+
+
+
+
+
 	// read the break sensor, check if it is active
 	if(brake_sensor)
 	{
 		// Activate regenerative breaking to slow the bike down to the appropriate speed
-		comm_can_set_current(MOTOR_CAN_ID, 0.0);
-		HAL_UART_Transmit(&huart3, "Succ-seed\r\n", strlen("Succ-seed\r\n"), HAL_MAX_DELAY);
+
+		//comm_can_set_current(MOTOR_CAN_ID, 0.0);
+
+		//HAL_UART_Transmit(&huart3, "Succ-seed\r\n", strlen("Succ-seed\r\n"), HAL_MAX_DELAY);
+
+		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
+		{
+			sprintf(uart_tx, "ST %u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
+			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);
+		}
 	}
 	else
 	{
+		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
+		{
+			sprintf(uart_tx, "%u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
+			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);
+		}
 		// read the throttle sensor
-		HAL_ADC_Start(&hadc1);
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-		throttle_data = HAL_ADC_GetValue(&hadc1);
-		HAL_ADC_Stop(&hadc1);
-
-		// ensure the sensor value is reasonable to send to the motor
-		handle_throttle(throttle_data, &filtered_data, &acceleration);
-		duty_cycle = map(filtered_data, throttle_min, throttle_max, 0, 100);
-
-		sprintf(uart_tx, "%ld\r\n", duty_cycle);
-		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-//		sprintf(uart_tx, "filtered: %lu\r\n", filtered_data);
+//		HAL_ADC_Start(&hadc1);
+//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//		throttle_data = HAL_ADC_GetValue(&hadc1);
+//		HAL_ADC_Stop(&hadc1);
+//
+//		// ensure the sensor value is reasonable to send to the motor
+//		handle_throttle(throttle_data, &filtered_data, &acceleration);
+//		duty_cycle = map(filtered_data, throttle_min, throttle_max, 0, 100);
+//
+//		sprintf(uart_tx, "%ld\r\n", duty_cycle);
 //		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
 
 		if(acceleration > 0)
