@@ -1086,6 +1086,8 @@ uint32_t filtered_data;
 uint32_t duty_cycle = 0;
 int32_t acceleration;
 
+float brake_magnitude = 0;
+
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
@@ -1104,12 +1106,11 @@ void StartMotorTask(void *argument)
 	{
 		// Activate regenerative breaking to slow the bike down to the appropriate speed
 
-		//comm_can_set_current(MOTOR_CAN_ID, 0.0);
-
-		//HAL_UART_Transmit(&huart3, "Succ-seed\r\n", strlen("Succ-seed\r\n"), HAL_MAX_DELAY);
-
 		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
 		{
+			handle_brake((uint16_t)__HAL_TIM_GET_COUNTER(&htim14) - time, brake_magnitude);
+			comm_can_set_current_brake_rel(MOTOR_CAN_ID, 1);
+
 			sprintf(uart_tx, "ST %u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
 			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
 			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);

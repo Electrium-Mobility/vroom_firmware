@@ -3,6 +3,8 @@
 
 #include <gui_generated/main_screen_screen/main_screenViewBase.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
+#include <gui/common/CustomKeyboard.hpp>
+#include <touchgfx/widgets/ButtonWithLabel.hpp>
 
 class main_screenView : public main_screenViewBase
 {
@@ -11,7 +13,15 @@ public:
     virtual ~main_screenView() {}
     virtual void setupScreen();
     virtual void tearDownScreen();
+    /*
+	 * Virtual Action Handlers
+	 */
+	virtual void command_button_clicked();
+
 protected:
+    CustomKeyboard keyboard;
+
+
 };
 
 #endif // MAIN_SCREENVIEW_HPP

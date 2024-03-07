@@ -32,38 +32,31 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.add(motor_page);
 
-    throttle_sensor.setWidth(800);
-    throttle_sensor.setHeight(480);
-    throttle_box.setPosition(300, 20, 200, 93);
-    throttle_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    throttle_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    throttle_box.setBorderSize(5);
-    throttle_sensor.add(throttle_box);
+    command_page.setWidth(800);
+    command_page.setHeight(480);
+    command_box.setPosition(54, 183, 200, 114);
+    command_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    command_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    command_box.setBorderSize(5);
+    command_page.add(command_box);
 
-    current_throttle.setPosition(375, 46, 50, 41);
-    current_throttle.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    current_throttle.setLinespacing(0);
-    current_throttle.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MW1J));
-    throttle_sensor.add(current_throttle);
+    command.setPosition(61, 205, 186, 70);
+    command.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    command.setLinespacing(0);
+    Unicode::snprintf(commandBuffer, COMMAND_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_WQGM).getText());
+    command.setWildcard(commandBuffer);
+    command.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MW1J));
+    command_page.add(command);
 
-    keypad_blank.setBitmap(touchgfx::Bitmap(BITMAP_KEYPAD_BLANK_ID));
-    keypad_blank.setPosition(263, 126, 275, 325);
-    keypad_blank.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
-    throttle_sensor.add(keypad_blank);
+    flexButton1.setBoxWithBorderPosition(0, 0, 199, 114);
+    flexButton1.setBorderSize(5);
+    flexButton1.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    flexButton1.setAlpha(118);
+    flexButton1.setAction(flexButtonCallback);
+    flexButton1.setPosition(55, 183, 199, 114);
+    command_page.add(flexButton1);
 
-    enter_button.setBoxWithBorderPosition(0, 0, 55, 55);
-    enter_button.setBorderSize(5);
-    enter_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
-    enter_button.setAction(flexButtonCallback);
-    enter_button.setPosition(457, 375, 55, 55);
-    throttle_sensor.add(enter_button);
-
-    enter_icon.setBitmap(touchgfx::Bitmap(BITMAP_ENTER_ID));
-    enter_icon.setPosition(457, 375, 55, 55);
-    enter_icon.setScalingAlgorithm(touchgfx::ScalableImage::NEAREST_NEIGHBOR);
-    throttle_sensor.add(enter_icon);
-
-    swipe_container.add(throttle_sensor);
+    swipe_container.add(command_page);
 
     main_page_1.setWidth(800);
     main_page_1.setHeight(480);
@@ -116,11 +109,11 @@ void main_screenViewBase::setupScreen()
 
 void main_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
 {
-    if (&src == &enter_button)
+    if (&src == &flexButton1)
     {
-        //updateThrottle
-        //When enter_button clicked call virtual function
-        //Call updateThrottle
-        updateThrottle();
+        //send_command
+        //When flexButton1 clicked call virtual function
+        //Call command_button_clicked
+        command_button_clicked();
     }
 }

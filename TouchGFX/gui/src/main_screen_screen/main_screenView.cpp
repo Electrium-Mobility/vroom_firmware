@@ -2,7 +2,10 @@
 
 main_screenView::main_screenView()
 {
-
+	keyboard.setPosition(300, 0, 418, 480);
+	add(keyboard);
+	keyboard.setVisible(false);
+	keyboard.invalidate();
 }
 
 void main_screenView::setupScreen()
@@ -13,4 +16,10 @@ void main_screenView::setupScreen()
 void main_screenView::tearDownScreen()
 {
     main_screenViewBase::tearDownScreen();
+}
+
+void main_screenView::command_button_clicked()
+{
+	keyboard.setVisible(true);
+	keyboard.invalidate();
 }

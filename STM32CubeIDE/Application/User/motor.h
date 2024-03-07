@@ -184,6 +184,8 @@ uint8_t comm_can_ping(uint8_t controller_id);
  *
  */
 void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration);
+void handle_brake(uint16_t t, float *brake_magnitude);
+
 int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 
 #endif /* APPLICATION_USER_MOTOR_H_ */

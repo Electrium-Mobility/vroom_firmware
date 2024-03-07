@@ -13,8 +13,7 @@
 #include <touchgfx/containers/Container.hpp>
 #include <touchgfx/widgets/Button.hpp>
 #include <touchgfx/widgets/BoxWithBorder.hpp>
-#include <touchgfx/widgets/TextArea.hpp>
-#include <touchgfx/widgets/ScalableImage.hpp>
+#include <touchgfx/widgets/TextAreaWithWildcard.hpp>
 #include <touchgfx/containers/buttons/Buttons.hpp>
 #include <touchgfx/containers/progress_indicators/CircleProgress.hpp>
 #include <touchgfx/widgets/canvas/PainterRGB565.hpp>
@@ -30,7 +29,7 @@ public:
     /*
      * Virtual Action Handlers
      */
-    virtual void updateThrottle()
+    virtual void command_button_clicked()
     {
         // Override and implement this function in main_screen
     }
@@ -48,18 +47,22 @@ protected:
     touchgfx::SwipeContainer swipe_container;
     touchgfx::Container motor_page;
     touchgfx::Button button1;
-    touchgfx::Container throttle_sensor;
-    touchgfx::BoxWithBorder throttle_box;
-    touchgfx::TextArea current_throttle;
-    touchgfx::ScalableImage keypad_blank;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
-    touchgfx::ScalableImage enter_icon;
+    touchgfx::Container command_page;
+    touchgfx::BoxWithBorder command_box;
+    touchgfx::TextAreaWithOneWildcard command;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  flexButton1;
     touchgfx::Container main_page_1;
     touchgfx::CircleProgress battery_circle_1;
     touchgfx::PainterRGB565 battery_circle_1Painter;
     touchgfx::TextProgress battery_text_1;
     touchgfx::Container bms_page;
     touchgfx::Button button2;
+
+    /*
+     * Wildcard Buffers
+     */
+    static const uint16_t COMMAND_SIZE = 20;
+    touchgfx::Unicode::UnicodeChar commandBuffer[COMMAND_SIZE];
 
 private:
 

@@ -355,6 +355,10 @@ void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acc
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
 }
 
+void handle_brake(uint16_t t, float *brake_magnitude)
+{
+}
+
 int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;

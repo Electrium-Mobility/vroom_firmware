@@ -21,7 +21,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "throttle_sensor",
+            "SelectedPage": "command_page",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -45,17 +45,17 @@
               },
               {
                 "Type": "Container",
-                "Name": "throttle_sensor",
+                "Name": "command_page",
                 "Width": 800,
                 "Height": 480,
                 "Components": [
                   {
                     "Type": "BoxWithBorder",
-                    "Name": "throttle_box",
-                    "X": 300,
-                    "Y": 20,
+                    "Name": "command_box",
+                    "X": 54,
+                    "Y": 183,
                     "Width": 200,
-                    "Height": 93,
+                    "Height": 114,
                     "Color": {
                       "Red": 255,
                       "Green": 255,
@@ -65,39 +65,35 @@
                   },
                   {
                     "Type": "TextArea",
-                    "Name": "current_throttle",
-                    "X": 375,
-                    "Y": 46,
-                    "Width": 50,
-                    "Height": 41,
+                    "Name": "command",
+                    "X": 61,
+                    "Y": 205,
+                    "Width": 186,
+                    "Height": 70,
                     "TextId": "__SingleUse_MW1J",
-                    "TextRotation": "0"
-                  },
-                  {
-                    "Type": "ScalableImage",
-                    "Name": "keypad_blank",
-                    "X": 263,
-                    "Y": 126,
-                    "Width": 275,
-                    "Height": 325,
-                    "Filename": "keypad_blank.png",
-                    "ScalingAlgorithm": "Nearest-neighbor"
+                    "TextRotation": "0",
+                    "Wildcard1": {
+                      "TextId": "__SingleUse_WQGM",
+                      "UseBuffer": true,
+                      "BufferSize": 20
+                    }
                   },
                   {
                     "Type": "FlexButton",
-                    "Name": "enter_button",
-                    "X": 457,
-                    "Y": 375,
-                    "Width": 55,
-                    "Height": 55,
+                    "Name": "flexButton1",
+                    "X": 55,
+                    "Y": 183,
+                    "Width": 199,
+                    "Height": 114,
+                    "Alpha": 118,
                     "ButtonTrigger": {
                       "Type": "ClickButtonTrigger"
                     },
                     "ButtonStyles": [
                       {
                         "Type": "BoxWithBorderButtonStyle",
-                        "Width": 55,
-                        "Height": 55,
+                        "Width": 199,
+                        "Height": 114,
                         "LockToFlexButtonSize": true,
                         "BorderSize": 5,
                         "ColorReleased": {
@@ -119,16 +115,6 @@
                         }
                       }
                     ]
-                  },
-                  {
-                    "Type": "ScalableImage",
-                    "Name": "enter_icon",
-                    "X": 457,
-                    "Y": 375,
-                    "Width": 55,
-                    "Height": 55,
-                    "Filename": "enter.png",
-                    "ScalingAlgorithm": "Nearest-neighbor"
                   }
                 ]
               },
@@ -207,14 +193,14 @@
         ],
         "Interactions": [
           {
-            "InteractionName": "updateThrottle",
+            "InteractionName": "send_command",
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "enter_button"
+              "TriggerComponent": "flexButton1"
             },
             "Action": {
               "Type": "ActionCustom",
-              "FunctionName": "updateThrottle"
+              "FunctionName": "command_button_clicked"
             }
           }
         ]

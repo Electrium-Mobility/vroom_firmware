@@ -173,16 +173,16 @@
       <UniqueIdentifier>7735BC4D-3DD5-5335-6C56-BDA80AB9F594</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\gui\main_screen_screen">
-      <UniqueIdentifier>61B5BFFF-191D-4040-B87D-BDA45E1583AB</UniqueIdentifier>
+      <UniqueIdentifier>ECBE9AA3-CCB2-38C1-7FDB-572CC958BC9D</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\gui\main_screen_screen">
-      <UniqueIdentifier>B78B0EE3-6082-1442-F48C-B14606C59A2B</UniqueIdentifier>
+      <UniqueIdentifier>8F664BEB-8827-BB87-5D8F-A996D4AB1BBB</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\generated\gui_generated\main_screen_screen">
-      <UniqueIdentifier>7430C0A9-1408-6024-602A-3A47ACB209CF</UniqueIdentifier>
+      <UniqueIdentifier>F1E579A2-EC60-806C-F58A-1EDE8A3AD561</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\generated\gui_generated\main_screen_screen">
-      <UniqueIdentifier>9B850474-C4C4-8034-1A21-8E3E308F4580</UniqueIdentifier>
+      <UniqueIdentifier>4A008A68-E8F0-720A-F27B-14A1D64956EE</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="..\..\generated\simulator\src\video\SoftwareMJPEGDecoder.cpp">
       <Filter>Source Files\generated\simulator\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\common\CustomKeyboard.cpp">
+      <Filter>Source Files\gui\common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenPresenter.cpp">
       <Filter>Source Files\gui\main_screen_screen</Filter>
@@ -666,6 +669,15 @@
     </ClInclude>
     <ClInclude Include="..\..\generated\simulator\include\simulator\video\SoftwareMJPEGDecoder.hpp">
       <Filter>Header Files\generated\simulator\include\simulator\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\CustomKeyboard.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\KeyboardKeyMapping.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\KeyboardLayout.hpp">
+      <Filter>Header Files\gui\common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenPresenter.hpp">
       <Filter>Header Files\gui\main_screen_screen</Filter>

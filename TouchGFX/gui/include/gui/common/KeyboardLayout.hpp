@@ -1,0 +1,63 @@
+#ifndef KEYBOARD_LAYOUT
+#define KEYBOARD_LAYOUT
+
+#include <touchgfx/widgets/Keyboard.hpp>
+#include <touchgfx/hal/Types.hpp>
+#include <fonts/ApplicationFontProvider.hpp>
+#include "BitmapDatabase.hpp"
+
+using namespace touchgfx;
+
+#define BUTTON_WIDTH 89
+#define BUTTON_SPACE_W 21
+#define BUTTON_HEIGHT 89
+#define BUTTON_SPACE_H 15
+#define TEXT_OFFSET 80
+/**
+ * Array specifying the keys used in the CustomKeyboard.
+ */
+static const Keyboard::Key keyArray[11] =
+{
+    { 1, Rect(0, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+    { 2, Rect(BUTTON_WIDTH + BUTTON_SPACE_W, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+    { 3, Rect((BUTTON_WIDTH + BUTTON_SPACE_W)* 2, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+
+    { 4, Rect(0, TEXT_OFFSET + BUTTON_HEIGHT + BUTTON_SPACE_H, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+    { 5, Rect(BUTTON_WIDTH + BUTTON_SPACE_W, TEXT_OFFSET + BUTTON_HEIGHT + BUTTON_SPACE_H, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+    { 6, Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 2, TEXT_OFFSET + BUTTON_HEIGHT + BUTTON_SPACE_H, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+
+    { 7, Rect(0, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 2, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+    { 8, Rect(BUTTON_WIDTH + BUTTON_SPACE_W, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 2, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+    { 9, Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 2, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 2, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+
+    {10, Rect(BUTTON_WIDTH + BUTTON_SPACE_W, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+
+    {11, Rect(0, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+};
+
+/**
+ * Callback areas for the special buttons on the CustomKeyboard.
+ */
+static Keyboard::CallbackArea callbackAreas[2] =
+{
+    {Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 3, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT * 2 + BUTTON_SPACE_H), 0, BITMAP_KEY_2_PRESSED_ID},  // backspace
+	{Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 3, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H)* 2, BUTTON_WIDTH, BUTTON_HEIGHT * 2 + BUTTON_SPACE_H), 0, BITMAP_KEY_2_PRESSED_ID},
+};
+/**
+ * The layout for the CustomKeyboard.
+ */
+static const Keyboard::Layout layout =
+{
+	BITMAP_KEYPAD_2_ID,
+    keyArray,
+    11,
+    callbackAreas,
+    2,
+    Rect(0, 0, 418, TEXT_OFFSET),
+    TypedText(T_ENTERED_TEXT),
+    0,
+    Typography::KEYBOARD,
+    0
+};
+
+#endif
