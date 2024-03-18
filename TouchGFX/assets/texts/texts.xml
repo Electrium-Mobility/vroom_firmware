@@ -5,17 +5,28 @@
   </Languages>
   <Texts>
     <TextGroup Id="Keyboard">
-      <Text Id="entered_text" Alignment="Center" TypographyId="Keyboard">
+      <Text Id="entered_text" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB">&lt;placeholder&gt;</Translation>
       </Text>
     </TextGroup>
-    <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
-      <Text Id="__SingleUse_WQGM" Alignment="Left" TypographyId="Keyboard">
-        <Translation Language="GB">0</Translation>
+      <Text Id="value_text" Alignment="Left" TypographyId="Keyboard">
+        <Translation Language="GB"></Translation>
       </Text>
-      <Text Id="__SingleUse_MW1J" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="__SingleUse_HU9G" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="function_text" Alignment="Left" TypographyId="Keyboard">
+        <Translation Language="GB"></Translation>
+      </Text>
+      <Text Id="__SingleUse_PLEI" Alignment="Left" TypographyId="Keyboard">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_S3TK" Alignment="Left" TypographyId="Keyboard">
+        <Translation Language="GB">Value</Translation>
+      </Text>
+      <Text Id="__SingleUse_W5VS" Alignment="Left" TypographyId="Keyboard">
+        <Translation Language="GB">Function</Translation>
       </Text>
       <Text Id="__SingleUse_C37D" Alignment="Center" TypographyId="Large">
         <Translation Language="GB">&lt;&gt; %</Translation>
@@ -26,6 +37,6 @@
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WidgetWildcardCharacters="0123456789." />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" Direction="LTR" FallbackCharacter="?" />
-    <Typography Id="Keyboard" Font="verdana.ttf" Size="60" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789." WildcardCharacterRanges="0-9" />
+    <Typography Id="Keyboard" Font="verdana.ttf" Size="60" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789.:" WildcardCharacterRanges="0-9" />
   </Typographies>
 </TextDatabase>

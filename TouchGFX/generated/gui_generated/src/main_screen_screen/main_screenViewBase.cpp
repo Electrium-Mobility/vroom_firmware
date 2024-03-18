@@ -21,6 +21,8 @@ main_screenViewBase::main_screenViewBase() :
     add(image1);
 
     swipe_container.setXY(0, 0);
+    swipe_container.setPageIndicatorBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_SWIPECONTAINER_MEDIUM_OFF_NORMAL_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_SWIPECONTAINER_MEDIUM_ON_ACTIVE_ID));
+    swipe_container.setPageIndicatorXY(0, 0);
     swipe_container.setSwipeCutoff(50);
     swipe_container.setEndSwipeElasticWidth(50);
 
@@ -34,27 +36,74 @@ main_screenViewBase::main_screenViewBase() :
 
     command_page.setWidth(800);
     command_page.setHeight(480);
-    command_box.setPosition(54, 183, 200, 114);
+    command_box.setPosition(60, 0, 330, 70);
     command_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     command_box.setBorderSize(5);
     command_page.add(command_box);
 
-    command.setPosition(61, 205, 186, 70);
-    command.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command.setLinespacing(0);
-    Unicode::snprintf(commandBuffer, COMMAND_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_WQGM).getText());
-    command.setWildcard(commandBuffer);
-    command.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MW1J));
-    command_page.add(command);
+    command_box_1.setPosition(495, 137, 305, 70);
+    command_box_1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    command_box_1.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    command_box_1.setBorderSize(5);
+    command_page.add(command_box_1);
 
-    flexButton1.setBoxWithBorderPosition(0, 0, 199, 114);
-    flexButton1.setBorderSize(5);
-    flexButton1.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
-    flexButton1.setAlpha(118);
-    flexButton1.setAction(flexButtonCallback);
-    flexButton1.setPosition(55, 183, 199, 114);
-    command_page.add(flexButton1);
+    command_box_2.setPosition(495, 356, 305, 70);
+    command_box_2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    command_box_2.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    command_box_2.setBorderSize(5);
+    command_page.add(command_box_2);
+
+    keypad_image.setXY(71, 0);
+    keypad_image.setBitmap(touchgfx::Bitmap(BITMAP_KEYPAD_ID));
+    command_page.add(keypad_image);
+
+    textArea1.setXY(520, 58);
+    textArea1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textArea1.setLinespacing(0);
+    textArea1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_W5VS));
+    command_page.add(textArea1);
+
+    textArea2.setXY(565, 279);
+    textArea2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textArea2.setLinespacing(0);
+    textArea2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_S3TK));
+    command_page.add(textArea2);
+
+    value_button.setBoxWithBorderPosition(0, 0, 305, 70);
+    value_button.setBorderSize(5);
+    value_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    value_button.setAction(flexButtonCallback);
+    value_button.setPosition(495, 279, 305, 70);
+    command_page.add(value_button);
+
+    function_button.setBoxWithBorderPosition(0, 0, 305, 70);
+    function_button.setBorderSize(5);
+    function_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    function_button.setAlpha(0);
+    function_button.setAction(flexButtonCallback);
+    function_button.setPosition(495, 138, 305, 70);
+    command_page.add(function_button);
+
+    delete_button.setBitmaps(Bitmap(BITMAP_KEY_2_ID), Bitmap(BITMAP_KEY_2_PRESSED_ID));
+    delete_button.setBitmapXY(0, 0);
+    delete_button.setAction(flexButtonCallback);
+    delete_button.setPosition(400, 76, 89, 192);
+    command_page.add(delete_button);
+
+    enter_button.setBitmaps(Bitmap(BITMAP_KEY_2_ID), Bitmap(BITMAP_KEY_2_PRESSED_ID));
+    enter_button.setBitmapXY(0, 0);
+    enter_button.setAction(flexButtonCallback);
+    enter_button.setPosition(400, 288, 89, 192);
+    command_page.add(enter_button);
+
+    function_text.setPosition(495, 137, 305, 71);
+    function_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    function_text.setLinespacing(0);
+    Unicode::snprintf(function_textBuffer, FUNCTION_TEXT_SIZE, "%s", touchgfx::TypedText(T_FUNCTION_TEXT).getText());
+    function_text.setWildcard(function_textBuffer);
+    function_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PLEI));
+    command_page.add(function_text);
 
     swipe_container.add(command_page);
 
@@ -95,6 +144,14 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.setSelectedPage(1);
     add(swipe_container);
+
+    value_text.setPosition(495, 356, 305, 70);
+    value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    value_text.setLinespacing(0);
+    Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%s", touchgfx::TypedText(T_VALUE_TEXT).getText());
+    value_text.setWildcard(value_textBuffer);
+    value_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HU9G));
+    add(value_text);
 }
 
 main_screenViewBase::~main_screenViewBase()
@@ -109,11 +166,32 @@ void main_screenViewBase::setupScreen()
 
 void main_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
 {
-    if (&src == &flexButton1)
+    if (&src == &value_button)
     {
-        //send_command
-        //When flexButton1 clicked call virtual function
-        //Call command_button_clicked
-        command_button_clicked();
+        //value_interaction
+        //When value_button clicked call virtual function
+        //Call check_value
+        check_value();
+    }
+    if (&src == &function_button)
+    {
+        //function_interaction
+        //When function_button clicked call virtual function
+        //Call check_function
+        check_function();
+    }
+    if (&src == &delete_button)
+    {
+        //delete_interaction
+        //When delete_button clicked call virtual function
+        //Call delete_char
+        delete_char();
+    }
+    if (&src == &enter_button)
+    {
+        //enter_interaction
+        //When enter_button clicked call virtual function
+        //Call enter_command
+        enter_command();
     }
 }

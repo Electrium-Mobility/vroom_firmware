@@ -6,6 +6,8 @@
 #include <gui/common/CustomKeyboard.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 
+#include <touchgfx/Color.hpp>
+
 class main_screenView : public main_screenViewBase
 {
 public:
@@ -14,14 +16,15 @@ public:
     virtual void setupScreen();
     virtual void tearDownScreen();
     /*
-	 * Virtual Action Handlers
-	 */
-	virtual void command_button_clicked();
+      * Virtual Action Handlers
+      */
+     virtual void check_value();
+     virtual void check_function();
+     virtual void delete_char();
+     virtual void enter_command();
 
 protected:
-    CustomKeyboard keyboard;
-
-
+	CustomKeyboard keypad;
 };
 
 #endif // MAIN_SCREENVIEW_HPP

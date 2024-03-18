@@ -9,7 +9,11 @@
 #include <fonts/ApplicationFontProvider.hpp>
 #include <gui/common/KeyboardKeyMapping.hpp>
 
+#include <touchgfx/widgets/TextAreaWithWildcard.hpp>
+
+
 using namespace touchgfx;
+
 
 /**
  * An alphanumeric keyboard with backspace, space-bar and delete functionality.
@@ -18,6 +22,7 @@ using namespace touchgfx;
  * Please note that the ApplicationFontProvider is initialized and set with the FontManager in main.cpp
  * The fonts and the characters used by the keyboard have to be defined in the assets/texts/texts.xlsx file.
  */
+
 class CustomKeyboard : public Container
 {
 public:
@@ -31,15 +36,22 @@ public:
     void setTouchable(bool touch);
 
     Unicode::UnicodeChar *getBuffer ();
-
     virtual void clearBuffer ();
+    void set_keyboard_visible(bool visibility);
+    uint16_t getBufferPosition();
+	void delete_char();
 
-private:
+
     /*
      * The size of the buffer that is used by the keyboard.
      * The size determines how much text the keyboard can contain in its textfield.
      */
-    static const uint8_t BUFFER_SIZE = 12;
+    static const uint8_t BUFFER_SIZE = 9;
+
+private:
+
+
+    uint8_t decimal_pressed = 0;
 
     /**
      * The keyboard which this CustomKeyboard wraps.
@@ -59,6 +71,18 @@ private:
      * Callback for the enter button.
      */
     Callback<CustomKeyboard> enterPressed;
+    /**
+	 * Callback for the enter button.
+	 */
+	Callback<CustomKeyboard> equalsPressed;
+	/**
+	 * Callback for the enter button.
+	 */
+	Callback<CustomKeyboard> decimalPressed;
+	/**
+	 * Callback for when keys are pressed on the keyboard.
+	 */
+	Callback<CustomKeyboard, Unicode::UnicodeChar> keyPressed;
 
     /*
      * Sets the correct key mappings of the keyboard according to alpha/numeric and upper-case/lower-case.
@@ -74,6 +98,22 @@ private:
      * Callback handler for the enter button.
      */
     void enterPressedHandler();
+
+    /**
+	 * Callback handler for the enter button.
+	 */
+	void equalsPressedHandler();
+
+	/**
+	 * Callback handler for the decimal button
+	 */
+	void decimalPressedHandler();
+
+	/**
+	 * Callback handler for key presses.
+	 * @param keyChar The UnicodeChar for the key that was pressed.
+	 */
+	void keyPressedhandler(Unicode::UnicodeChar char_pressed);
 };
 
 #endif /* TGFXKEYBOARD_HPP_ */

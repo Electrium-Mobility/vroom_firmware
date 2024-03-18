@@ -18,6 +18,7 @@
             "Width": 800,
             "Height": 480,
             "SwipeCutoff": 50,
+            "ShowPageIndicator": true,
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
@@ -52,10 +53,9 @@
                   {
                     "Type": "BoxWithBorder",
                     "Name": "command_box",
-                    "X": 54,
-                    "Y": 183,
-                    "Width": 200,
-                    "Height": 114,
+                    "X": 60,
+                    "Width": 330,
+                    "Height": 70,
                     "Color": {
                       "Red": 255,
                       "Green": 255,
@@ -64,36 +64,79 @@
                     "BorderSize": 5
                   },
                   {
-                    "Type": "TextArea",
-                    "Name": "command",
-                    "X": 61,
-                    "Y": 205,
-                    "Width": 186,
+                    "Type": "BoxWithBorder",
+                    "Name": "command_box_1",
+                    "X": 495,
+                    "Y": 137,
+                    "Width": 305,
                     "Height": 70,
-                    "TextId": "__SingleUse_MW1J",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "BorderSize": 5
+                  },
+                  {
+                    "Type": "BoxWithBorder",
+                    "Name": "command_box_2",
+                    "X": 495,
+                    "Y": 356,
+                    "Width": 305,
+                    "Height": 70,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "BorderSize": 5
+                  },
+                  {
+                    "Type": "Image",
+                    "Name": "keypad_image",
+                    "X": 71,
+                    "Width": 308,
+                    "Height": 480,
+                    "RelativeFilename": "keypad.png"
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textArea1",
+                    "X": 520,
+                    "Y": 58,
+                    "Width": 255,
+                    "Height": 72,
+                    "TextId": "__SingleUse_W5VS",
                     "TextRotation": "0",
-                    "Wildcard1": {
-                      "TextId": "__SingleUse_WQGM",
-                      "UseBuffer": true,
-                      "BufferSize": 20
-                    }
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "textArea2",
+                    "X": 565,
+                    "Y": 279,
+                    "Width": 164,
+                    "Height": 72,
+                    "TextId": "__SingleUse_S3TK",
+                    "TextRotation": "0",
+                    "AutoSize": true
                   },
                   {
                     "Type": "FlexButton",
-                    "Name": "flexButton1",
-                    "X": 55,
-                    "Y": 183,
-                    "Width": 199,
-                    "Height": 114,
-                    "Alpha": 118,
+                    "Name": "value_button",
+                    "X": 495,
+                    "Y": 356,
+                    "Width": 305,
+                    "Height": 70,
+                    "Alpha": 0,
                     "ButtonTrigger": {
                       "Type": "ClickButtonTrigger"
                     },
                     "ButtonStyles": [
                       {
                         "Type": "BoxWithBorderButtonStyle",
-                        "Width": 199,
-                        "Height": 114,
+                        "Width": 305,
+                        "Height": 70,
                         "LockToFlexButtonSize": true,
                         "BorderSize": 5,
                         "ColorReleased": {
@@ -115,6 +158,97 @@
                         }
                       }
                     ]
+                  },
+                  {
+                    "Type": "FlexButton",
+                    "Name": "function_button",
+                    "X": 495,
+                    "Y": 138,
+                    "Width": 305,
+                    "Height": 70,
+                    "Alpha": 0,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 305,
+                        "Height": 70,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 5,
+                        "ColorReleased": {
+                          "Green": 102,
+                          "Blue": 153
+                        },
+                        "ColorPressed": {
+                          "Green": 153,
+                          "Blue": 204
+                        },
+                        "ColorBorderReleased": {
+                          "Green": 51,
+                          "Blue": 102
+                        },
+                        "ColorBorderPressed": {
+                          "Red": 51,
+                          "Green": 102,
+                          "Blue": 153
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "FlexButton",
+                    "Name": "delete_button",
+                    "X": 400,
+                    "Y": 76,
+                    "Width": 89,
+                    "Height": 192,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "ImageButtonStyle",
+                        "LockFlexButtonToImageSize": true,
+                        "ImageReleased": "key_2.png",
+                        "ImagePressed": "key_2_pressed.png"
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "FlexButton",
+                    "Name": "enter_button",
+                    "X": 400,
+                    "Y": 288,
+                    "Width": 89,
+                    "Height": 192,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "ImageButtonStyle",
+                        "LockFlexButtonToImageSize": true,
+                        "ImageReleased": "key_2.png",
+                        "ImagePressed": "key_2_pressed.png"
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "function_text",
+                    "X": 495,
+                    "Y": 137,
+                    "Width": 305,
+                    "Height": 71,
+                    "TextId": "__SingleUse_PLEI",
+                    "TextRotation": "0",
+                    "Wildcard1": {
+                      "TextId": "function_text",
+                      "UseBuffer": true,
+                      "BufferSize": 9
+                    }
                   }
                 ]
               },
@@ -189,18 +323,66 @@
                 ]
               }
             ]
+          },
+          {
+            "Type": "TextArea",
+            "Name": "value_text",
+            "X": 495,
+            "Y": 356,
+            "Width": 305,
+            "Height": 70,
+            "TextId": "__SingleUse_HU9G",
+            "TextRotation": "0",
+            "Wildcard1": {
+              "TextId": "value_text",
+              "UseBuffer": true,
+              "BufferSize": 9
+            }
           }
         ],
         "Interactions": [
           {
-            "InteractionName": "send_command",
+            "InteractionName": "value_interaction",
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "flexButton1"
+              "TriggerComponent": "value_button"
             },
             "Action": {
               "Type": "ActionCustom",
-              "FunctionName": "command_button_clicked"
+              "FunctionName": "check_value"
+            }
+          },
+          {
+            "InteractionName": "function_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "function_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "check_function"
+            }
+          },
+          {
+            "InteractionName": "delete_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "delete_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "delete_char"
+            }
+          },
+          {
+            "InteractionName": "enter_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "enter_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "enter_command"
             }
           }
         ]

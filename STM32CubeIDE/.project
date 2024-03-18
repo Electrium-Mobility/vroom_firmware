@@ -530,6 +530,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_enter.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/generated/image_key.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_key.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_key_2.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_key_2.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/generated/image_key_2_pressed.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_key_2_pressed.cpp</locationURI>
@@ -540,9 +550,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_key_pressed.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/generated/image_keypad_2.cpp</name>
+			<name>Application/User/generated/image_keypad.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_keypad_2.cpp</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_keypad.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/image_trans.cpp</name>

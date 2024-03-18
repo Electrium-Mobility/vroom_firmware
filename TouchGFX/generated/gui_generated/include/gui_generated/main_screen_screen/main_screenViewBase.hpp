@@ -13,8 +13,9 @@
 #include <touchgfx/containers/Container.hpp>
 #include <touchgfx/widgets/Button.hpp>
 #include <touchgfx/widgets/BoxWithBorder.hpp>
-#include <touchgfx/widgets/TextAreaWithWildcard.hpp>
+#include <touchgfx/widgets/TextArea.hpp>
 #include <touchgfx/containers/buttons/Buttons.hpp>
+#include <touchgfx/widgets/TextAreaWithWildcard.hpp>
 #include <touchgfx/containers/progress_indicators/CircleProgress.hpp>
 #include <touchgfx/widgets/canvas/PainterRGB565.hpp>
 #include <touchgfx/containers/progress_indicators/TextProgress.hpp>
@@ -29,7 +30,19 @@ public:
     /*
      * Virtual Action Handlers
      */
-    virtual void command_button_clicked()
+    virtual void check_value()
+    {
+        // Override and implement this function in main_screen
+    }
+    virtual void check_function()
+    {
+        // Override and implement this function in main_screen
+    }
+    virtual void delete_char()
+    {
+        // Override and implement this function in main_screen
+    }
+    virtual void enter_command()
     {
         // Override and implement this function in main_screen
     }
@@ -49,20 +62,31 @@ protected:
     touchgfx::Button button1;
     touchgfx::Container command_page;
     touchgfx::BoxWithBorder command_box;
-    touchgfx::TextAreaWithOneWildcard command;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  flexButton1;
+    touchgfx::BoxWithBorder command_box_1;
+    touchgfx::BoxWithBorder command_box_2;
+    touchgfx::Image keypad_image;
+    touchgfx::TextArea textArea1;
+    touchgfx::TextArea textArea2;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  value_button;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  function_button;
+    touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  delete_button;
+    touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
+    touchgfx::TextAreaWithOneWildcard function_text;
     touchgfx::Container main_page_1;
     touchgfx::CircleProgress battery_circle_1;
     touchgfx::PainterRGB565 battery_circle_1Painter;
     touchgfx::TextProgress battery_text_1;
     touchgfx::Container bms_page;
     touchgfx::Button button2;
+    touchgfx::TextAreaWithOneWildcard value_text;
 
     /*
      * Wildcard Buffers
      */
-    static const uint16_t COMMAND_SIZE = 20;
-    touchgfx::Unicode::UnicodeChar commandBuffer[COMMAND_SIZE];
+    static const uint16_t FUNCTION_TEXT_SIZE = 9;
+    touchgfx::Unicode::UnicodeChar function_textBuffer[FUNCTION_TEXT_SIZE];
+    static const uint16_t VALUE_TEXT_SIZE = 9;
+    touchgfx::Unicode::UnicodeChar value_textBuffer[VALUE_TEXT_SIZE];
 
 private:
 

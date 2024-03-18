@@ -16,7 +16,7 @@ using namespace touchgfx;
 /**
  * Array specifying the keys used in the CustomKeyboard.
  */
-static const Keyboard::Key keyArray[11] =
+static const Keyboard::Key keyArray[12] =
 {
     { 1, Rect(0, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
     { 2, Rect(BUTTON_WIDTH + BUTTON_SPACE_W, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
@@ -31,28 +31,31 @@ static const Keyboard::Key keyArray[11] =
     { 9, Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 2, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 2, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
 
     {10, Rect(BUTTON_WIDTH + BUTTON_SPACE_W, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
-
     {11, Rect(0, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+	{12, Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 2, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), BITMAP_KEY_PRESSED_ID},
+
 };
 
 /**
  * Callback areas for the special buttons on the CustomKeyboard.
  */
-static Keyboard::CallbackArea callbackAreas[2] =
+static Keyboard::CallbackArea callbackAreas[4] =
 {
     {Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 3, TEXT_OFFSET, BUTTON_WIDTH, BUTTON_HEIGHT * 2 + BUTTON_SPACE_H), 0, BITMAP_KEY_2_PRESSED_ID},  // backspace
-	{Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 3, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H)* 2, BUTTON_WIDTH, BUTTON_HEIGHT * 2 + BUTTON_SPACE_H), 0, BITMAP_KEY_2_PRESSED_ID},
+	{Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 3, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H)* 2, BUTTON_WIDTH, BUTTON_HEIGHT * 2 + BUTTON_SPACE_H), 0, BITMAP_KEY_2_PRESSED_ID}, // enter
+	{Rect((BUTTON_WIDTH + BUTTON_SPACE_W) * 2, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), 0, BITMAP_KEY_PRESSED_ID}, // :
+	{Rect(0, TEXT_OFFSET + (BUTTON_HEIGHT + BUTTON_SPACE_H) * 3, BUTTON_WIDTH, BUTTON_HEIGHT), 0, BITMAP_KEY_PRESSED_ID}, // .
 };
 /**
  * The layout for the CustomKeyboard.
  */
 static const Keyboard::Layout layout =
 {
-	BITMAP_KEYPAD_2_ID,
+	BITMAP_TRANS_ID,
     keyArray,
-    11,
+    12,
     callbackAreas,
-    2,
+    4,
     Rect(0, 0, 418, TEXT_OFFSET),
     TypedText(T_ENTERED_TEXT),
     0,
