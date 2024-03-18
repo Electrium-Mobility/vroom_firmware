@@ -23,6 +23,9 @@ public:
     // main_screen
     void gotomain_screenScreenNoTransition();
 
+    // Motor
+    void gotoMotorScreenSlideTransitionEast();
+
 protected:
     touchgfx::Callback<FrontendApplicationBase> transitionCallback;
     FrontendHeap& frontendHeap;
@@ -30,6 +33,9 @@ protected:
 
     // main_screen
     void gotomain_screenScreenNoTransitionImpl();
+
+    // Motor
+    void gotoMotorScreenSlideTransitionEastImpl();
 };
 
 #endif // FRONTENDAPPLICATIONBASE_HPP

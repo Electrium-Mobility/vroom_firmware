@@ -11,6 +11,8 @@
 #include <platform/driver/lcd/LCD16bpp.hpp>
 #include <gui/main_screen_screen/main_screenView.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
+#include <gui/motor_screen/MotorView.hpp>
+#include <gui/motor_screen/MotorPresenter.hpp>
 
 using namespace touchgfx;
 
@@ -41,4 +43,17 @@ void FrontendApplicationBase::gotomain_screenScreenNoTransition()
 void FrontendApplicationBase::gotomain_screenScreenNoTransitionImpl()
 {
     touchgfx::makeTransition<main_screenView, main_screenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
+// Motor
+
+void FrontendApplicationBase::gotoMotorScreenSlideTransitionEast()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotoMotorScreenSlideTransitionEastImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoMotorScreenSlideTransitionEastImpl()
+{
+    touchgfx::makeTransition<MotorView, MotorPresenter, touchgfx::SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }

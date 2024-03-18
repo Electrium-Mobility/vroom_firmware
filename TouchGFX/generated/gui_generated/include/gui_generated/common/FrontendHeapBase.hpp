@@ -9,11 +9,15 @@
 #include <mvp/MVPHeap.hpp>
 
 #include <touchgfx/transitions/NoTransition.hpp>
+#include <touchgfx/transitions/SlideTransition.hpp>
+
 #include <gui/common/FrontendApplication.hpp>
 #include <gui/model/Model.hpp>
 
 #include <gui/main_screen_screen/main_screenView.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
+#include <gui/motor_screen/MotorView.hpp>
+#include <gui/motor_screen/MotorPresenter.hpp>
 
 
 /**
@@ -37,7 +41,8 @@ public:
      * @note All view types used in the application MUST be added to this list!
      */
     typedef touchgfx::meta::TypeList< main_screenView,
-            touchgfx::meta::Nil
+            touchgfx::meta::TypeList< MotorView,
+            touchgfx::meta::Nil >
             > GeneratedViewTypes;
 
     /**
@@ -50,7 +55,8 @@ public:
      * @note All presenter types used in the application MUST be added to this list!
      */
     typedef touchgfx::meta::TypeList< main_screenPresenter,
-            touchgfx::meta::Nil
+            touchgfx::meta::TypeList< MotorPresenter,
+            touchgfx::meta::Nil >
             > GeneratedPresenterTypes;
 
     /**
@@ -63,7 +69,8 @@ public:
      * @note All transition types used in the application MUST be added to this list!
      */
     typedef touchgfx::meta::TypeList< touchgfx::NoTransition,
-            touchgfx::meta::Nil
+            touchgfx::meta::TypeList< SlideTransition<EAST>,
+            touchgfx::meta::Nil >
             > GeneratedTransitionTypes;
 
     /**

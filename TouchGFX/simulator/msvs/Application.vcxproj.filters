@@ -184,6 +184,18 @@
     <Filter Include="Source Files\generated\gui_generated\main_screen_screen">
       <UniqueIdentifier>4A008A68-E8F0-720A-F27B-14A1D64956EE</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gui\motor_screen">
+      <UniqueIdentifier>817CD93B-7555-3DE6-2A6E-C3E5BAC948EB</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui\motor_screen">
+      <UniqueIdentifier>FAD7E5FA-8D40-18EB-F2A2-3C6393BB2445</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generated\gui_generated\motor_screen">
+      <UniqueIdentifier>F1E1D25C-EF31-5863-6683-C67DB846666A</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\generated\gui_generated\motor_screen">
+      <UniqueIdentifier>73689853-867B-FC61-2BCD-364E98742E4F</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(TouchGFXReleasePath)\framework\source\platform\driver\touch\SDL2TouchController.cpp">
@@ -227,6 +239,15 @@
     </ClCompile>
     <ClCompile Include="..\..\generated\gui_generated\src\main_screen_screen\main_screenViewBase.cpp">
       <Filter>Source Files\generated\gui_generated\main_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\motor_screen\MotorPresenter.cpp">
+      <Filter>Source Files\gui\motor_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\motor_screen\MotorView.cpp">
+      <Filter>Source Files\gui\motor_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\generated\gui_generated\src\motor_screen\MotorViewBase.cpp">
+      <Filter>Source Files\generated\gui_generated\motor_screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -687,6 +708,15 @@
     </ClInclude>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\main_screen_screen\main_screenViewBase.hpp">
       <Filter>Header Files\generated\gui_generated\main_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\motor_screen\MotorPresenter.hpp">
+      <Filter>Header Files\gui\motor_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\motor_screen\MotorView.hpp">
+      <Filter>Header Files\gui\motor_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\motor_screen\MotorViewBase.hpp">
+      <Filter>Header Files\generated\gui_generated\motor_screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

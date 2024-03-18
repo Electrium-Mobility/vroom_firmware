@@ -11,6 +11,15 @@
     </TextGroup>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="wild" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">0</Translation>
+      </Text>
+      <Text Id="__SingleUse_E9MZ" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_PMSH" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">km/h</Translation>
+      </Text>
       <Text Id="__SingleUse_WQGM" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB">0</Translation>
       </Text>
@@ -27,5 +36,6 @@
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WidgetWildcardCharacters="0123456789." />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Keyboard" Font="verdana.ttf" Size="60" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789." WildcardCharacterRanges="0-9" />
+    <Typography Id="Speed" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9" />
   </Typographies>
 </TextDatabase>

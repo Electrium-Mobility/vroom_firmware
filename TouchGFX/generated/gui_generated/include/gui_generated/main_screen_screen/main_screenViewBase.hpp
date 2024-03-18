@@ -57,6 +57,7 @@ protected:
     touchgfx::TextProgress battery_text_1;
     touchgfx::Container bms_page;
     touchgfx::Button button2;
+    touchgfx::Button button3;
 
     /*
      * Wildcard Buffers
@@ -76,11 +77,13 @@ private:
      * Callback Declarations
      */
     touchgfx::Callback<main_screenViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
+    touchgfx::Callback<main_screenViewBase, const touchgfx::AbstractButton&> buttonCallback;
 
     /*
      * Callback Handler Declarations
      */
     void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
+    void buttonCallbackHandler(const touchgfx::AbstractButton& src);
 
 };
 

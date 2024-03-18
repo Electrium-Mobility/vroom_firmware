@@ -8,7 +8,8 @@
 #include <texts/TextKeysAndLanguages.hpp>
 
 main_screenViewBase::main_screenViewBase() :
-    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler)
+    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler),
+    buttonCallback(this, &main_screenViewBase::buttonCallbackHandler)
 {
     touchgfx::CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
     
@@ -95,6 +96,11 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.setSelectedPage(1);
     add(swipe_container);
+
+    button3.setXY(560, 0);
+    button3.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_50_MEDIUM_ROUNDED_NORMAL_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_50_MEDIUM_ROUNDED_PRESSED_ID));
+    button3.setAction(buttonCallback);
+    add(button3);
 }
 
 main_screenViewBase::~main_screenViewBase()
@@ -115,5 +121,16 @@ void main_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButt
         //When flexButton1 clicked call virtual function
         //Call command_button_clicked
         command_button_clicked();
+    }
+}
+
+void main_screenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
+{
+    if (&src == &button3)
+    {
+        //Screenchange
+        //When button3 clicked change screen to Motor
+        //Go to Motor with screen transition towards East
+        application().gotoMotorScreenSlideTransitionEast();
     }
 }

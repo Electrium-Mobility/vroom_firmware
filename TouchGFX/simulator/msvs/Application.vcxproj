@@ -25,6 +25,9 @@
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenPresenter.cpp"/>
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenView.cpp"/>
     <ClCompile Include="..\..\generated\gui_generated\src\main_screen_screen\main_screenViewBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\motor_screen\MotorPresenter.cpp"/>
+    <ClCompile Include="..\..\gui\src\motor_screen\MotorView.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\motor_screen\MotorViewBase.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ApplicationRoot)\assets\texts\texts.xml"/>
@@ -181,6 +184,9 @@
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenPresenter.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenView.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\main_screen_screen\main_screenViewBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\motor_screen\MotorPresenter.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\motor_screen\MotorView.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\motor_screen\MotorViewBase.hpp"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc"/>

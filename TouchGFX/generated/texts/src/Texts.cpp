@@ -62,7 +62,8 @@ TEXT_LOCATION_FLASH_PRAGMA
 KEEP extern const touchgfx::Unicode::UnicodeChar texts_all_languages[] TEXT_LOCATION_FLASH_ATTRIBUTE = {
     0x2, 0x0, // @0 "<>"
     0x2, 0x20, 0x25, 0x0, // @2 "<> %"
-    0x30, 0x0 // @6 "0"
+    0x6b, 0x6d, 0x2f, 0x68, 0x0, // @6 "km/h"
+    0x32, 0x30, 0x0 // @11 "20"
 };
 
 TEXT_LOCATION_FLASH_PRAGMA

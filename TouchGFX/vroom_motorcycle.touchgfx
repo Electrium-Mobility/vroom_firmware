@@ -189,6 +189,16 @@
                 ]
               }
             ]
+          },
+          {
+            "Type": "Button",
+            "Name": "button3",
+            "X": 560,
+            "Width": 240,
+            "Height": 50,
+            "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_pressed.png",
+            "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_normal.png",
+            "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
           }
         ],
         "Interactions": [
@@ -202,8 +212,64 @@
               "Type": "ActionCustom",
               "FunctionName": "command_button_clicked"
             }
+          },
+          {
+            "InteractionName": "Screenchange",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "button3"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
+              "ActionComponent": "Motor"
+            }
           }
         ]
+      },
+      {
+        "Name": "Motor",
+        "Components": [
+          {
+            "Type": "TextArea",
+            "Name": "TESTINGBLOCK",
+            "X": 422,
+            "Y": 229,
+            "Width": 53,
+            "Height": 23,
+            "TextId": "__SingleUse_PMSH",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 252,
+              "Green": 252,
+              "Blue": 252
+            },
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "TESTINGBLOCK_1",
+            "X": 387,
+            "Y": 229,
+            "Width": 13,
+            "Height": 23,
+            "TextId": "__SingleUse_E9MZ",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 252,
+              "Green": 252,
+              "Blue": 252
+            },
+            "AutoSize": true,
+            "Wildcard1": {
+              "TextId": "wild",
+              "UseBuffer": true,
+              "BufferSize": 4
+            }
+          }
+        ],
+        "Interactions": []
       }
     ],
     "CustomContainerDefinitions": [],
