@@ -1,5 +1,4 @@
 #include <gui/main_screen_screen/main_screenView.hpp>
-// #include "commands.hpp"
 
 main_screenView::main_screenView()
 {

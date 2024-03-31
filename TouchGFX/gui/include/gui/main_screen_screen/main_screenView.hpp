@@ -4,6 +4,7 @@
 #include <gui_generated/main_screen_screen/main_screenViewBase.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
 #include <gui/common/CustomKeyboard.hpp>
+#include <gui/common/commands.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
 
 #include <touchgfx/Color.hpp>

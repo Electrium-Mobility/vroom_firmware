@@ -73,8 +73,9 @@ main_screenViewBase::main_screenViewBase() :
     value_button.setBoxWithBorderPosition(0, 0, 305, 70);
     value_button.setBorderSize(5);
     value_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    value_button.setAlpha(0);
     value_button.setAction(flexButtonCallback);
-    value_button.setPosition(495, 279, 305, 70);
+    value_button.setPosition(495, 356, 305, 70);
     command_page.add(value_button);
 
     function_button.setBoxWithBorderPosition(0, 0, 305, 70);

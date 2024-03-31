@@ -688,6 +688,9 @@
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\main_screen_screen\main_screenViewBase.hpp">
       <Filter>Header Files\generated\gui_generated\main_screen_screen</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\commands.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc">
