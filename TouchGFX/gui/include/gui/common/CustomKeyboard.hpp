@@ -40,6 +40,8 @@ public:
     void set_keyboard_visible(bool visibility);
     uint16_t getBufferPosition();
 	void delete_char();
+	uint8_t get_command();
+	float get_command_input();
 
 
     /*

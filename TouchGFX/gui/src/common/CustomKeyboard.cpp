@@ -2,6 +2,7 @@
 #include <string.h>
 #include <touchgfx/Color.hpp>
 #include <gui/main_screen_screen/main_screenView.hpp>
+#include <stdlib.h>
 
 CustomKeyboard::CustomKeyboard() : keyboard(),
 	backspacePressed(this, &CustomKeyboard::backspacePressedHandler),
@@ -143,4 +144,16 @@ void CustomKeyboard::set_keyboard_visible(bool visibility)
 {
 	keyboard.setVisible(visibility);
 	keyboard.invalidate();
+}
+
+uint8_t CustomKeyboard:: get_command()
+{
+	Unicode::UnicodeChar command[2] = {buffer[0], buffer[1]};
+	return Unicode::atoi(command);
+}
+
+float CustomKeyboard:: get_command_input()
+{
+	Unicode::UnicodeChar command[2] = {buffer[3], buffer[4]};
+	return std::atof(reinterpret_cast<char*>(command));
 }

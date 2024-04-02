@@ -61,21 +61,21 @@
                       "Green": 255,
                       "Blue": 255
                     },
-                    "BorderSize": 5
+                    "BorderSize": 3
                   },
                   {
                     "Type": "BoxWithBorder",
                     "Name": "command_box_1",
                     "X": 495,
-                    "Y": 137,
+                    "Y": 76,
                     "Width": 305,
-                    "Height": 70,
+                    "Height": 149,
                     "Color": {
                       "Red": 255,
                       "Green": 255,
                       "Blue": 255
                     },
-                    "BorderSize": 5
+                    "BorderSize": 3
                   },
                   {
                     "Type": "BoxWithBorder",
@@ -89,7 +89,7 @@
                       "Green": 255,
                       "Blue": 255
                     },
-                    "BorderSize": 5
+                    "BorderSize": 3
                   },
                   {
                     "Type": "Image",
@@ -103,7 +103,7 @@
                     "Type": "TextArea",
                     "Name": "textArea1",
                     "X": 520,
-                    "Y": 58,
+                    "Y": -1,
                     "Width": 255,
                     "Height": 72,
                     "TextId": "__SingleUse_W5VS",
@@ -114,7 +114,7 @@
                     "Type": "TextArea",
                     "Name": "textArea2",
                     "X": 565,
-                    "Y": 279,
+                    "Y": 284,
                     "Width": 164,
                     "Height": 72,
                     "TextId": "__SingleUse_S3TK",
@@ -239,13 +239,28 @@
                     "Type": "TextArea",
                     "Name": "function_text",
                     "X": 495,
-                    "Y": 137,
+                    "Y": 76,
                     "Width": 305,
-                    "Height": 71,
+                    "Height": 149,
                     "TextId": "__SingleUse_PLEI",
                     "TextRotation": "0",
                     "Wildcard1": {
                       "TextId": "function_text",
+                      "UseBuffer": true,
+                      "BufferSize": 50
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "value_text",
+                    "X": 495,
+                    "Y": 356,
+                    "Width": 305,
+                    "Height": 70,
+                    "TextId": "__SingleUse_HU9G",
+                    "TextRotation": "0",
+                    "Wildcard1": {
+                      "TextId": "value_text",
                       "UseBuffer": true,
                       "BufferSize": 9
                     }
@@ -323,21 +338,6 @@
                 ]
               }
             ]
-          },
-          {
-            "Type": "TextArea",
-            "Name": "value_text",
-            "X": 495,
-            "Y": 356,
-            "Width": 305,
-            "Height": 70,
-            "TextId": "__SingleUse_HU9G",
-            "TextRotation": "0",
-            "Wildcard1": {
-              "TextId": "value_text",
-              "UseBuffer": true,
-              "BufferSize": 9
-            }
           }
         ],
         "Interactions": [

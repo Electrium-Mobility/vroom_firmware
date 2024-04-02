@@ -13,13 +13,13 @@
       <Text Id="value_text" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB"></Translation>
       </Text>
-      <Text Id="__SingleUse_HU9G" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="__SingleUse_HU9G" Alignment="Center" TypographyId="Keyboard">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
       <Text Id="function_text" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB"></Translation>
       </Text>
-      <Text Id="__SingleUse_PLEI" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="__SingleUse_PLEI" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_S3TK" Alignment="Left" TypographyId="Keyboard">
@@ -38,5 +38,6 @@
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WidgetWildcardCharacters="0123456789." />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Keyboard" Font="verdana.ttf" Size="60" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789.:" WildcardCharacterRanges="0-9" />
+    <Typography Id="Keypad_command_descriptions" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters=" " WildcardCharacterRanges="a-z,A-Z,0-9" />
   </Typographies>
 </TextDatabase>

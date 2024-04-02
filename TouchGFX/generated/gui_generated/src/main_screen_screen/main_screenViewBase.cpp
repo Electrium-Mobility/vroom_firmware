@@ -39,32 +39,32 @@ main_screenViewBase::main_screenViewBase() :
     command_box.setPosition(60, 0, 330, 70);
     command_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command_box.setBorderSize(5);
+    command_box.setBorderSize(3);
     command_page.add(command_box);
 
-    command_box_1.setPosition(495, 137, 305, 70);
+    command_box_1.setPosition(495, 76, 305, 149);
     command_box_1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box_1.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command_box_1.setBorderSize(5);
+    command_box_1.setBorderSize(3);
     command_page.add(command_box_1);
 
     command_box_2.setPosition(495, 356, 305, 70);
     command_box_2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box_2.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command_box_2.setBorderSize(5);
+    command_box_2.setBorderSize(3);
     command_page.add(command_box_2);
 
     keypad_image.setXY(71, 0);
     keypad_image.setBitmap(touchgfx::Bitmap(BITMAP_KEYPAD_ID));
     command_page.add(keypad_image);
 
-    textArea1.setXY(520, 58);
+    textArea1.setXY(520, -1);
     textArea1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textArea1.setLinespacing(0);
     textArea1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_W5VS));
     command_page.add(textArea1);
 
-    textArea2.setXY(565, 279);
+    textArea2.setXY(565, 284);
     textArea2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textArea2.setLinespacing(0);
     textArea2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_S3TK));
@@ -98,13 +98,21 @@ main_screenViewBase::main_screenViewBase() :
     enter_button.setPosition(400, 288, 89, 192);
     command_page.add(enter_button);
 
-    function_text.setPosition(495, 137, 305, 71);
+    function_text.setPosition(495, 76, 305, 149);
     function_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     function_text.setLinespacing(0);
     Unicode::snprintf(function_textBuffer, FUNCTION_TEXT_SIZE, "%s", touchgfx::TypedText(T_FUNCTION_TEXT).getText());
     function_text.setWildcard(function_textBuffer);
     function_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PLEI));
     command_page.add(function_text);
+
+    value_text.setPosition(495, 356, 305, 70);
+    value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    value_text.setLinespacing(0);
+    Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%s", touchgfx::TypedText(T_VALUE_TEXT).getText());
+    value_text.setWildcard(value_textBuffer);
+    value_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HU9G));
+    command_page.add(value_text);
 
     swipe_container.add(command_page);
 
@@ -145,14 +153,6 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.setSelectedPage(1);
     add(swipe_container);
-
-    value_text.setPosition(495, 356, 305, 70);
-    value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    value_text.setLinespacing(0);
-    Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%s", touchgfx::TypedText(T_VALUE_TEXT).getText());
-    value_text.setWildcard(value_textBuffer);
-    value_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HU9G));
-    add(value_text);
 }
 
 main_screenViewBase::~main_screenViewBase()

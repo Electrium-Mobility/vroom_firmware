@@ -72,18 +72,18 @@ protected:
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  delete_button;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
     touchgfx::TextAreaWithOneWildcard function_text;
+    touchgfx::TextAreaWithOneWildcard value_text;
     touchgfx::Container main_page_1;
     touchgfx::CircleProgress battery_circle_1;
     touchgfx::PainterRGB565 battery_circle_1Painter;
     touchgfx::TextProgress battery_text_1;
     touchgfx::Container bms_page;
     touchgfx::Button button2;
-    touchgfx::TextAreaWithOneWildcard value_text;
 
     /*
      * Wildcard Buffers
      */
-    static const uint16_t FUNCTION_TEXT_SIZE = 9;
+    static const uint16_t FUNCTION_TEXT_SIZE = 50;
     touchgfx::Unicode::UnicodeChar function_textBuffer[FUNCTION_TEXT_SIZE];
     static const uint16_t VALUE_TEXT_SIZE = 9;
     touchgfx::Unicode::UnicodeChar value_textBuffer[VALUE_TEXT_SIZE];

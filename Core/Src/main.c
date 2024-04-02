@@ -44,7 +44,7 @@
 /* DISPLAY */
 #define LCD_ORIENTATION_LANDSCAPE 0x01
 
-#define MOTOR_CAN_ID 2
+#define MOTOR_CAN_ID 120
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -81,7 +81,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for TouchGFXTask */
 osThreadId_t TouchGFXTaskHandle;
@@ -132,7 +132,7 @@ uint8_t tx_data[8];
 uint32_t tx_mailbox[4];
 
 CAN_RxHeaderTypeDef rx_header;
-uint8_t rx_data[8];
+volatile uint8_t rx_data[8];
 
 // TouchGFX CONFIGURABLE VARIABLES
 // Throttle sensor sensitivity threshold variable
@@ -457,7 +457,20 @@ static void MX_CAN2_Init(void)
   /* USER CODE BEGIN CAN2_Init 2 */
 
   // Must be configured to determine the FIFO to add received messages to
+  CAN_FilterTypeDef filter;
 
+  filter.FilterIdHigh = 0;
+  filter.FilterIdLow = 0x0000;
+  filter.FilterMaskIdHigh = 0;
+  filter.FilterMaskIdLow = 0x0000;
+  filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+  filter.FilterBank = 1;
+  filter.FilterMode = CAN_FILTERMODE_IDMASK;
+  filter.FilterScale = CAN_FILTERSCALE_32BIT;
+  filter.FilterActivation = ENABLE;
+  filter.SlaveStartFilterBank = 0;
+
+  if(HAL_CAN_ConfigFilter(&hcan2, &filter) != HAL_OK)
   {
 	 Error_Handler();
   }
@@ -1064,12 +1077,8 @@ void StartDefaultTask(void *argument)
 		sprintf(uart_tx, "pending");
 		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, strlen(uart_tx), HAL_MAX_DELAY);
 	}
-//	if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
-//	{
-//		HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
-//		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
-//		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
-//	}
+
+
     osDelay(1);
   }
   /* USER CODE END 5 */
@@ -1098,8 +1107,12 @@ void StartMotorTask(void *argument)
   {
 
 
-
-
+	if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
+	{
+		HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
+		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
+		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
+	}
 
 	// read the break sensor, check if it is active
 	if(brake_sensor)

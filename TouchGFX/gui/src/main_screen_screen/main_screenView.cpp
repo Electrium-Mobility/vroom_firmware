@@ -26,8 +26,9 @@ void main_screenView::check_value()
 }
 void main_screenView::check_function()
 {
+	//clear the buffer
 	//display the command name to the user
-	Unicode::strncpy(function_textBuffer, keypad.getBuffer(), FUNCTION_TEXT_SIZE);
+	Unicode::strncpy(function_textBuffer, keypad_command_names[keypad.get_command()], strlen(keypad_command_names[keypad.get_command()]));
 	function_text.invalidate();
 
 }
