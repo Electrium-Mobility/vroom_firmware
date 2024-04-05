@@ -7,12 +7,25 @@
 
 #ifndef APPLICATION_USER_MOTOR_H_
 #define APPLICATION_USER_MOTOR_H_
-
+#include "main.h"
 /*
  *
  * CAN Protocol Commands for the VESC Motor Controller
  *
  */
+
+//Store relevant motor data here
+typedef struct {
+	uint16_t fetTemp;
+	uint16_t motorTemp;
+	uint16_t voltIn;
+	uint16_t currIn;
+
+} MotorData;
+
+//CAN data decode for insertion into motor data struct
+void can_packet_read(CAN_RxHeaderTypeDef *rx_header, uint8_t *data, MotorData *motorDataStruct);
+
 
 void can_transmit_eid(uint32_t id, uint8_t *data, uint8_t len);
 

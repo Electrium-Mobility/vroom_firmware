@@ -81,7 +81,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for TouchGFXTask */
 osThreadId_t TouchGFXTaskHandle;
@@ -132,7 +132,7 @@ uint8_t tx_data[8];
 uint32_t tx_mailbox[4];
 
 CAN_RxHeaderTypeDef rx_header;
-volatile uint8_t rx_data[8];
+uint8_t rx_data[8];
 
 // TouchGFX CONFIGURABLE VARIABLES
 // Throttle sensor sensitivity threshold variable
@@ -1097,6 +1097,8 @@ int32_t acceleration;
 
 float brake_magnitude = 0;
 
+MotorData motorDataStruct;
+
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
@@ -1106,10 +1108,11 @@ void StartMotorTask(void *argument)
   for(;;)
   {
 
-
+	  //CAN receive decoding - may be moved to lower priority task if needed
 	if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
 	{
 		HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
+		can_packet_read(&rx_header, rx_data, &motorDataStruct);
 		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
 		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
 	}

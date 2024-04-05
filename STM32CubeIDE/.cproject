@@ -118,9 +118,11 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.directories.0446552423" name="Library search path (-L)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.directories" valueType="libPaths">
 									<listOptionValue builtIn="false" value="C:/git/STM32F469-dk/stm32f469i_disco/STM32F469I-DISCO-REV-AU1/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\alexa\vroom_firmware\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc&quot;"/>
 									<listOptionValue builtIn="false" value="C:/git/stm32f469i_disco/STM32F469I-DISCO-REV-AU1/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
 									<listOptionValue builtIn="false" value="C:/TouchGFXProjects/vroom_motorcycle/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
 									<listOptionValue builtIn="false" value="C:/Users/randi/OneDrive/Desktop/UW/VroomFW/Test/vroom_firmware/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
+									<listOptionValue builtIn="false" value="C:/Users/alexa/vroom_firmware/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.input.1690517566" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -255,6 +257,7 @@
 									<listOptionValue builtIn="false" value="C:/git/stm32f469i_disco/STM32F469I-DISCO-REV-AU1/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
 									<listOptionValue builtIn="false" value="C:/TouchGFXProjects/vroom_motorcycle/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
 									<listOptionValue builtIn="false" value="C:/Users/randi/OneDrive/Desktop/UW/VroomFW/Test/vroom_firmware/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
+									<listOptionValue builtIn="false" value="C:/Users/alexa/vroom_firmware/Middlewares/ST/touchgfx/lib/core/cortex_m4f/gcc"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.input.129321398" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

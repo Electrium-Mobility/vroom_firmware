@@ -23,6 +23,7 @@ public:
      virtual void check_function();
      virtual void delete_char();
      virtual void enter_command();
+     virtual void motorDataUpdate();
 
 protected:
 	CustomKeyboard keypad;

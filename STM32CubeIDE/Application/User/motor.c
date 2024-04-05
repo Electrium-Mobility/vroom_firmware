@@ -6,7 +6,8 @@
  */
 
 #include <stdint.h>
-#include "motor.h"
+//#include "motor.h"
+#include "../../../Core/Inc/motor.h"
 #include "main.h"
 #include <stdio.h>
 #include <string.h>
@@ -99,6 +100,23 @@ typedef enum {
 	//CAN_PACKET_GNSS_ALT_SPEED_HDOP			= 62, not sure if it's relevant
 	CAN_PACKET_MAKE_ENUM_32_BITS = 0xFFFFFFFF,
 } CAN_PACKET_ID;
+
+
+void can_packet_read(CAN_RxHeaderTypeDef *rx_header, uint8_t *data, MotorData *motorDataStruct){
+
+	uint8_t cmdID = (rx_header->ExtId>>8) & 0xff;							//get VESC command ID
+	switch (cmdID){
+		case CAN_PACKET_STATUS_4:											//Byte addition and scaling in accordance with VESC specifications
+			motorDataStruct->fetTemp = ((data[0]<<8) + data[1])/10;
+			motorDataStruct->motorTemp = ((data[2]<<8) + data[3])/10;
+			motorDataStruct->currIn = ((data[4]<<8) + data[5])/10;
+		case CAN_PACKET_STATUS_5:
+			motorDataStruct->voltIn = ((data[4]<<8) + data[5])/10;
+			break;
+		default:
+	}
+}
+
 
 void buffer_append_int16(uint8_t* buffer, int16_t number, int32_t *index)
 {

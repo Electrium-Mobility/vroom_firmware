@@ -26,6 +26,7 @@ public:
     main_screenViewBase();
     virtual ~main_screenViewBase();
     virtual void setupScreen();
+    virtual void handleTickEvent();
 
     /*
      * Virtual Action Handlers
@@ -43,6 +44,10 @@ public:
         // Override and implement this function in main_screen
     }
     virtual void enter_command()
+    {
+        // Override and implement this function in main_screen
+    }
+    virtual void motorDataUpdate()
     {
         // Override and implement this function in main_screen
     }
@@ -79,6 +84,16 @@ protected:
     touchgfx::TextProgress battery_text_1;
     touchgfx::Container bms_page;
     touchgfx::Button button2;
+    touchgfx::Container motor_data;
+    touchgfx::TextArea textArea3;
+    touchgfx::TextAreaWithOneWildcard fet_temp_wild;
+    touchgfx::TextAreaWithOneWildcard motor_temp_wild;
+    touchgfx::TextAreaWithOneWildcard curr_in_wild;
+    touchgfx::TextAreaWithOneWildcard volt_in_wild;
+    touchgfx::TextArea volt_in;
+    touchgfx::TextArea curr_in;
+    touchgfx::TextArea motor_temp;
+    touchgfx::TextArea fet_temp;
 
     /*
      * Wildcard Buffers
@@ -87,6 +102,14 @@ protected:
     touchgfx::Unicode::UnicodeChar function_textBuffer[FUNCTION_TEXT_SIZE];
     static const uint16_t VALUE_TEXT_SIZE = 9;
     touchgfx::Unicode::UnicodeChar value_textBuffer[VALUE_TEXT_SIZE];
+    static const uint16_t FET_TEMP_WILD_SIZE = 3;
+    touchgfx::Unicode::UnicodeChar fet_temp_wildBuffer[FET_TEMP_WILD_SIZE];
+    static const uint16_t MOTOR_TEMP_WILD_SIZE = 3;
+    touchgfx::Unicode::UnicodeChar motor_temp_wildBuffer[MOTOR_TEMP_WILD_SIZE];
+    static const uint16_t CURR_IN_WILD_SIZE = 3;
+    touchgfx::Unicode::UnicodeChar curr_in_wildBuffer[CURR_IN_WILD_SIZE];
+    static const uint16_t VOLT_IN_WILD_SIZE = 3;
+    touchgfx::Unicode::UnicodeChar volt_in_wildBuffer[VOLT_IN_WILD_SIZE];
 
 private:
 
@@ -105,6 +128,12 @@ private:
      * Callback Handler Declarations
      */
     void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
+
+    /*
+     * Tick Counter Declarations
+     */
+    static const uint32_t TICK_MOTORDATAUPDATE_INTERVAL = 20;
+    uint32_t frameCountMotorDataUpdateInterval;
 
 };
 

@@ -22,7 +22,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "command_page",
+            "SelectedPage": "motor_data",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -336,6 +336,174 @@
                     "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
                   }
                 ]
+              },
+              {
+                "Type": "Container",
+                "Name": "motor_data",
+                "Width": 800,
+                "Height": 480,
+                "Components": [
+                  {
+                    "Type": "TextArea",
+                    "Name": "textArea3",
+                    "X": 221,
+                    "Y": 35,
+                    "Width": 359,
+                    "Height": 48,
+                    "TextId": "__SingleUse_L6ZD",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "fet_temp_wild",
+                    "X": 500,
+                    "Y": 138,
+                    "Width": 150,
+                    "Height": 36,
+                    "TextId": "__SingleUse_RJB5",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "Wildcard1": {
+                      "TextId": "voltIn",
+                      "UseBuffer": true,
+                      "BufferSize": 3
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "motor_temp_wild",
+                    "X": 500,
+                    "Y": 195,
+                    "Width": 150,
+                    "Height": 36,
+                    "TextId": "__SingleUse_PAWH",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "Wildcard1": {
+                      "TextId": "voltIn",
+                      "UseBuffer": true,
+                      "BufferSize": 3
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "curr_in_wild",
+                    "X": 500,
+                    "Y": 315,
+                    "Width": 150,
+                    "Height": 36,
+                    "TextId": "__SingleUse_3C6S",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "Wildcard1": {
+                      "TextId": "voltIn",
+                      "UseBuffer": true,
+                      "BufferSize": 3
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "volt_in_wild",
+                    "X": 500,
+                    "Y": 252,
+                    "Width": 150,
+                    "Height": 36,
+                    "TextId": "__SingleUse_2KO1",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "Wildcard1": {
+                      "TextId": "voltIn",
+                      "UseBuffer": true,
+                      "BufferSize": 3
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "volt_in",
+                    "X": 200,
+                    "Y": 252,
+                    "Width": 258,
+                    "Height": 36,
+                    "TextId": "__SingleUse_BX1B",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "curr_in",
+                    "X": 200,
+                    "Y": 315,
+                    "Width": 249,
+                    "Height": 36,
+                    "TextId": "__SingleUse_1WUV",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "motor_temp",
+                    "X": 200,
+                    "Y": 195,
+                    "Width": 247,
+                    "Height": 36,
+                    "TextId": "__SingleUse_DGJ5",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "AutoSize": true
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "fet_temp",
+                    "X": 200,
+                    "Y": 138,
+                    "Width": 248,
+                    "Height": 36,
+                    "TextId": "__SingleUse_5ZT6",
+                    "TextRotation": "0",
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    },
+                    "AutoSize": true
+                  }
+                ]
               }
             ]
           }
@@ -383,6 +551,17 @@
             "Action": {
               "Type": "ActionCustom",
               "FunctionName": "enter_command"
+            }
+          },
+          {
+            "InteractionName": "motorDataUpdate",
+            "Trigger": {
+              "Type": "TriggerOnEveryTick",
+              "TickCount": 20
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "motorDataUpdate"
             }
           }
         ]

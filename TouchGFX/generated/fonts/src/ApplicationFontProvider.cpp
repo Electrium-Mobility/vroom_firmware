@@ -24,6 +24,12 @@ touchgfx::Font* ApplicationFontProvider::getFont(touchgfx::FontId typography)
     case Typography::KEYPAD_COMMAND_DESCRIPTIONS:
         // verdana_40_4bpp
         return const_cast<touchgfx::Font*>(TypedTextDatabase::getFonts()[1]);
+    case Typography::MEDIUM:
+        // verdana_30_4bpp
+        return const_cast<touchgfx::Font*>(TypedTextDatabase::getFonts()[4]);
+    case Typography::NUMBERS:
+        // verdana_30_4bpp
+        return const_cast<touchgfx::Font*>(TypedTextDatabase::getFonts()[4]);
     default:
         return 0;
     }

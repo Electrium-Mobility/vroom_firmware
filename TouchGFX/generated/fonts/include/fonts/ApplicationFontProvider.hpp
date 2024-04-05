@@ -18,6 +18,8 @@ struct Typography
     static const touchgfx::FontId SMALL = 2;
     static const touchgfx::FontId KEYBOARD = 3;
     static const touchgfx::FontId KEYPAD_COMMAND_DESCRIPTIONS = 4;
+    static const touchgfx::FontId MEDIUM = 5;
+    static const touchgfx::FontId NUMBERS = 6;
 };
 
 struct TypographyFontIndex
@@ -27,7 +29,9 @@ struct TypographyFontIndex
     static const touchgfx::FontId SMALL = 2;                       // verdana_10_4bpp
     static const touchgfx::FontId KEYBOARD = 3;                    // verdana_60_4bpp
     static const touchgfx::FontId KEYPAD_COMMAND_DESCRIPTIONS = 1; // verdana_40_4bpp
-    static const uint16_t NUMBER_OF_FONTS = 4;
+    static const touchgfx::FontId MEDIUM = 4;                      // verdana_30_4bpp
+    static const touchgfx::FontId NUMBERS = 4;                     // verdana_30_4bpp
+    static const uint16_t NUMBER_OF_FONTS = 5;
 };
 
 class ApplicationFontProvider : public touchgfx::FontProvider
