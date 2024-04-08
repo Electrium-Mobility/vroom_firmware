@@ -8,7 +8,8 @@
 #include <texts/TextKeysAndLanguages.hpp>
 
 main_screenViewBase::main_screenViewBase() :
-    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler)
+    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler),
+    frameCountMotorDataUpdateInterval(0)
 {
     touchgfx::CanvasWidgetRenderer::setupBuffer(canvasBuffer, CANVAS_BUFFER_SIZE);
     
@@ -39,32 +40,32 @@ main_screenViewBase::main_screenViewBase() :
     command_box.setPosition(60, 0, 330, 70);
     command_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command_box.setBorderSize(5);
+    command_box.setBorderSize(3);
     command_page.add(command_box);
 
-    command_box_1.setPosition(495, 137, 305, 70);
+    command_box_1.setPosition(495, 76, 305, 149);
     command_box_1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box_1.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command_box_1.setBorderSize(5);
+    command_box_1.setBorderSize(3);
     command_page.add(command_box_1);
 
     command_box_2.setPosition(495, 356, 305, 70);
     command_box_2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box_2.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    command_box_2.setBorderSize(5);
+    command_box_2.setBorderSize(3);
     command_page.add(command_box_2);
 
     keypad_image.setXY(71, 0);
     keypad_image.setBitmap(touchgfx::Bitmap(BITMAP_KEYPAD_ID));
     command_page.add(keypad_image);
 
-    textArea1.setXY(520, 58);
+    textArea1.setXY(520, -1);
     textArea1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textArea1.setLinespacing(0);
     textArea1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_W5VS));
     command_page.add(textArea1);
 
-    textArea2.setXY(565, 279);
+    textArea2.setXY(565, 284);
     textArea2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     textArea2.setLinespacing(0);
     textArea2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_S3TK));
@@ -73,8 +74,9 @@ main_screenViewBase::main_screenViewBase() :
     value_button.setBoxWithBorderPosition(0, 0, 305, 70);
     value_button.setBorderSize(5);
     value_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
+    value_button.setAlpha(0);
     value_button.setAction(flexButtonCallback);
-    value_button.setPosition(495, 279, 305, 70);
+    value_button.setPosition(495, 356, 305, 70);
     command_page.add(value_button);
 
     function_button.setBoxWithBorderPosition(0, 0, 305, 70);
@@ -97,13 +99,21 @@ main_screenViewBase::main_screenViewBase() :
     enter_button.setPosition(400, 288, 89, 192);
     command_page.add(enter_button);
 
-    function_text.setPosition(495, 137, 305, 71);
+    function_text.setPosition(495, 76, 305, 149);
     function_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     function_text.setLinespacing(0);
     Unicode::snprintf(function_textBuffer, FUNCTION_TEXT_SIZE, "%s", touchgfx::TypedText(T_FUNCTION_TEXT).getText());
     function_text.setWildcard(function_textBuffer);
     function_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PLEI));
     command_page.add(function_text);
+
+    value_text.setPosition(495, 356, 305, 70);
+    value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    value_text.setLinespacing(0);
+    Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%s", touchgfx::TypedText(T_VALUE_TEXT).getText());
+    value_text.setWildcard(value_textBuffer);
+    value_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HU9G));
+    command_page.add(value_text);
 
     swipe_container.add(command_page);
 
@@ -142,16 +152,74 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.add(bms_page);
 
+    motor_data.setWidth(800);
+    motor_data.setHeight(480);
+    textArea3.setXY(221, 35);
+    textArea3.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    textArea3.setLinespacing(0);
+    textArea3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_L6ZD));
+    motor_data.add(textArea3);
+
+    fet_temp_wild.setPosition(500, 138, 150, 36);
+    fet_temp_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    fet_temp_wild.setLinespacing(0);
+    Unicode::snprintf(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    fet_temp_wild.setWildcard(fet_temp_wildBuffer);
+    fet_temp_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_RJB5));
+    motor_data.add(fet_temp_wild);
+
+    motor_temp_wild.setPosition(500, 195, 150, 36);
+    motor_temp_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    motor_temp_wild.setLinespacing(0);
+    Unicode::snprintf(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    motor_temp_wild.setWildcard(motor_temp_wildBuffer);
+    motor_temp_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PAWH));
+    motor_data.add(motor_temp_wild);
+
+    curr_in_wild.setPosition(500, 315, 150, 36);
+    curr_in_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    curr_in_wild.setLinespacing(0);
+    Unicode::snprintf(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    curr_in_wild.setWildcard(curr_in_wildBuffer);
+    curr_in_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_3C6S));
+    motor_data.add(curr_in_wild);
+
+    volt_in_wild.setPosition(500, 252, 150, 36);
+    volt_in_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    volt_in_wild.setLinespacing(0);
+    Unicode::snprintf(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    volt_in_wild.setWildcard(volt_in_wildBuffer);
+    volt_in_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_2KO1));
+    motor_data.add(volt_in_wild);
+
+    volt_in.setXY(200, 252);
+    volt_in.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    volt_in.setLinespacing(0);
+    volt_in.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BX1B));
+    motor_data.add(volt_in);
+
+    curr_in.setXY(200, 315);
+    curr_in.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    curr_in.setLinespacing(0);
+    curr_in.setTypedText(touchgfx::TypedText(T___SINGLEUSE_1WUV));
+    motor_data.add(curr_in);
+
+    motor_temp.setXY(200, 195);
+    motor_temp.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    motor_temp.setLinespacing(0);
+    motor_temp.setTypedText(touchgfx::TypedText(T___SINGLEUSE_DGJ5));
+    motor_data.add(motor_temp);
+
+    fet_temp.setXY(200, 138);
+    fet_temp.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    fet_temp.setLinespacing(0);
+    fet_temp.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5ZT6));
+    motor_data.add(fet_temp);
+
+    swipe_container.add(motor_data);
+
     swipe_container.setSelectedPage(1);
     add(swipe_container);
-
-    value_text.setPosition(495, 356, 305, 70);
-    value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    value_text.setLinespacing(0);
-    Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%s", touchgfx::TypedText(T_VALUE_TEXT).getText());
-    value_text.setWildcard(value_textBuffer);
-    value_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HU9G));
-    add(value_text);
 }
 
 main_screenViewBase::~main_screenViewBase()
@@ -193,5 +261,18 @@ void main_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButt
         //When enter_button clicked call virtual function
         //Call enter_command
         enter_command();
+    }
+}
+
+void main_screenViewBase::handleTickEvent()
+{
+    frameCountMotorDataUpdateInterval++;
+    if(frameCountMotorDataUpdateInterval == TICK_MOTORDATAUPDATE_INTERVAL)
+    {
+        //motorDataUpdate
+        //When every N tick call virtual function
+        //Call motorDataUpdate
+        motorDataUpdate();
+        frameCountMotorDataUpdateInterval = 0;
     }
 }

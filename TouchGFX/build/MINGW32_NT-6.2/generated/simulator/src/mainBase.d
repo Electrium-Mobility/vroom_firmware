@@ -121,6 +121,7 @@ build/MINGW32_NT-6.2/generated/simulator/src/mainBase.o: \
  generated/texts/include/texts/TextKeysAndLanguages.hpp \
  gui/include/gui/common/KeyboardLayout.hpp \
  gui/include/gui/common/KeyboardKeyMapping.hpp \
+ gui/include/gui/common/commands.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/CWRVectorRenderer.hpp \
@@ -375,6 +376,8 @@ generated/texts/include/texts/TextKeysAndLanguages.hpp:
 gui/include/gui/common/KeyboardLayout.hpp:
 
 gui/include/gui/common/KeyboardKeyMapping.hpp:
+
+gui/include/gui/common/commands.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
 

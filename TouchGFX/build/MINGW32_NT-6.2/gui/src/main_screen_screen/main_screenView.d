@@ -97,6 +97,7 @@ build/MINGW32_NT-6.2/gui/src/main_screen_screen/main_screenView.o: \
  generated/images/include/BitmapDatabase.hpp \
  generated/images/include/images/BitmapDatabase.hpp \
  gui/include/gui/common/KeyboardKeyMapping.hpp \
+ gui/include/gui/common/commands.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp
 
@@ -293,6 +294,8 @@ generated/images/include/BitmapDatabase.hpp:
 generated/images/include/images/BitmapDatabase.hpp:
 
 gui/include/gui/common/KeyboardKeyMapping.hpp:
+
+gui/include/gui/common/commands.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
 
