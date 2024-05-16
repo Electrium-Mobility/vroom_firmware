@@ -6,8 +6,8 @@
  */
 
 #include <stdint.h>
-//#include "motor.h"
-#include "../../../Core/Inc/motor.h"
+#include "motor.h"
+//#include "../../../Core/Inc/motor.h"
 #include "main.h"
 #include <stdio.h>
 #include <string.h>

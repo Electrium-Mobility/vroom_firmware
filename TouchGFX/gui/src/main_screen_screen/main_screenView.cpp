@@ -1,5 +1,8 @@
 #include <gui/main_screen_screen/main_screenView.hpp>
-#include <motor.h>
+
+#ifndef SIMULATOR
+#include "motor.h"
+#endif
 
 main_screenView::main_screenView()
 {
@@ -44,18 +47,19 @@ void main_screenView::enter_command()
 	// define what happens when the enter button is pressed for the keypad
 }
 
+#ifndef SIMULATOR
 //MotorDataStruct is for hardware
 extern MotorData motorDataStruct;
 //For simulator - comment out motorDataStruct and set wildcard data to literal (e.x. replace motorDataStruct.fetTemp with 0)
 void main_screenView::motorDataUpdate()
-    {
-    Unicode::snprintf(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%d", motorDataStruct.fetTemp) ;
-    Unicode::snprintf(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%d", motorDataStruct.motorTemp);
-    Unicode::snprintf(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%d", motorDataStruct.voltIn);
-    Unicode::snprintf(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%d", motorDataStruct.currIn);
-    fet_temp_wild.invalidate();
-    motor_temp_wild.invalidate();
-    volt_in_wild.invalidate();
-    curr_in_wild.invalidate();
-
-    }
+{
+	Unicode::snprintf(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%d", motorDataStruct.fetTemp) ;
+	Unicode::snprintf(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%d", motorDataStruct.motorTemp);
+	Unicode::snprintf(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%d", motorDataStruct.voltIn);
+	Unicode::snprintf(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%d", motorDataStruct.currIn);
+	fet_temp_wild.invalidate();
+	motor_temp_wild.invalidate();
+	volt_in_wild.invalidate();
+	curr_in_wild.invalidate();
+}
+#endif
