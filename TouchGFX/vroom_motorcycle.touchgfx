@@ -3,7 +3,6 @@
     "Screens": [
       {
         "Name": "main_screen",
-        "CanvasBufferSize": 12000,
         "Components": [
           {
             "Type": "Image",
@@ -27,25 +26,6 @@
             "Components": [
               {
                 "Type": "Container",
-                "Name": "motor_page",
-                "Width": 800,
-                "Height": 480,
-                "Components": [
-                  {
-                    "Type": "Button",
-                    "Name": "button1",
-                    "X": 280,
-                    "Y": 215,
-                    "Width": 240,
-                    "Height": 50,
-                    "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_pressed.png",
-                    "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_normal.png",
-                    "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
-                  }
-                ]
-              },
-              {
-                "Type": "Container",
                 "Name": "command_page",
                 "Width": 800,
                 "Height": 480,
@@ -53,7 +33,8 @@
                   {
                     "Type": "BoxWithBorder",
                     "Name": "command_box",
-                    "X": 60,
+                    "X": -429,
+                    "Y": 6,
                     "Width": 330,
                     "Height": 70,
                     "Color": {
@@ -65,23 +46,9 @@
                   },
                   {
                     "Type": "BoxWithBorder",
-                    "Name": "command_box_1",
-                    "X": 495,
-                    "Y": 76,
-                    "Width": 305,
-                    "Height": 149,
-                    "Color": {
-                      "Red": 255,
-                      "Green": 255,
-                      "Blue": 255
-                    },
-                    "BorderSize": 3
-                  },
-                  {
-                    "Type": "BoxWithBorder",
                     "Name": "command_box_2",
-                    "X": 495,
-                    "Y": 356,
+                    "X": 248,
+                    "Y": 395,
                     "Width": 305,
                     "Height": 70,
                     "Color": {
@@ -94,16 +61,16 @@
                   {
                     "Type": "Image",
                     "Name": "keypad_image",
-                    "X": 71,
+                    "X": -418,
                     "Width": 308,
                     "Height": 480,
                     "RelativeFilename": "keypad.png"
                   },
                   {
                     "Type": "TextArea",
-                    "Name": "textArea1",
-                    "X": 520,
-                    "Y": -1,
+                    "Name": "function_title",
+                    "X": 273,
+                    "Y": 4,
                     "Width": 255,
                     "Height": 72,
                     "TextId": "__SingleUse_W5VS",
@@ -112,9 +79,9 @@
                   },
                   {
                     "Type": "TextArea",
-                    "Name": "textArea2",
-                    "X": 565,
-                    "Y": 284,
+                    "Name": "value_title",
+                    "X": 318,
+                    "Y": 315,
                     "Width": 164,
                     "Height": 72,
                     "TextId": "__SingleUse_S3TK",
@@ -123,87 +90,11 @@
                   },
                   {
                     "Type": "FlexButton",
-                    "Name": "value_button",
-                    "X": 495,
-                    "Y": 356,
-                    "Width": 305,
-                    "Height": 70,
-                    "Alpha": 0,
-                    "ButtonTrigger": {
-                      "Type": "ClickButtonTrigger"
-                    },
-                    "ButtonStyles": [
-                      {
-                        "Type": "BoxWithBorderButtonStyle",
-                        "Width": 305,
-                        "Height": 70,
-                        "LockToFlexButtonSize": true,
-                        "BorderSize": 5,
-                        "ColorReleased": {
-                          "Green": 102,
-                          "Blue": 153
-                        },
-                        "ColorPressed": {
-                          "Green": 153,
-                          "Blue": 204
-                        },
-                        "ColorBorderReleased": {
-                          "Green": 51,
-                          "Blue": 102
-                        },
-                        "ColorBorderPressed": {
-                          "Red": 51,
-                          "Green": 102,
-                          "Blue": 153
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "Type": "FlexButton",
-                    "Name": "function_button",
-                    "X": 495,
-                    "Y": 138,
-                    "Width": 305,
-                    "Height": 70,
-                    "Alpha": 0,
-                    "ButtonTrigger": {
-                      "Type": "ClickButtonTrigger"
-                    },
-                    "ButtonStyles": [
-                      {
-                        "Type": "BoxWithBorderButtonStyle",
-                        "Width": 305,
-                        "Height": 70,
-                        "LockToFlexButtonSize": true,
-                        "BorderSize": 5,
-                        "ColorReleased": {
-                          "Green": 102,
-                          "Blue": 153
-                        },
-                        "ColorPressed": {
-                          "Green": 153,
-                          "Blue": 204
-                        },
-                        "ColorBorderReleased": {
-                          "Green": 51,
-                          "Blue": 102
-                        },
-                        "ColorBorderPressed": {
-                          "Red": 51,
-                          "Green": 102,
-                          "Blue": 153
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "Type": "FlexButton",
                     "Name": "delete_button",
-                    "X": 400,
+                    "X": -89,
                     "Y": 76,
                     "Width": 89,
-                    "Height": 192,
+                    "Height": 89,
                     "ButtonTrigger": {
                       "Type": "ClickButtonTrigger"
                     },
@@ -211,16 +102,35 @@
                       {
                         "Type": "ImageButtonStyle",
                         "LockFlexButtonToImageSize": true,
-                        "ImageReleased": "key_2.png",
-                        "ImagePressed": "key_2_pressed.png"
+                        "ImageReleased": "key.png",
+                        "ImagePressed": "key_pressed.png"
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "FlexButton",
+                    "Name": "cancel_button",
+                    "X": -89,
+                    "Y": 180,
+                    "Width": 89,
+                    "Height": 89,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "ImageButtonStyle",
+                        "LockFlexButtonToImageSize": true,
+                        "ImageReleased": "key.png",
+                        "ImagePressed": "key_pressed.png"
                       }
                     ]
                   },
                   {
                     "Type": "FlexButton",
                     "Name": "enter_button",
-                    "X": 400,
-                    "Y": 288,
+                    "X": -89,
+                    "Y": 287,
                     "Width": 89,
                     "Height": 192,
                     "ButtonTrigger": {
@@ -237,26 +147,11 @@
                   },
                   {
                     "Type": "TextArea",
-                    "Name": "function_text",
-                    "X": 495,
-                    "Y": 76,
-                    "Width": 305,
-                    "Height": 149,
-                    "TextId": "__SingleUse_PLEI",
-                    "TextRotation": "0",
-                    "Wildcard1": {
-                      "TextId": "function_text",
-                      "UseBuffer": true,
-                      "BufferSize": 50
-                    }
-                  },
-                  {
-                    "Type": "TextArea",
                     "Name": "value_text",
-                    "X": 495,
-                    "Y": 356,
+                    "X": 248,
+                    "Y": 389,
                     "Width": 305,
-                    "Height": 70,
+                    "Height": 76,
                     "TextId": "__SingleUse_HU9G",
                     "TextRotation": "0",
                     "Wildcard1": {
@@ -264,76 +159,140 @@
                       "UseBuffer": true,
                       "BufferSize": 9
                     }
-                  }
-                ]
-              },
-              {
-                "Type": "Container",
-                "Name": "main_page_1",
-                "Width": 800,
-                "Height": 480,
-                "Components": [
-                  {
-                    "Type": "CircleProgress",
-                    "Name": "battery_circle_1",
-                    "X": 305,
-                    "Y": 145,
-                    "Width": 190,
-                    "Height": 190,
-                    "Color": {
-                      "Red": 255,
-                      "Green": 255,
-                      "Blue": 255
-                    },
-                    "CenterX": 95.0,
-                    "CenterY": 95.0,
-                    "Radius": 85.0,
-                    "LineWidth": 20.0,
-                    "EndAngle": 360.0,
-                    "CapPrecision": "Triangle",
-                    "FileNameBackground": "__generated\\dark_theme_images_widgets_circleprogress_backgrounds_large.png",
-                    "ProgressRangeMax": 100,
-                    "ProgressInitialValue": 60
                   },
                   {
-                    "Type": "TextProgress",
-                    "Name": "battery_text_1",
-                    "X": 325,
-                    "Y": 165,
-                    "Width": 150,
-                    "Height": 150,
-                    "TextId": "__SingleUse_C37D",
+                    "Type": "FlexButton",
+                    "Name": "function_select_button",
+                    "X": 211,
+                    "Y": 260,
+                    "Width": 379,
+                    "Height": 55,
+                    "ButtonTrigger": {
+                      "Type": "ClickButtonTrigger"
+                    },
+                    "ButtonStyles": [
+                      {
+                        "Type": "BoxWithBorderButtonStyle",
+                        "Width": 379,
+                        "Height": 55,
+                        "LockToFlexButtonSize": true,
+                        "BorderSize": 5,
+                        "ColorReleased": {
+                          "Green": 102,
+                          "Blue": 153
+                        },
+                        "ColorPressed": {
+                          "Green": 153,
+                          "Blue": 204
+                        },
+                        "ColorBorderReleased": {
+                          "Green": 51,
+                          "Blue": 102
+                        },
+                        "ColorBorderPressed": {
+                          "Red": 51,
+                          "Green": 102,
+                          "Blue": 153
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "button_text",
+                    "X": 211,
+                    "Y": 260,
+                    "Width": 379,
+                    "Height": 55,
+                    "TextId": "__SingleUse_FPGL",
+                    "TextRotation": "0"
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "dummy_background_center",
+                    "X": 25,
+                    "Y": 129,
+                    "Width": 750,
+                    "Height": 55,
+                    "Color": {
+                      "Red": 163,
+                      "Green": 163,
+                      "Blue": 163
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "dummy_function_name_center",
+                    "X": 25,
+                    "Y": 132,
+                    "Width": 750,
+                    "Height": 50,
+                    "TextId": "function_0",
+                    "TextRotation": "0"
+                  },
+                  {
+                    "Type": "Box",
+                    "Name": "dummy_background_1",
+                    "X": 25,
+                    "Y": 74,
+                    "Width": 750,
+                    "Height": 55,
                     "Color": {
                       "Red": 255,
                       "Green": 255,
                       "Blue": 255
-                    },
-                    "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_round_neutral.png",
-                    "IndicatorPositionX": 12,
-                    "IndicatorPositionY": 50,
-                    "IndicatorPositionWidth": 130,
-                    "IndicatorPositionHeight": 60,
-                    "ProgressRangeMax": 100,
-                    "ProgressInitialValue": 60
-                  }
-                ]
-              },
-              {
-                "Type": "Container",
-                "Name": "bms_page",
-                "Width": 800,
-                "Height": 480,
-                "Components": [
+                    }
+                  },
                   {
-                    "Type": "Button",
-                    "Name": "button2",
-                    "X": 280,
-                    "Y": 215,
-                    "Width": 240,
+                    "Type": "Box",
+                    "Name": "dummy_background_2",
+                    "X": 25,
+                    "Y": 184,
+                    "Width": 750,
+                    "Height": 55,
+                    "Color": {
+                      "Red": 255,
+                      "Green": 255,
+                      "Blue": 255
+                    }
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "dummy_function_name_1",
+                    "X": 25,
+                    "Y": 73,
+                    "Width": 750,
                     "Height": 50,
-                    "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_pressed.png",
-                    "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_medium_rounded_normal.png",
-                    "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
+                    "TextId": "function_6",
+                    "TextRotation": "0"
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "dummy_function_name_2",
+                    "X": 25,
+                    "Y": 185,
+                    "Width": 750,
+                    "Height": 50,
+                    "TextId": "function_1",
+                    "TextRotation": "0"
+                  },
+                  {
+                    "Type": "ScrollWheel",
+                    "Name": "function_wheel",
+                    "X": 25,
+                    "Y": 74,
+                    "Width": 750,
+                    "Height": 165,
+                    "SelectedItemOffset": 55,
+                    "UseSelectedStyle": true,
+                    "SelectedItemTemplateName": "function_center",
+                    "IsCircular": true,
+                    "ItemTemplateName": "function_element",
+                    "NumberofItems": 7,
+                    "Easing": "Back",
+                    "EasingOption": "Out",
+                    "SwipeAcceleration": 1.0,
+                    "DragAcceleration": 1.0
                   }
                 ]
               },
@@ -510,25 +469,14 @@
         ],
         "Interactions": [
           {
-            "InteractionName": "value_interaction",
+            "InteractionName": "execute_function_interraction",
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "value_button"
+              "TriggerComponent": "function_select_button"
             },
             "Action": {
               "Type": "ActionCustom",
-              "FunctionName": "check_value"
-            }
-          },
-          {
-            "InteractionName": "function_interaction",
-            "Trigger": {
-              "Type": "TriggerClicked",
-              "TriggerComponent": "function_button"
-            },
-            "Action": {
-              "Type": "ActionCustom",
-              "FunctionName": "check_function"
+              "FunctionName": "execute_function_pressed"
             }
           },
           {
@@ -563,11 +511,89 @@
               "Type": "ActionCustom",
               "FunctionName": "motorDataUpdate"
             }
+          },
+          {
+            "InteractionName": "cancel_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "cancel_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "cancel_command"
+            }
           }
         ]
       }
     ],
-    "CustomContainerDefinitions": [],
+    "CustomContainerDefinitions": [
+      {
+        "Name": "function_element",
+        "X": 25,
+        "Y": -56,
+        "Width": 750,
+        "Height": 56,
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "background",
+            "Width": 750,
+            "Height": 56,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "function_name",
+            "Width": 750,
+            "Height": 56,
+            "TextId": "function_0",
+            "TextRotation": "0"
+          }
+        ],
+        "Interactions": [],
+        "CustomActions": [
+          {
+            "Name": "resize_widget",
+            "HasValue": true,
+            "ValueType": "int16_t"
+          }
+        ]
+      },
+      {
+        "Name": "function_center",
+        "X": 25,
+        "Y": -56,
+        "Width": 750,
+        "Height": 56,
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "background",
+            "Width": 750,
+            "Height": 55,
+            "Color": {
+              "Red": 163,
+              "Green": 163,
+              "Blue": 163
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "function_name",
+            "Y": 3,
+            "Width": 750,
+            "Height": 50,
+            "TextId": "function_0",
+            "TextRotation": "0"
+          }
+        ],
+        "Interactions": []
+      }
+    ],
     "Name": "vroom_motorcycle",
     "Resolution": {
       "Width": 800,

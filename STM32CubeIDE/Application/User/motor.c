@@ -340,7 +340,6 @@ uint8_t comm_can_ping(uint8_t controller_id)
 // Throttle Filtering Algorithm
 
 extern uint16_t threshold; // Variable for max sensitivity difference in analog values
-uint16_t previous_value = 0; // Variable to store the previous analog value
 
 void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
 {

@@ -11,14 +11,13 @@
 #include <touchgfx/widgets/Image.hpp>
 #include <touchgfx/containers/SwipeContainer.hpp>
 #include <touchgfx/containers/Container.hpp>
-#include <touchgfx/widgets/Button.hpp>
 #include <touchgfx/widgets/BoxWithBorder.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
 #include <touchgfx/containers/buttons/Buttons.hpp>
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
-#include <touchgfx/containers/progress_indicators/CircleProgress.hpp>
-#include <touchgfx/widgets/canvas/PainterRGB565.hpp>
-#include <touchgfx/containers/progress_indicators/TextProgress.hpp>
+#include <touchgfx/containers/scrollers/ScrollWheelWithSelectionStyle.hpp>
+#include <gui/containers/function_element.hpp>
+#include <gui/containers/function_center.hpp>
 
 class main_screenViewBase : public touchgfx::View<main_screenPresenter>
 {
@@ -26,16 +25,22 @@ public:
     main_screenViewBase();
     virtual ~main_screenViewBase();
     virtual void setupScreen();
+
+    virtual void function_wheelUpdateItem(function_element& item, int16_t itemIndex)
+    {
+        // Override and implement this function in main_screen
+    }
+
+    virtual void function_wheelUpdateCenterItem(function_center& item, int16_t itemIndex)
+    {
+        // Override and implement this function in main_screen
+    }
     virtual void handleTickEvent();
 
     /*
      * Virtual Action Handlers
      */
-    virtual void check_value()
-    {
-        // Override and implement this function in main_screen
-    }
-    virtual void check_function()
+    virtual void execute_function_pressed()
     {
         // Override and implement this function in main_screen
     }
@@ -51,6 +56,10 @@ public:
     {
         // Override and implement this function in main_screen
     }
+    virtual void cancel_command()
+    {
+        // Override and implement this function in main_screen
+    }
 
 protected:
     FrontendApplication& application() {
@@ -63,27 +72,27 @@ protected:
     touchgfx::Box __background;
     touchgfx::Image image1;
     touchgfx::SwipeContainer swipe_container;
-    touchgfx::Container motor_page;
-    touchgfx::Button button1;
     touchgfx::Container command_page;
     touchgfx::BoxWithBorder command_box;
-    touchgfx::BoxWithBorder command_box_1;
     touchgfx::BoxWithBorder command_box_2;
     touchgfx::Image keypad_image;
-    touchgfx::TextArea textArea1;
-    touchgfx::TextArea textArea2;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  value_button;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  function_button;
+    touchgfx::TextArea function_title;
+    touchgfx::TextArea value_title;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  delete_button;
+    touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  cancel_button;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
-    touchgfx::TextAreaWithOneWildcard function_text;
     touchgfx::TextAreaWithOneWildcard value_text;
-    touchgfx::Container main_page_1;
-    touchgfx::CircleProgress battery_circle_1;
-    touchgfx::PainterRGB565 battery_circle_1Painter;
-    touchgfx::TextProgress battery_text_1;
-    touchgfx::Container bms_page;
-    touchgfx::Button button2;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  function_select_button;
+    touchgfx::TextArea button_text;
+    touchgfx::Box dummy_background_center;
+    touchgfx::TextArea dummy_function_name_center;
+    touchgfx::Box dummy_background_1;
+    touchgfx::Box dummy_background_2;
+    touchgfx::TextArea dummy_function_name_1;
+    touchgfx::TextArea dummy_function_name_2;
+    touchgfx::ScrollWheelWithSelectionStyle function_wheel;
+    touchgfx::DrawableListItems<function_element, 4> function_wheelListItems;
+    touchgfx::DrawableListItems<function_center, 2> function_wheelSelectedListItems;
     touchgfx::Container motor_data;
     touchgfx::TextArea textArea3;
     touchgfx::TextAreaWithOneWildcard fet_temp_wild;
@@ -98,8 +107,6 @@ protected:
     /*
      * Wildcard Buffers
      */
-    static const uint16_t FUNCTION_TEXT_SIZE = 50;
-    touchgfx::Unicode::UnicodeChar function_textBuffer[FUNCTION_TEXT_SIZE];
     static const uint16_t VALUE_TEXT_SIZE = 9;
     touchgfx::Unicode::UnicodeChar value_textBuffer[VALUE_TEXT_SIZE];
     static const uint16_t FET_TEMP_WILD_SIZE = 3;
@@ -114,19 +121,15 @@ protected:
 private:
 
     /*
-     * Canvas Buffer Size
-     */
-    static const uint32_t CANVAS_BUFFER_SIZE = 12000;
-    uint8_t canvasBuffer[CANVAS_BUFFER_SIZE];
-
-    /*
      * Callback Declarations
      */
+    touchgfx::Callback<main_screenViewBase, touchgfx::DrawableListItemsInterface*, int16_t, int16_t> updateItemCallback;
     touchgfx::Callback<main_screenViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
 
     /*
      * Callback Handler Declarations
      */
+    void updateItemCallbackHandler(touchgfx::DrawableListItemsInterface* items, int16_t containerIndex, int16_t itemIndex);
     void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
 
     /*

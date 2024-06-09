@@ -8,7 +8,7 @@ using namespace touchgfx;
  * This file contains all the keymappings for the CustomKeyboard.
  */
 
-static const Keyboard::KeyMapping keyMappingsNumLower[12] =
+static const Keyboard::KeyMapping keyMappingsNumLower[11] =
 {
     { 1,  49},  // 1
     { 2,  50},  // 2
@@ -23,14 +23,13 @@ static const Keyboard::KeyMapping keyMappingsNumLower[12] =
     { 9,  57},  // 9
 
     {10,  48},  // 0
-    {11,  46},  // .
-	{12,  58},  // :
+	{11,  46},  // .
 };
 
 static const Keyboard::KeyMappingList keyMappingListNumLower =
 {
     keyMappingsNumLower,
-    12
+    11
 };
 
 #endif

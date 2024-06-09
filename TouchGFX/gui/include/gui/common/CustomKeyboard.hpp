@@ -42,6 +42,9 @@ public:
 	void delete_char();
 	uint8_t get_command();
 	float get_command_input();
+	uint16_t get_button_w_offset();
+	uint16_t get_button_h_offset();
+	uint16_t get_text_offset();
 
 
     /*
@@ -69,14 +72,6 @@ private:
      * Callback for the backspace button.
      */
     Callback<CustomKeyboard> backspacePressed;
-    /**
-     * Callback for the enter button.
-     */
-    Callback<CustomKeyboard> enterPressed;
-    /**
-	 * Callback for the enter button.
-	 */
-	Callback<CustomKeyboard> equalsPressed;
 	/**
 	 * Callback for the enter button.
 	 */
@@ -99,12 +94,12 @@ private:
     /**
      * Callback handler for the enter button.
      */
-    void enterPressedHandler();
+    //void enterPressedHandler();
 
     /**
 	 * Callback handler for the enter button.
 	 */
-	void equalsPressedHandler();
+	void cancelPressedHandler();
 
 	/**
 	 * Callback handler for the decimal button

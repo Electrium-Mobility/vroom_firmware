@@ -25,6 +25,10 @@
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenPresenter.cpp"/>
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenView.cpp"/>
     <ClCompile Include="..\..\generated\gui_generated\src\main_screen_screen\main_screenViewBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\containers\function_center.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\containers\function_centerBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\containers\function_element.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\containers\function_elementBase.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ApplicationRoot)\assets\texts\texts.xml"/>
@@ -182,6 +186,10 @@
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenView.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\main_screen_screen\main_screenViewBase.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\common\commands.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\containers\function_center.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\function_centerBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\containers\function_element.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\function_elementBase.hpp"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc"/>
