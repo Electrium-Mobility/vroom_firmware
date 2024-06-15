@@ -16,3 +16,8 @@ void main_screenPresenter::deactivate()
 {
 
 }
+
+void main_screenPresenter::display_adc(unsigned int adc_value)
+{
+	view.display_adc(adc_value);
+}

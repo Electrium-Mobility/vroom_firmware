@@ -27,6 +27,72 @@ public:
 
     virtual ~main_screenPresenter() {}
 
+
+    virtual void display_adc(unsigned int adc_value);
+
+
+    void set_throttle_high_point()
+    {
+    	model->set_throttle_high_point();
+    }
+
+    void set_throttle_low_point()
+    {
+    	model->set_throttle_low_point();
+    }
+
+    void set_brake_high_point()
+    {
+    	model->set_brake_high_point();
+    }
+
+    void set_brake_low_point()
+    {
+    	model->set_brake_low_point();
+    }
+
+
+
+    unsigned int get_throttle_sensitivity()
+    {
+    	return model->get_throttle_sensitivity();
+    }
+
+    void set_throttle_sensitivity(unsigned int throttle_value)
+    {
+    	model->set_throttle_sensitivity(throttle_value);
+    }
+
+    unsigned int get_brake_sensitivity()
+    {
+    	return model->get_brake_sensitivity();
+    }
+
+    void set_brake_sensitivity(unsigned int brake_value)
+    {
+    	model->set_brake_sensitivity(brake_value);
+    }
+
+    unsigned int get_CAN_transmit_frequency()
+	{
+		return model->get_CAN_transmit_frequency();
+	}
+
+    void start_throttle_adc()
+    {
+    	return model->start_throttle_adc();
+    }
+
+    void start_brake_adc()
+    {
+    	return model->start_brake_adc();
+    }
+
+    void stop_adc_retrieval()
+    {
+    	model->stop_adc_retrieval();
+    }
+
 private:
     main_screenPresenter();
 

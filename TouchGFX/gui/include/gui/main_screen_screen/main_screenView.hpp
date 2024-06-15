@@ -25,12 +25,19 @@ public:
 		KEYPAD_ANIMATION_IN_STEP_0,
 		KEYPAD_ANIMATION_IN_STEP_1,
 		KEYPAD_ANIMATION_OUT_STEP_0,
-		KEYPAD_ANIMATION_OUT_STEP_1
+		KEYPAD_ANIMATION_OUT_STEP_1,
+		KEYPAD_VALUE_SET_STEP_0,
+		KEYPAD_VALUE_SET_STEP_1,
+		CALIBRATION_IN_STEP_0,
+		CALIBRATION_IN_STEP_1,
+		CALIBRATION_OUT_STEP_0,
+		CALIBRATION_OUT_STEP_1
     };
 
     // Command Page
-    static const int KEYPAD_ANIMATION_DURATION = 100;
+    static const int KEYPAD_ANIMATION_DURATION = 40;
     static const int KEYPAD_ANIMATION_X_SIZE = 1;
+    static const int KEYPAD_SET_ANIMATION_DURATION = 100;
 
 	virtual void delete_char();
 	virtual void enter_command();
@@ -40,6 +47,10 @@ public:
 	virtual void function_wheelUpdateCenterItem(function_center& item, int16_t itemIndex);
 	virtual void execute_function_pressed();
 
+
+    virtual void display_adc(unsigned int adc_value);
+
+
 #ifndef SIMULATOR
      // Motor Data
      virtual void motorDataUpdate();
@@ -47,6 +58,11 @@ public:
 
 protected:
     // Command Page
+
+    bool high_point;
+    bool calibration_mode;
+	float keypad_value_f;
+	uint32_t keypad_value_d;
 	CustomKeyboard keypad;
 	uint32_t animation_tick;
 	int8_t keypad_animation_state; // also defines the animation direction (-1, 1)

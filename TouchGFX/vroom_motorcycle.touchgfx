@@ -6,7 +6,7 @@
         "Components": [
           {
             "Type": "Image",
-            "Name": "image1",
+            "Name": "background",
             "Width": 800,
             "Height": 480,
             "RelativeFilename": "__generated\\alternate_theme_images_backgrounds_800x480_lines.png"
@@ -30,6 +30,20 @@
                 "Width": 800,
                 "Height": 480,
                 "Components": [
+                  {
+                    "Type": "BoxWithBorder",
+                    "Name": "value_set_background",
+                    "X": 445,
+                    "Y": 240,
+                    "Width": 355,
+                    "Height": 239,
+                    "Visible": false,
+                    "Color": {
+                      "Green": 102,
+                      "Blue": 153
+                    },
+                    "BorderSize": 5
+                  },
                   {
                     "Type": "BoxWithBorder",
                     "Name": "command_box",
@@ -78,17 +92,6 @@
                     "AutoSize": true
                   },
                   {
-                    "Type": "TextArea",
-                    "Name": "value_title",
-                    "X": 318,
-                    "Y": 315,
-                    "Width": 164,
-                    "Height": 72,
-                    "TextId": "__SingleUse_S3TK",
-                    "TextRotation": "0",
-                    "AutoSize": true
-                  },
-                  {
                     "Type": "FlexButton",
                     "Name": "delete_button",
                     "X": -89,
@@ -106,6 +109,16 @@
                         "ImagePressed": "key_pressed.png"
                       }
                     ]
+                  },
+                  {
+                    "Type": "TextArea",
+                    "Name": "value_title",
+                    "X": 248,
+                    "Y": 315,
+                    "Width": 305,
+                    "Height": 72,
+                    "TextId": "value_title",
+                    "TextRotation": "0"
                   },
                   {
                     "Type": "FlexButton",
@@ -304,7 +317,7 @@
                 "Components": [
                   {
                     "Type": "TextArea",
-                    "Name": "textArea3",
+                    "Name": "diagnostics_title",
                     "X": 221,
                     "Y": 35,
                     "Width": 359,

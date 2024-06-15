@@ -14,7 +14,7 @@ public:
     {
         model = m;
     }
-
+    virtual void display_adc(unsigned int adc_value) {}
 
 protected:
     Model* model;

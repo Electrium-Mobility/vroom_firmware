@@ -15,9 +15,9 @@ main_screenViewBase::main_screenViewBase() :
     __background.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     add(__background);
 
-    image1.setXY(0, 0);
-    image1.setBitmap(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_BACKGROUNDS_800X480_LINES_ID));
-    add(image1);
+    background.setXY(0, 0);
+    background.setBitmap(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_BACKGROUNDS_800X480_LINES_ID));
+    add(background);
 
     swipe_container.setXY(0, 0);
     swipe_container.setPageIndicatorBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_SWIPECONTAINER_MEDIUM_OFF_NORMAL_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_SWIPECONTAINER_MEDIUM_ON_ACTIVE_ID));
@@ -27,6 +27,13 @@ main_screenViewBase::main_screenViewBase() :
 
     command_page.setWidth(800);
     command_page.setHeight(480);
+    value_set_background.setPosition(445, 240, 355, 239);
+    value_set_background.setColor(touchgfx::Color::getColorFromRGB(0, 102, 153));
+    value_set_background.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    value_set_background.setBorderSize(5);
+    value_set_background.setVisible(false);
+    command_page.add(value_set_background);
+
     command_box.setPosition(-429, 6, 330, 70);
     command_box.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -49,17 +56,17 @@ main_screenViewBase::main_screenViewBase() :
     function_title.setTypedText(touchgfx::TypedText(T___SINGLEUSE_W5VS));
     command_page.add(function_title);
 
-    value_title.setXY(318, 315);
-    value_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    value_title.setLinespacing(0);
-    value_title.setTypedText(touchgfx::TypedText(T___SINGLEUSE_S3TK));
-    command_page.add(value_title);
-
     delete_button.setBitmaps(Bitmap(BITMAP_KEY_ID), Bitmap(BITMAP_KEY_PRESSED_ID));
     delete_button.setBitmapXY(0, 0);
     delete_button.setAction(flexButtonCallback);
     delete_button.setPosition(-89, 76, 89, 89);
     command_page.add(delete_button);
+
+    value_title.setPosition(248, 315, 305, 72);
+    value_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    value_title.setLinespacing(0);
+    value_title.setTypedText(touchgfx::TypedText(T_VALUE_TITLE));
+    command_page.add(value_title);
 
     cancel_button.setBitmaps(Bitmap(BITMAP_KEY_ID), Bitmap(BITMAP_KEY_PRESSED_ID));
     cancel_button.setBitmapXY(0, 0);
@@ -145,11 +152,11 @@ main_screenViewBase::main_screenViewBase() :
 
     motor_data.setWidth(800);
     motor_data.setHeight(480);
-    textArea3.setXY(221, 35);
-    textArea3.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
-    textArea3.setLinespacing(0);
-    textArea3.setTypedText(touchgfx::TypedText(T___SINGLEUSE_L6ZD));
-    motor_data.add(textArea3);
+    diagnostics_title.setXY(221, 35);
+    diagnostics_title.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    diagnostics_title.setLinespacing(0);
+    diagnostics_title.setTypedText(touchgfx::TypedText(T___SINGLEUSE_L6ZD));
+    motor_data.add(diagnostics_title);
 
     fet_temp_wild.setPosition(500, 138, 150, 36);
     fet_temp_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));

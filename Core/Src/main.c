@@ -97,6 +97,16 @@ const osThreadAttr_t motorTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for adcQueue */
+osMessageQueueId_t adcQueueHandle;
+const osMessageQueueAttr_t adcQueue_attributes = {
+  .name = "adcQueue"
+};
+/* Definitions for settingMutex */
+osMutexId_t settingMutexHandle;
+const osMutexAttr_t settingMutex_attributes = {
+  .name = "settingMutex"
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -231,6 +241,9 @@ int main(void)
 
   /* Init scheduler */
   osKernelInitialize();
+  /* Create the mutex(es) */
+  /* creation of settingMutex */
+  settingMutexHandle = osMutexNew(&settingMutex_attributes);
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
@@ -243,6 +256,10 @@ int main(void)
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of adcQueue */
+  adcQueueHandle = osMessageQueueNew (5, sizeof(uint16_t), &adcQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */

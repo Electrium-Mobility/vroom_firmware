@@ -112,18 +112,15 @@ void CustomKeyboard::set_keyboard_visible(bool visibility)
 	keyboard.invalidate();
 }
 
-uint8_t CustomKeyboard:: get_command()
+float CustomKeyboard:: get_input_value_f()
 {
-	Unicode::UnicodeChar command[2] = {buffer[0], buffer[1]};
-	return Unicode::atoi(command);
+	return std::atof(reinterpret_cast<char*>(keyboard.getBuffer()));
 }
 
-float CustomKeyboard:: get_command_input()
+uint32_t CustomKeyboard:: get_input_value_d()
 {
-	Unicode::UnicodeChar command[2] = {buffer[3], buffer[4]};
-	return std::atof(reinterpret_cast<char*>(command));
+	return std::atol(reinterpret_cast<char*>(keyboard.getBuffer()));
 }
-
 
 uint16_t CustomKeyboard:: get_button_w_offset()
 {

@@ -4,6 +4,17 @@
     <Language Id="GB" />
   </Languages>
   <Texts>
+    <TextGroup Id="Calibration">
+      <Text Id="set_analog_value" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Set Analog Value</Translation>
+      </Text>
+      <Text Id="low_point" Alignment="Center" TypographyId="Keyboard">
+        <Translation Language="GB">Low Point</Translation>
+      </Text>
+      <Text Id="high_point" Alignment="Center" TypographyId="Keyboard">
+        <Translation Language="GB">High Point</Translation>
+      </Text>
+    </TextGroup>
     <TextGroup Id="Function_Names">
       <Text Id="function_6" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Edit User</Translation>
@@ -28,6 +39,12 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Keyboard">
+      <Text Id="value_title" Alignment="Center" TypographyId="Keyboard">
+        <Translation Language="GB">Value</Translation>
+      </Text>
+      <Text Id="value_set" Alignment="Center" TypographyId="Keyboard">
+        <Translation Language="GB">Value Set</Translation>
+      </Text>
       <Text Id="entered_text" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB">&lt;placeholder&gt;</Translation>
       </Text>
@@ -74,9 +91,6 @@
       </Text>
       <Text Id="function_text" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB"></Translation>
-      </Text>
-      <Text Id="__SingleUse_S3TK" Alignment="Left" TypographyId="Keyboard">
-        <Translation Language="GB">Value</Translation>
       </Text>
       <Text Id="__SingleUse_W5VS" Alignment="Left" TypographyId="Keyboard">
         <Translation Language="GB">Function</Translation>

@@ -70,15 +70,16 @@ protected:
      * Member Declarations
      */
     touchgfx::Box __background;
-    touchgfx::Image image1;
+    touchgfx::Image background;
     touchgfx::SwipeContainer swipe_container;
     touchgfx::Container command_page;
+    touchgfx::BoxWithBorder value_set_background;
     touchgfx::BoxWithBorder command_box;
     touchgfx::BoxWithBorder command_box_2;
     touchgfx::Image keypad_image;
     touchgfx::TextArea function_title;
-    touchgfx::TextArea value_title;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  delete_button;
+    touchgfx::TextArea value_title;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  cancel_button;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
     touchgfx::TextAreaWithOneWildcard value_text;
@@ -94,7 +95,7 @@ protected:
     touchgfx::DrawableListItems<function_element, 4> function_wheelListItems;
     touchgfx::DrawableListItems<function_center, 2> function_wheelSelectedListItems;
     touchgfx::Container motor_data;
-    touchgfx::TextArea textArea3;
+    touchgfx::TextArea diagnostics_title;
     touchgfx::TextAreaWithOneWildcard fet_temp_wild;
     touchgfx::TextAreaWithOneWildcard motor_temp_wild;
     touchgfx::TextAreaWithOneWildcard curr_in_wild;
