@@ -3,24 +3,23 @@
 
 #ifndef SIMULATOR
 
-extern "C"
-{
+extern "C" {
 #include "motor.h"
 #include "main.h"
 #include "cmsis_os.h"
 
-	extern uint16_t threshold;
-	// extern uint16_t brake_sensitivity;
-	// extern uint8_t display_throttle_adc;
-	// extern uint8_t display_brake_adc;
+extern uint16_t threshold;
+// extern uint16_t brake_sensitivity;
+// extern uint8_t display_throttle_adc;
+// extern uint8_t display_brake_adc;
 
-	extern osMessageQueueId_t adcQueueHandle;
-	extern osMutexId_t settingMutexHandle;
-	extern ADC_HandleTypeDef hadc1;
-	extern uint16_t throttle_max;
-	extern uint16_t throttle_min;
-	//extern uint16_t brake_max;
-	//extern uint16_t brake_min;
+extern osMessageQueueId_t adcQueueHandle;
+extern osMutexId_t settingMutexHandle;
+extern ADC_HandleTypeDef hadc1;
+extern uint16_t throttle_max;
+extern uint16_t throttle_min;
+//extern uint16_t brake_max;
+//extern uint16_t brake_min;
 }
 
 #endif // SIMULATOR
@@ -35,21 +34,17 @@ extern "C"
  * Initialize an adc for the brake sensor
  */
 
-Model:: Model() : modelListener(0), retrieve_adc(false), adc_value(0)
-{
+Model::Model() :
+		modelListener(0), retrieve_adc(false), adc_value(0) {
 
 }
 
-void Model:: tick()
-{
+void Model::tick() {
 #ifndef SIMULATOR
-	if(retrieve_adc)
-	{
+	if (retrieve_adc) {
 		// Retrieve the throttle ADC value from the queue
-		if(osMessageQueueGetCount(adcQueueHandle) > 0)
-		{
-			if(osMessageQueueGet(adcQueueHandle, &adc_value, 0, 0) == osOK)
-			{
+		if (osMessageQueueGetCount(adcQueueHandle) > 0) {
+			if (osMessageQueueGet(adcQueueHandle, &adc_value, 0, 0) == osOK) {
 				modelListener->display_adc(adc_value);
 			}
 		}
@@ -57,21 +52,9 @@ void Model:: tick()
 #endif // SIMULATOR
 }
 
-
-
-
-
-
-
-
-
-
-
-void Model:: set_throttle_high_point()
-{
+void Model::set_throttle_high_point() {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 		throttle_max = HAL_ADC_GetValue(&hadc1);
@@ -82,11 +65,9 @@ void Model:: set_throttle_high_point()
 #endif
 }
 
-void Model:: set_throttle_low_point()
-{
+void Model::set_throttle_low_point() {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 		throttle_min = HAL_ADC_GetValue(&hadc1);
@@ -97,11 +78,9 @@ void Model:: set_throttle_low_point()
 #endif
 }
 
-void Model:: set_brake_high_point()
-{
+void Model::set_brake_high_point() {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		//HAL_ADC_Start(&hadc2);
 		//HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
 		//brake_max = HAL_ADC_GetValue(&hadc2);
@@ -112,11 +91,9 @@ void Model:: set_brake_high_point()
 #endif
 }
 
-void Model:: set_brake_low_point()
-{
+void Model::set_brake_low_point() {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		//HAL_ADC_Start(&hadc2);
 		//HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
 		//brake_min = HAL_ADC_GetValue(&hadc2);
@@ -127,14 +104,11 @@ void Model:: set_brake_low_point()
 #endif
 }
 
-
-unsigned int Model:: get_throttle_sensitivity()
-{
+unsigned int Model::get_throttle_sensitivity() {
 	unsigned int temp = 100;
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		temp = threshold;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
@@ -143,12 +117,10 @@ unsigned int Model:: get_throttle_sensitivity()
 	return temp;
 }
 
-void Model:: set_throttle_sensitivity(unsigned int throttle_value)
-{
+void Model::set_throttle_sensitivity(unsigned int throttle_value) {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		threshold = throttle_value;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
@@ -156,13 +128,11 @@ void Model:: set_throttle_sensitivity(unsigned int throttle_value)
 #endif // SIMULATOR
 }
 
-unsigned int Model:: get_brake_sensitivity()
-{
+unsigned int Model::get_brake_sensitivity() {
 	unsigned int temp = 100;
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		//temp = brake_threshold;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
@@ -172,12 +142,10 @@ unsigned int Model:: get_brake_sensitivity()
 	return temp;
 }
 
-void Model:: set_brake_sensitivity(unsigned int brake_value)
-{
+void Model::set_brake_sensitivity(unsigned int brake_value) {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		//brake_threshold = brake_value;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
@@ -185,13 +153,11 @@ void Model:: set_brake_sensitivity(unsigned int brake_value)
 #endif // SIMULATOR
 }
 
-unsigned int Model:: get_CAN_transmit_frequency()
-{
+unsigned int Model::get_CAN_transmit_frequency() {
 	unsigned int temp = 1000;
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		//temp = motor_task_delay;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
@@ -202,12 +168,10 @@ unsigned int Model:: get_CAN_transmit_frequency()
 	return 1000 / temp;
 }
 
-void Model:: start_throttle_adc()
-{
+void Model::start_throttle_adc() {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		//display_throttle_adc = true;
 		//retrieve_adc = display_throttle_adc;
 
@@ -218,12 +182,10 @@ void Model:: start_throttle_adc()
 #endif
 }
 
-void Model:: start_brake_adc()
-{
+void Model::start_brake_adc() {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		// display_brake_adc = true;
 		// retrieve_adc = display_brake_adc;
 
@@ -233,12 +195,10 @@ void Model:: start_brake_adc()
 #endif
 }
 
-void Model:: stop_adc_retrieval()
-{
+void Model::stop_adc_retrieval() {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if(osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK) {
 		// display_throttle_adc = false;
 		// display_brake_adc = false;
 		retrieve_adc = false;

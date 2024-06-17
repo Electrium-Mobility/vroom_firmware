@@ -55,9 +55,9 @@ static const Keyboard::Layout layout =
     callbackAreas,
     2,
     Rect(0, 0, 418, TEXT_OFFSET),
-    TypedText(T_ENTERED_TEXT),
+    TypedText(T_KEYPAD_ENTERED_TEXT),
     0,
-    Typography::KEYBOARD,
+    Typography::KEYPAD,
     0
 };
 

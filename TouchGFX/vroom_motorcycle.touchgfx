@@ -2,6 +2,343 @@
   "Application": {
     "Screens": [
       {
+        "Name": "startup_screen",
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "background",
+            "Width": 800,
+            "Height": 480,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "Image",
+            "Name": "name_logo",
+            "X": 184,
+            "Y": 193,
+            "Width": 591,
+            "Height": 94,
+            "RelativeFilename": "electrium_name.png"
+          },
+          {
+            "Type": "Box",
+            "Name": "logo_cover",
+            "X": 184,
+            "Y": 193,
+            "Width": 591,
+            "Height": 94,
+            "Visible": false,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "Image",
+            "Name": "bike_logo",
+            "X": 25,
+            "Y": 193,
+            "Width": 140,
+            "Height": 94,
+            "RelativeFilename": "electrium_bike.png"
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "to_user_screen_interaction",
+            "Trigger": {
+              "Type": "TriggerWhen",
+              "ActionCustomTypeName": "Call startup_screen to_user_screen"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "user_screen"
+            }
+          }
+        ],
+        "CustomActions": [
+          {
+            "Name": "to_user_screen",
+            "Description": "Transitions function to the user screen"
+          }
+        ]
+      },
+      {
+        "Name": "user_screen",
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "background",
+            "Width": 800,
+            "Height": 480,
+            "Color": {
+              "Red": 73,
+              "Green": 184,
+              "Blue": 72
+            }
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "user_button",
+            "X": 80,
+            "Y": 188,
+            "Width": 720,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 720,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "view_password_button",
+            "X": 61,
+            "Y": 383,
+            "Width": 330,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 330,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "password_button",
+            "X": 80,
+            "Y": 285,
+            "Width": 720,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 720,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "enter_button",
+            "X": 409,
+            "Y": 383,
+            "Width": 330,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 330,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "TextArea",
+            "Name": "username",
+            "X": 86,
+            "Y": 204,
+            "Width": 715,
+            "Height": 48,
+            "TextId": "username_title",
+            "TextRotation": "0",
+            "Wildcard1": {
+              "UseBuffer": true,
+              "BufferSize": 16
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "password",
+            "X": 86,
+            "Y": 301,
+            "Width": 715,
+            "Height": 48,
+            "TextId": "password_title",
+            "TextRotation": "0",
+            "Wildcard1": {
+              "UseBuffer": true,
+              "BufferSize": 16
+            }
+          },
+          {
+            "Type": "BoxWithBorder",
+            "Name": "logo_background",
+            "X": 290,
+            "Y": 20,
+            "Width": 220,
+            "Height": 150,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "BorderSize": 5
+          },
+          {
+            "Type": "Image",
+            "Name": "bike_logo",
+            "X": 332,
+            "Y": 48,
+            "Width": 140,
+            "Height": 94,
+            "RelativeFilename": "electrium_bike.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "password_icon",
+            "Y": 285,
+            "Width": 80,
+            "Height": 80,
+            "RelativeFilename": "password_icon.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "user_icon",
+            "Y": 188,
+            "Width": 80,
+            "Height": 80,
+            "RelativeFilename": "username_icon.png"
+          },
+          {
+            "Type": "Image",
+            "Name": "enter_icon",
+            "X": 544,
+            "Y": 400,
+            "Width": 60,
+            "Height": 47,
+            "RelativeFilename": "enter_icon.png"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "view_password_title",
+            "X": 78,
+            "Y": 399,
+            "Width": 297,
+            "Height": 48,
+            "TextId": "__SingleUse_BCKB",
+            "TextRotation": "0",
+            "AutoSize": true
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "user_button_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "user_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "user_pressed"
+            }
+          },
+          {
+            "InteractionName": "password_button_interraction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "password_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "password_pressed"
+            }
+          },
+          {
+            "InteractionName": "enter_button_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "enter_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "enter_pressed"
+            }
+          },
+          {
+            "InteractionName": "password_visibility_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "view_password_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "toggle_password_visibility"
+            }
+          }
+        ]
+      },
+      {
         "Name": "main_screen",
         "Components": [
           {
@@ -613,7 +950,7 @@
       "Height": 480
     },
     "SelectedColorDepth": 16,
-    "StartupScreenName": "main_screen",
+    "StartupScreenName": "startup_screen",
     "SelectedStartupLanguage": "GB",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",
     "UIPath": ".",

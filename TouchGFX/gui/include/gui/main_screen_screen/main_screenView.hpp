@@ -3,9 +3,8 @@
 
 #include <gui_generated/main_screen_screen/main_screenViewBase.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
-#include <gui/common/CustomKeyboard.hpp>
-#include <gui/common/commands.hpp>
 #include <touchgfx/widgets/ButtonWithLabel.hpp>
+#include <gui/common/CustomKeyboard.hpp>
 
 #include <touchgfx/Color.hpp>
 
@@ -58,12 +57,12 @@ public:
 
 protected:
     // Command Page
-
     bool high_point;
     bool calibration_mode;
 	float keypad_value_f;
 	uint32_t keypad_value_d;
-	CustomKeyboard keypad;
+
+
 	uint32_t animation_tick;
 	int8_t keypad_animation_state; // also defines the animation direction (-1, 1)
 
@@ -71,6 +70,8 @@ protected:
 	void scrollWheelSelectedItemHandler();
 
 	// Other Pages
+	CustomKeyboard keypad;
+
 };
 
 #endif // MAIN_SCREENVIEW_HPP

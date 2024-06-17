@@ -21,7 +21,6 @@
     <ClCompile Include="..\..\generated\gui_generated\src\common\FrontendApplicationBase.cpp"/>
     <ClCompile Include="..\..\gui\src\model\Model.cpp"/>
     <ClCompile Include="..\..\generated\simulator\src\video\SoftwareMJPEGDecoder.cpp"/>
-    <ClCompile Include="..\..\gui\src\common\CustomKeyboard.cpp"/>
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenPresenter.cpp"/>
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenView.cpp"/>
     <ClCompile Include="..\..\generated\gui_generated\src\main_screen_screen\main_screenViewBase.cpp"/>
@@ -29,6 +28,14 @@
     <ClCompile Include="..\..\generated\gui_generated\src\containers\function_centerBase.cpp"/>
     <ClCompile Include="..\..\gui\src\containers\function_element.cpp"/>
     <ClCompile Include="..\..\generated\gui_generated\src\containers\function_elementBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\startup_screen_screen\startup_screenPresenter.cpp"/>
+    <ClCompile Include="..\..\gui\src\startup_screen_screen\startup_screenView.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\startup_screen_screen\startup_screenViewBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\user_screen_screen\user_screenPresenter.cpp"/>
+    <ClCompile Include="..\..\gui\src\user_screen_screen\user_screenView.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\user_screen_screen\user_screenViewBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\common\CustomKeyboard.cpp"/>
+    <ClCompile Include="..\..\gui\src\common\CharKeyboard.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ApplicationRoot)\assets\texts\texts.xml"/>
@@ -179,17 +186,25 @@
     <ClInclude Include="..\..\gui\include\gui\model\ModelListener.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\common\SimConstants.hpp"/>
     <ClInclude Include="..\..\generated\simulator\include\simulator\video\SoftwareMJPEGDecoder.hpp"/>
-    <ClInclude Include="..\..\gui\include\gui\common\CustomKeyboard.hpp"/>
-    <ClInclude Include="..\..\gui\include\gui\common\KeyboardKeyMapping.hpp"/>
-    <ClInclude Include="..\..\gui\include\gui\common\KeyboardLayout.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenPresenter.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenView.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\main_screen_screen\main_screenViewBase.hpp"/>
-    <ClInclude Include="..\..\gui\include\gui\common\commands.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\containers\function_center.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\function_centerBase.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\containers\function_element.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\function_elementBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\startup_screen_screen\startup_screenPresenter.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\startup_screen_screen\startup_screenView.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\startup_screen_screen\startup_screenViewBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\user_screen_screen\user_screenPresenter.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\user_screen_screen\user_screenView.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\user_screen_screen\user_screenViewBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\CustomKeyboard.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\KeyboardKeyMapping.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\KeyboardLayout.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\CharKeyboard.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardKeyMapping.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardLayout.hpp"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc"/>

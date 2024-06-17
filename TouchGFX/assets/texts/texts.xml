@@ -8,10 +8,10 @@
       <Text Id="set_analog_value" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Analog Value</Translation>
       </Text>
-      <Text Id="low_point" Alignment="Center" TypographyId="Keyboard">
+      <Text Id="low_point" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">Low Point</Translation>
       </Text>
-      <Text Id="high_point" Alignment="Center" TypographyId="Keyboard">
+      <Text Id="high_point" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">High Point</Translation>
       </Text>
     </TextGroup>
@@ -39,17 +39,35 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Keyboard">
-      <Text Id="value_title" Alignment="Center" TypographyId="Keyboard">
+      <Text Id="keyboard_entered_text" Alignment="Left" TypographyId="Display">
+        <Translation Language="GB">&lt;placeholder&gt;</Translation>
+      </Text>
+      <Text Id="NumMode" Alignment="Center" TypographyId="Mode">
+        <Translation Language="GB">ABC</Translation>
+      </Text>
+      <Text Id="AlphaMode" Alignment="Center" TypographyId="Mode">
+        <Translation Language="GB">123</Translation>
+      </Text>
+      <Text Id="password_title" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Password: &lt;value&gt;</Translation>
+      </Text>
+      <Text Id="username_title" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">User: &lt;value&gt;</Translation>
+      </Text>
+      <Text Id="value_title" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">Value</Translation>
       </Text>
-      <Text Id="value_set" Alignment="Center" TypographyId="Keyboard">
+      <Text Id="value_set" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">Value Set</Translation>
       </Text>
-      <Text Id="entered_text" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="keypad_entered_text" Alignment="Left" TypographyId="Keypad">
         <Translation Language="GB">&lt;placeholder&gt;</Translation>
       </Text>
     </TextGroup>
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_BCKB" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">View Password</Translation>
+      </Text>
       <Text Id="__SingleUse_FPGL" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Execute Function</Translation>
       </Text>
@@ -83,16 +101,16 @@
       <Text Id="__SingleUse_L6ZD" Alignment="Left" TypographyId="Large">
         <Translation Language="GB">Motor Diagnostics</Translation>
       </Text>
-      <Text Id="value_text" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="value_text" Alignment="Left" TypographyId="Keypad">
         <Translation Language="GB"></Translation>
       </Text>
-      <Text Id="__SingleUse_HU9G" Alignment="Center" TypographyId="Keyboard">
+      <Text Id="__SingleUse_HU9G" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
-      <Text Id="function_text" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="function_text" Alignment="Left" TypographyId="Keypad">
         <Translation Language="GB"></Translation>
       </Text>
-      <Text Id="__SingleUse_W5VS" Alignment="Left" TypographyId="Keyboard">
+      <Text Id="__SingleUse_W5VS" Alignment="Left" TypographyId="Keypad">
         <Translation Language="GB">Function</Translation>
       </Text>
     </TextGroup>
@@ -101,9 +119,12 @@
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" Direction="LTR" FallbackCharacter="?" />
-    <Typography Id="Keyboard" Font="verdana.ttf" Size="60" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789.N/A" WildcardCharacterRanges="0-9" />
+    <Typography Id="Keypad" Font="verdana.ttf" Size="60" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789.N/A" WildcardCharacterRanges="0-9" />
     <Typography Id="Keypad_command_descriptions" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters=" " />
     <Typography Id="Medium" Font="verdana.ttf" Size="30" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="numbers" Font="verdana.ttf" Size="30" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9" />
+    <Typography Id="Mode" Font="verdana.ttf" Size="48" Bpp="4" Direction="LTR" />
+    <Typography Id="Display" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="!”&quot;#*%&amp;()'$+-@_, .:;?/~±×÷•º`´{}©£€^®¥_=[]¡¢|\¿&gt;&lt;" WildcardCharacterRanges="a-z,A-Z,0-9" />
+    <Typography Id="Keyboard" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="!”&quot;#*%&amp;()'$+-@_, .:;?/~±×÷•º`´{}©£€^®¥_=[]¡¢|\¿&gt;&lt;" WildcardCharacterRanges="a-z,A-Z,0-9" />
   </Typographies>
 </TextDatabase>

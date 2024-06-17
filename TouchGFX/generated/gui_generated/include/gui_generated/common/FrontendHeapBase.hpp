@@ -12,6 +12,10 @@
 #include <gui/common/FrontendApplication.hpp>
 #include <gui/model/Model.hpp>
 
+#include <gui/startup_screen_screen/startup_screenView.hpp>
+#include <gui/startup_screen_screen/startup_screenPresenter.hpp>
+#include <gui/user_screen_screen/user_screenView.hpp>
+#include <gui/user_screen_screen/user_screenPresenter.hpp>
 #include <gui/main_screen_screen/main_screenView.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
 
@@ -36,8 +40,10 @@ public:
      * A list of all view types. Must end with meta::Nil.
      * @note All view types used in the application MUST be added to this list!
      */
-    typedef touchgfx::meta::TypeList< main_screenView,
-            touchgfx::meta::Nil
+    typedef touchgfx::meta::TypeList< startup_screenView,
+            touchgfx::meta::TypeList< user_screenView,
+            touchgfx::meta::TypeList< main_screenView,
+            touchgfx::meta::Nil > >
             > GeneratedViewTypes;
 
     /**
@@ -49,8 +55,10 @@ public:
      * A list of all presenter types. Must end with meta::Nil.
      * @note All presenter types used in the application MUST be added to this list!
      */
-    typedef touchgfx::meta::TypeList< main_screenPresenter,
-            touchgfx::meta::Nil
+    typedef touchgfx::meta::TypeList< startup_screenPresenter,
+            touchgfx::meta::TypeList< user_screenPresenter,
+            touchgfx::meta::TypeList< main_screenPresenter,
+            touchgfx::meta::Nil > >
             > GeneratedPresenterTypes;
 
     /**
@@ -73,7 +81,7 @@ public:
 
     virtual void gotoStartScreen(FrontendApplication& app)
     {
-        app.gotomain_screenScreenNoTransition();
+        app.gotostartup_screenScreenNoTransition();
     }
 protected:
     FrontendHeapBase(touchgfx::AbstractPartition& presenters, touchgfx::AbstractPartition& views, touchgfx::AbstractPartition& transitions, FrontendApplication& app)

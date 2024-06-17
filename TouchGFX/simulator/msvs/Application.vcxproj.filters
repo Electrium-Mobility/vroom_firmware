@@ -196,6 +196,30 @@
     <Filter Include="Source Files\generated\gui_generated\containers">
       <UniqueIdentifier>B481E47E-3A6D-D548-9D36-60B1B055A61F</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\gui\startup_screen_screen">
+      <UniqueIdentifier>7F241D04-6A66-2D9F-462F-BC35F498D7F8</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui\startup_screen_screen">
+      <UniqueIdentifier>D754DB3C-3B3B-D776-F33C-08657151F67C</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\generated\gui_generated\startup_screen_screen">
+      <UniqueIdentifier>71414C75-D6F1-E0D3-F08A-2DF59B5592C1</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generated\gui_generated\startup_screen_screen">
+      <UniqueIdentifier>49D7F5C6-8746-7850-A8F0-96E33202C7C3</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui\user_screen_screen">
+      <UniqueIdentifier>4ECF0910-E238-3411-8136-34C30FF716E7</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui\user_screen_screen">
+      <UniqueIdentifier>EBBC8AFB-8539-D0F4-5CF3-CADA4D578ABD</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\generated\gui_generated\user_screen_screen">
+      <UniqueIdentifier>756FEF6C-8D37-EB23-8754-95B72D31ABE1</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generated\gui_generated\user_screen_screen">
+      <UniqueIdentifier>63793CA2-6B62-142D-623A-58161AFCB1DD</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(TouchGFXReleasePath)\framework\source\platform\driver\touch\SDL2TouchController.cpp">
@@ -228,9 +252,6 @@
     <ClCompile Include="..\..\generated\simulator\src\video\SoftwareMJPEGDecoder.cpp">
       <Filter>Source Files\generated\simulator\video</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\gui\src\common\CustomKeyboard.cpp">
-      <Filter>Source Files\gui\common</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\gui\src\main_screen_screen\main_screenPresenter.cpp">
       <Filter>Source Files\gui\main_screen_screen</Filter>
     </ClCompile>
@@ -251,6 +272,30 @@
     </ClCompile>
     <ClCompile Include="..\..\generated\gui_generated\src\containers\function_elementBase.cpp">
       <Filter>Source Files\generated\gui_generated\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\startup_screen_screen\startup_screenPresenter.cpp">
+      <Filter>Source Files\gui\startup_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\startup_screen_screen\startup_screenView.cpp">
+      <Filter>Source Files\gui\startup_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\generated\gui_generated\src\startup_screen_screen\startup_screenViewBase.cpp">
+      <Filter>Source Files\generated\gui_generated\startup_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\user_screen_screen\user_screenPresenter.cpp">
+      <Filter>Source Files\gui\user_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\user_screen_screen\user_screenView.cpp">
+      <Filter>Source Files\gui\user_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\generated\gui_generated\src\user_screen_screen\user_screenViewBase.cpp">
+      <Filter>Source Files\generated\gui_generated\user_screen_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\common\CustomKeyboard.cpp">
+      <Filter>Source Files\gui\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\common\CharKeyboard.cpp">
+      <Filter>Source Files\gui\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -694,15 +739,6 @@
     <ClInclude Include="..\..\generated\simulator\include\simulator\video\SoftwareMJPEGDecoder.hpp">
       <Filter>Header Files\generated\simulator\include\simulator\video</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\gui\include\gui\common\CustomKeyboard.hpp">
-      <Filter>Header Files\gui\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gui\include\gui\common\KeyboardKeyMapping.hpp">
-      <Filter>Header Files\gui\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gui\include\gui\common\KeyboardLayout.hpp">
-      <Filter>Header Files\gui\common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\gui\include\gui\main_screen_screen\main_screenPresenter.hpp">
       <Filter>Header Files\gui\main_screen_screen</Filter>
     </ClInclude>
@@ -711,9 +747,6 @@
     </ClInclude>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\main_screen_screen\main_screenViewBase.hpp">
       <Filter>Header Files\generated\gui_generated\main_screen_screen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\gui\include\gui\common\commands.hpp">
-      <Filter>Header Files\gui\common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\gui\include\gui\containers\function_center.hpp">
       <Filter>Header Files\gui\containers</Filter>
@@ -726,6 +759,42 @@
     </ClInclude>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\function_elementBase.hpp">
       <Filter>Header Files\generated\gui_generated\containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\startup_screen_screen\startup_screenPresenter.hpp">
+      <Filter>Header Files\gui\startup_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\startup_screen_screen\startup_screenView.hpp">
+      <Filter>Header Files\gui\startup_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\startup_screen_screen\startup_screenViewBase.hpp">
+      <Filter>Header Files\generated\gui_generated\startup_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\user_screen_screen\user_screenPresenter.hpp">
+      <Filter>Header Files\gui\user_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\user_screen_screen\user_screenView.hpp">
+      <Filter>Header Files\gui\user_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\user_screen_screen\user_screenViewBase.hpp">
+      <Filter>Header Files\generated\gui_generated\user_screen_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\CustomKeyboard.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\KeyboardKeyMapping.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\KeyboardLayout.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\CharKeyboard.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardKeyMapping.hpp">
+      <Filter>Header Files\gui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardLayout.hpp">
+      <Filter>Header Files\gui\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

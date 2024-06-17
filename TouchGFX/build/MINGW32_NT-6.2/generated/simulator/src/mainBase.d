@@ -67,34 +67,45 @@ build/MINGW32_NT-6.2/generated/simulator/src/mainBase.o: \
  ../Middlewares/ST/touchgfx/framework/include/mvp/Presenter.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Screen.hpp \
  gui/include/gui/model/Model.hpp \
- gui/include/gui/main_screen_screen/main_screenView.hpp \
- generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp \
+ gui/include/gui/startup_screen_screen/startup_screenView.hpp \
+ generated/gui_generated/include/gui_generated/startup_screen_screen/startup_screenViewBase.hpp \
  ../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp \
- gui/include/gui/main_screen_screen/main_screenPresenter.hpp \
+ gui/include/gui/startup_screen_screen/startup_screenPresenter.hpp \
  gui/include/gui/model/ModelListener.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Box.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Image.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/SwipeContainer.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ListLayout.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TiledImage.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/BoxWithBorder.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextArea.hpp \
+ gui/include/gui/user_screen_screen/user_screenView.hpp \
+ generated/gui_generated/include/gui_generated/user_screen_screen/user_screenViewBase.hpp \
+ gui/include/gui/user_screen_screen/user_screenPresenter.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/Buttons.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/AnimatedImageButtonStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/AbstractButtonContainer.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AnimatedImage.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/BoxWithBorderButtonStyle.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/BoxWithBorder.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/ClickButtonTrigger.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/IconButtonStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/ImageButtonStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/RepeatButtonTrigger.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TextButtonStyle.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextArea.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TiledImageButtonStyle.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TiledImage.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/ToggleButtonTrigger.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TouchButtonTrigger.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TwoWildcardTextButtonStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextAreaWithWildcard.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/WildcardTextButtonStyle.hpp \
+ gui/include/gui/common/CharKeyboard.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp \
+ generated/texts/include/texts/TextKeysAndLanguages.hpp \
+ gui/include/gui/common/CharKeyboardLayout.hpp \
+ gui/include/gui/common/CharKeyboardKeyMapping.hpp \
+ gui/include/gui/main_screen_screen/main_screenView.hpp \
+ generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp \
+ gui/include/gui/main_screen_screen/main_screenPresenter.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/SwipeContainer.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ListLayout.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/scrollers/ScrollWheelWithSelectionStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/scrollers/DrawableList.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/scrollers/ScrollWheelBase.hpp \
@@ -102,17 +113,14 @@ build/MINGW32_NT-6.2/generated/simulator/src/mainBase.o: \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/EasingEquations.hpp \
  gui/include/gui/containers/function_element.hpp \
  generated/gui_generated/include/gui_generated/containers/function_elementBase.hpp \
- generated/texts/include/texts/TextKeysAndLanguages.hpp \
  gui/include/gui/containers/function_center.hpp \
  generated/gui_generated/include/gui_generated/containers/function_centerBase.hpp \
- gui/include/gui/common/CustomKeyboard.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp \
- gui/include/gui/common/KeyboardLayout.hpp \
- gui/include/gui/common/KeyboardKeyMapping.hpp \
- gui/include/gui/common/commands.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp \
+ gui/include/gui/common/CustomKeyboard.hpp \
+ gui/include/gui/common/KeyboardLayout.hpp \
+ gui/include/gui/common/KeyboardKeyMapping.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp \
  ../Middlewares/ST/touchgfx/framework/include/platform/driver/lcd/LCD16bpp.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/lcd/LCD16DebugPrinter.hpp \
@@ -273,13 +281,13 @@ generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp
 
 gui/include/gui/model/Model.hpp:
 
-gui/include/gui/main_screen_screen/main_screenView.hpp:
+gui/include/gui/startup_screen_screen/startup_screenView.hpp:
 
-generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp:
+generated/gui_generated/include/gui_generated/startup_screen_screen/startup_screenViewBase.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp:
 
-gui/include/gui/main_screen_screen/main_screenPresenter.hpp:
+gui/include/gui/startup_screen_screen/startup_screenPresenter.hpp:
 
 gui/include/gui/model/ModelListener.hpp:
 
@@ -287,15 +295,11 @@ gui/include/gui/model/ModelListener.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Image.hpp:
 
-../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/SwipeContainer.hpp:
+gui/include/gui/user_screen_screen/user_screenView.hpp:
 
-../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ListLayout.hpp:
+generated/gui_generated/include/gui_generated/user_screen_screen/user_screenViewBase.hpp:
 
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TiledImage.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/BoxWithBorder.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextArea.hpp:
+gui/include/gui/user_screen_screen/user_screenPresenter.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/Buttons.hpp:
 
@@ -307,6 +311,8 @@ gui/include/gui/model/ModelListener.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/BoxWithBorderButtonStyle.hpp:
 
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/BoxWithBorder.hpp:
+
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/ClickButtonTrigger.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/IconButtonStyle.hpp:
@@ -317,7 +323,11 @@ gui/include/gui/model/ModelListener.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TextButtonStyle.hpp:
 
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextArea.hpp:
+
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TiledImageButtonStyle.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TiledImage.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/ToggleButtonTrigger.hpp:
 
@@ -328,6 +338,26 @@ gui/include/gui/model/ModelListener.hpp:
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextAreaWithWildcard.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/WildcardTextButtonStyle.hpp:
+
+gui/include/gui/common/CharKeyboard.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp:
+
+generated/texts/include/texts/TextKeysAndLanguages.hpp:
+
+gui/include/gui/common/CharKeyboardLayout.hpp:
+
+gui/include/gui/common/CharKeyboardKeyMapping.hpp:
+
+gui/include/gui/main_screen_screen/main_screenView.hpp:
+
+generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp:
+
+gui/include/gui/main_screen_screen/main_screenPresenter.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/SwipeContainer.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ListLayout.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/scrollers/ScrollWheelWithSelectionStyle.hpp:
 
@@ -343,27 +373,21 @@ gui/include/gui/containers/function_element.hpp:
 
 generated/gui_generated/include/gui_generated/containers/function_elementBase.hpp:
 
-generated/texts/include/texts/TextKeysAndLanguages.hpp:
-
 gui/include/gui/containers/function_center.hpp:
 
 generated/gui_generated/include/gui_generated/containers/function_centerBase.hpp:
-
-gui/include/gui/common/CustomKeyboard.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp:
-
-gui/include/gui/common/KeyboardLayout.hpp:
-
-gui/include/gui/common/KeyboardKeyMapping.hpp:
-
-gui/include/gui/common/commands.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp:
+
+gui/include/gui/common/CustomKeyboard.hpp:
+
+gui/include/gui/common/KeyboardLayout.hpp:
+
+gui/include/gui/common/KeyboardKeyMapping.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp:
 

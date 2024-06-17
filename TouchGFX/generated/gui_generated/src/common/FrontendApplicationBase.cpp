@@ -9,6 +9,10 @@
 #include <touchgfx/Texts.hpp>
 #include <touchgfx/hal/HAL.hpp>
 #include <platform/driver/lcd/LCD16bpp.hpp>
+#include <gui/startup_screen_screen/startup_screenView.hpp>
+#include <gui/startup_screen_screen/startup_screenPresenter.hpp>
+#include <gui/user_screen_screen/user_screenView.hpp>
+#include <gui/user_screen_screen/user_screenPresenter.hpp>
 #include <gui/main_screen_screen/main_screenView.hpp>
 #include <gui/main_screen_screen/main_screenPresenter.hpp>
 
@@ -30,15 +34,28 @@ FrontendApplicationBase::FrontendApplicationBase(Model& m, FrontendHeap& heap)
  * Screen Transition Declarations
  */
 
-// main_screen
+// startup_screen
 
-void FrontendApplicationBase::gotomain_screenScreenNoTransition()
+void FrontendApplicationBase::gotostartup_screenScreenNoTransition()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotomain_screenScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotostartup_screenScreenNoTransitionImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotomain_screenScreenNoTransitionImpl()
+void FrontendApplicationBase::gotostartup_screenScreenNoTransitionImpl()
 {
-    touchgfx::makeTransition<main_screenView, main_screenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    touchgfx::makeTransition<startup_screenView, startup_screenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
+// user_screen
+
+void FrontendApplicationBase::gotouser_screenScreenNoTransition()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotouser_screenScreenNoTransitionImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotouser_screenScreenNoTransitionImpl()
+{
+    touchgfx::makeTransition<user_screenView, user_screenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }

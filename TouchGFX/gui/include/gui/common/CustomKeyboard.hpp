@@ -1,5 +1,5 @@
-#ifndef TGFXKEYBOARD_HPP_
-#define TGFXKEYBOARD_HPP_
+#ifndef CUSTOMKEYBOARD_HPP_
+#define CUSTOMKEYBOARD_HPP_
 
 #include <touchgfx/widgets/Keyboard.hpp>
 #include <touchgfx/containers/Container.hpp>

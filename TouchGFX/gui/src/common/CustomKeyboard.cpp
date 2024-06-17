@@ -1,7 +1,6 @@
 #include <gui/common/CustomKeyboard.hpp>
 #include <string.h>
 #include <touchgfx/Color.hpp>
-#include <gui/main_screen_screen/main_screenView.hpp>
 #include <stdlib.h>
 
 CustomKeyboard::CustomKeyboard() : keyboard(),

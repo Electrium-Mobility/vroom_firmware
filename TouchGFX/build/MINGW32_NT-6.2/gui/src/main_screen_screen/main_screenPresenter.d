@@ -77,6 +77,9 @@ build/MINGW32_NT-6.2/gui/src/main_screen_screen/main_screenPresenter.o: \
  generated/texts/include/texts/TextKeysAndLanguages.hpp \
  gui/include/gui/containers/function_center.hpp \
  generated/gui_generated/include/gui_generated/containers/function_centerBase.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp \
  gui/include/gui/common/CustomKeyboard.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp \
  gui/include/gui/common/KeyboardLayout.hpp \
@@ -85,10 +88,6 @@ build/MINGW32_NT-6.2/gui/src/main_screen_screen/main_screenPresenter.o: \
  generated/images/include/BitmapDatabase.hpp \
  generated/images/include/images/BitmapDatabase.hpp \
  gui/include/gui/common/KeyboardKeyMapping.hpp \
- gui/include/gui/common/commands.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp
 
 gui/include/gui/main_screen_screen/main_screenView.hpp:
@@ -245,6 +244,12 @@ gui/include/gui/containers/function_center.hpp:
 
 generated/gui_generated/include/gui_generated/containers/function_centerBase.hpp:
 
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp:
+
 gui/include/gui/common/CustomKeyboard.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp:
@@ -260,13 +265,5 @@ generated/images/include/BitmapDatabase.hpp:
 generated/images/include/images/BitmapDatabase.hpp:
 
 gui/include/gui/common/KeyboardKeyMapping.hpp:
-
-gui/include/gui/common/commands.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp:
