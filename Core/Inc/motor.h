@@ -196,6 +196,7 @@ uint8_t comm_can_ping(uint8_t controller_id);
  * Sensor Collection and Filtering Commands
  *
  */
-void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration);
+void handle_throttle(float prevData, float *currentData, float threshold);
+float map(uint32_t x, uint32_t in_min, uint32_t in_max, float out_min, float out_max);
 
 #endif /* APPLICATION_USER_MOTOR_H_ */

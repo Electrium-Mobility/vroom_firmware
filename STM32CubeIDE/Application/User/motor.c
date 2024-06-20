@@ -339,46 +339,39 @@ uint8_t comm_can_ping(uint8_t controller_id)
 
 // Throttle Filtering Algorithm
 
-extern uint16_t threshold; // Variable for max sensitivity difference in analog values
-uint16_t previous_value = 0; // Variable to store the previous analog value
 
-void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
+void handle_throttle(float prevData, float *currentData, float threshold)
 {
-	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
-
-	sprintf(uart_tx_2, "%d, ", abs(*acceleration));
-	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
+	float inputDifference = *currentData - prevData; // change in sensor output (know that time delta is ____ms)
+	//sprintf(uart_tx_2, "%d, ", abs(*acceleration));
+	//HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
 
 	// Check if the change of throttle data is very fast (exceeds the threshold)
-	if (abs(*acceleration) > threshold)
-	{
-		// limit the smoothed_value from changing faster than the threshold
-		if((*acceleration) > 0)
-		{
-			(*filtered_data) += threshold;
-		}
-		else
-		{
-			(*filtered_data) -= threshold;
-		}
-	}
-	else
-	{
-		(*filtered_data) = sensor_data;
+	if (*currentData > 0.5 && prevData < 0.5){
+
+		*currentData = 0.5;
+
+	} else if (*currentData > 0.5 && inputDifference > threshold) {
+
+		*currentData = prevData + threshold;
+
+	} else {
+		//currentData does not need to be filtered
 	}
 	//print current values that is compatible with serial plotter
-	sprintf(uart_tx_2, "%ld, ", sensor_data);
-	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
-	sprintf(uart_tx_2, "%ld, ", (*filtered_data));
-	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
+//	sprintf(uart_tx_2, "%ld, ", sensor_data);
+//	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
+//	sprintf(uart_tx_2, "%ld, ", (*filtered_data));
+//	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
 }
 
-void handle_brake(uint16_t t, float *brake_magnitude)
-{
-}
 
-int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+float map(uint32_t x, uint32_t in_min, uint32_t in_max, float out_min, float out_max)
 {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	if (x < in_min){
+		return 0;
+	}
+
+  return (float)((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
 }
 

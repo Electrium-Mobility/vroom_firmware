@@ -22,7 +22,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "command_page",
+            "SelectedPage": "motor_data",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -116,7 +116,7 @@
                     "X": 565,
                     "Y": 284,
                     "Width": 164,
-                    "Height": 72,
+                    "Height": 73,
                     "TextId": "__SingleUse_S3TK",
                     "TextRotation": "0",
                     "AutoSize": true

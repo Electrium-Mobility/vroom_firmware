@@ -54,6 +54,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 
 CAN_HandleTypeDef hcan1;
 CAN_HandleTypeDef hcan2;
@@ -95,7 +96,14 @@ osThreadId_t motorTaskHandle;
 const osThreadAttr_t motorTask_attributes = {
   .name = "motorTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for accelerateReadT */
+osThreadId_t accelerateReadTHandle;
+const osThreadAttr_t accelerateReadT_attributes = {
+  .name = "accelerateReadT",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE BEGIN PV */
 
@@ -104,6 +112,7 @@ const osThreadAttr_t motorTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_CRC_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_DSIHOST_DSI_Init(void);
@@ -119,6 +128,7 @@ static void MX_TIM14_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartMotorTask(void *argument);
+void accelerateRead(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -136,34 +146,31 @@ uint8_t rx_data[8];
 
 // TouchGFX CONFIGURABLE VARIABLES
 // Throttle sensor sensitivity threshold variable
-uint16_t threshold = 100;
+float threshold = 0.0005;
 uint16_t throttle_min = 1085;
 uint16_t throttle_max = 3205;
 
-volatile uint16_t time;
-volatile uint16_t time_delay = 50000;
 
 // UART transmission buffer
 char uart_tx[64];
 
-volatile uint8_t brake_sensor = 0;
-
+volatile uint8_t brakeActive = 0;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin == BRAKE_Pin)
-	{
-		// reverse time to make the motor immediately deactivate or activate upon interrupt
-		time = (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time_delay);
-
+	if (GPIO_Pin == BRAKE_Pin){
 		if(HAL_GPIO_ReadPin(BRAKE_GPIO_Port, BRAKE_Pin) == GPIO_PIN_SET)
-		{
-			brake_sensor = 0;
-		}
-		else
-		{
-			brake_sensor = 1;
-		}
+					{
+						brakeActive = 1;
+						vTaskPrioritySet(accelerateReadTHandle, configMAX_PRIORITIES - 1);
+					}
+					else
+					{
+						brakeActive = 0;
+						vTaskPrioritySet(accelerateReadTHandle, tskIDLE_PRIORITY);
+					}
 	}
+
+
 }
 
 /* USER CODE END 0 */
@@ -196,6 +203,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CRC_Init();
   MX_DMA2D_Init();
   MX_DSIHOST_DSI_Init();
@@ -212,7 +220,6 @@ int main(void)
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
-
   // CAN1 is the main CAN peripheral, it must be activated for CAN2 to work
   if(HAL_CAN_Start(&hcan2) != HAL_OK)
   {
@@ -257,6 +264,9 @@ int main(void)
 
   /* creation of motorTask */
   motorTaskHandle = osThreadNew(StartMotorTask, NULL, &motorTask_attributes);
+
+  /* creation of accelerateReadT */
+  accelerateReadTHandle = osThreadNew(accelerateRead, NULL, &accelerateReadT_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -355,15 +365,15 @@ static void MX_ADC1_Init(void)
   /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = DISABLE;
+  hadc1.Init.ScanConvMode = ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -376,6 +386,15 @@ static void MX_ADC1_Init(void)
   sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = 2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -884,6 +903,22 @@ static void MX_USART3_UART_Init(void)
 
 }
 
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
+}
+
 /* FMC initialization function */
 static void MX_FMC_Init(void)
 {
@@ -1029,7 +1064,6 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN 5 */
 
   uint8_t uart_buffer[1];
-
   /* Infinite loop */
   for(;;)
   {
@@ -1043,11 +1077,12 @@ void StartDefaultTask(void *argument)
 	case '0':
 	{
 		comm_can_set_duty(MOTOR_CAN_ID, 0.1);
+
 		break;
 	}
 	case '1':
 	{
-		comm_can_set_rpm(MOTOR_CAN_ID, 2600);
+		comm_can_set_duty(MOTOR_CAN_ID, 0);
 		break;
 	}
 	case '2':
@@ -1090,12 +1125,8 @@ void StartDefaultTask(void *argument)
 * @param argument: Not used
 * @retval None
 */
-uint32_t throttle_data;
-uint32_t filtered_data;
-uint32_t duty_cycle = 0;
-int32_t acceleration;
 
-float brake_magnitude = 0;
+
 
 MotorData motorDataStruct;
 
@@ -1103,68 +1134,81 @@ MotorData motorDataStruct;
 void StartMotorTask(void *argument)
 {
   /* USER CODE BEGIN StartMotorTask */
-  time = __HAL_TIM_GET_COUNTER(&htim14);
   /* Infinite loop */
   for(;;)
   {
-
 	  //CAN receive decoding - may be moved to lower priority task if needed
 	if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
 	{
 		HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
 		can_packet_read(&rx_header, rx_data, &motorDataStruct);
-		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
-		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
+		//sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
+		//HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
 	}
 
-	// read the break sensor, check if it is active
-	if(brake_sensor)
-	{
-		// Activate regenerative breaking to slow the bike down to the appropriate speed
-
-		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
-		{
-			handle_brake((uint16_t)__HAL_TIM_GET_COUNTER(&htim14) - time, brake_magnitude);
-			comm_can_set_current_brake_rel(MOTOR_CAN_ID, 1);
-
-			sprintf(uart_tx, "ST %u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
-			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);
-		}
-	}
-	else
-	{
-		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
-		{
-			sprintf(uart_tx, "%u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
-			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);
-		}
-		// read the throttle sensor
-//		HAL_ADC_Start(&hadc1);
-//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-//		throttle_data = HAL_ADC_GetValue(&hadc1);
-//		HAL_ADC_Stop(&hadc1);
-//
-//		// ensure the sensor value is reasonable to send to the motor
-//		handle_throttle(throttle_data, &filtered_data, &acceleration);
-//		duty_cycle = map(filtered_data, throttle_min, throttle_max, 0, 100);
-//
-//		sprintf(uart_tx, "%ld\r\n", duty_cycle);
-//		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-
-		if(acceleration > 0)
-		{
-			// Activate the motor to accelerate to the desired speed
-		}
-		else
-		{
-			// Activate regenerative breaking to slow the bike down to the appropriate speed
-		}
-	}
-    osDelay(1);
+    osDelay(10);
   }
   /* USER CODE END StartMotorTask */
+}
+
+/* USER CODE BEGIN Header_accelerateRead */
+/**
+* @brief Function implementing the accelerateReadT thread.
+* @param argument: Not used
+* @retval None
+*/
+
+volatile uint16_t throttle_data;
+volatile uint16_t brake_data;
+volatile uint16_t accel_buffer[2];
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+  throttle_data = accel_buffer[0];
+  brake_data = accel_buffer[1];
+}
+/* USER CODE END Header_accelerateRead */
+void accelerateRead(void *argument)
+{
+  /* USER CODE BEGIN accelerateRead */
+  /* Infinite loop */
+	float prevDuty;
+	float currentDuty = 0;
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)accel_buffer, 2);
+	uint16_t temp;
+
+  for(;;)
+  {
+	  //prevDuty = currentDuty;
+	  //currentDuty = map(throttle_data, 20, 4096, 0, 1);
+
+	  sprintf(uart_tx, "throttle: ");
+	  HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 10, HAL_MAX_DELAY);
+
+	  sprintf(uart_tx, "%u", throttle_data);
+	  HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+
+	  sprintf(uart_tx, "brake: ");
+	  HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 7, HAL_MAX_DELAY);
+
+	  sprintf(uart_tx, "%u\r\n", brake_data);
+	  HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+
+	  //handle_throttle(prevDuty, &currentDuty, threshold);
+	  //temp = (uint16_t) (100 * currentDuty);
+
+	  //sprintf(uart_tx, "%u\r\n", temp);
+	  //HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+//	  if (brakeActive == 1){
+//		  comm_can_set_duty(MOTOR_CAN_ID, 0.1);
+//	  }
+
+
+	//duty_cycle = throttle_map(filtered_data, throttle_min, throttle_max, 0, 100);
+
+    HAL_Delay(0.5);
+  }
+  /* USER CODE END accelerateRead */
 }
 
 /**
