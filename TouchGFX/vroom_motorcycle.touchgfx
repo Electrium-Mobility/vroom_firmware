@@ -423,7 +423,7 @@
                     "X": 273,
                     "Y": 4,
                     "Width": 255,
-                    "Height": 72,
+                    "Height": 73,
                     "TextId": "__SingleUse_W5VS",
                     "TextRotation": "0",
                     "AutoSize": true
@@ -658,7 +658,7 @@
                     "X": 221,
                     "Y": 35,
                     "Width": 359,
-                    "Height": 48,
+                    "Height": 49,
                     "TextId": "__SingleUse_L6ZD",
                     "TextRotation": "0",
                     "Color": {
@@ -950,7 +950,7 @@
       "Height": 480
     },
     "SelectedColorDepth": 16,
-    "StartupScreenName": "startup_screen",
+    "StartupScreenName": "main_screen",
     "SelectedStartupLanguage": "GB",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",
     "UIPath": ".",
