@@ -1,6 +1,18 @@
 #include <gui/user_screen_screen/user_screenView.hpp>
 #include <touchgfx/EasingEquations.hpp>
 
+//#ifndef SIMULATOR
+//extern "C"
+//{
+//#include "cmsis_os.h"
+//#include "main.h"
+//
+//extern osThreadId_t motorTaskHandle;
+//
+//}
+//#endif // SIMULATOR
+
+
 user_screenView::user_screenView():
 	animation_state(FADE_IN),
 	user_icon_selected(true),

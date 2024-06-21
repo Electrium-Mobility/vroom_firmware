@@ -32,9 +32,6 @@ public:
 
 protected:
     ModelListener* modelListener;
-
-    bool retrieve_adc;
-
     unsigned int adc_value;
 };
 

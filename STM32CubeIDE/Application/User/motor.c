@@ -3,11 +3,15 @@
  *
  *  Created on: Jan 9, 2024
  *      Author: Victor Kalenda
+ *
+ *
+ *      Sources:
+ *      CAN Protocol Commands - https://github.com/vedderb/bldc/blob/master/comm/comm_can.c
+ *     	CAN Implementation - https://github.com/vedderb/bldc/blob/master/documentation/comm_can.md
  */
 
 #include <stdint.h>
 #include "motor.h"
-//#include "../../../Core/Inc/motor.h"
 #include "main.h"
 #include <stdio.h>
 #include <string.h>
@@ -339,8 +343,16 @@ uint8_t comm_can_ping(uint8_t controller_id)
 
 // Throttle Filtering Algorithm
 
-extern uint16_t threshold; // Variable for max sensitivity difference in analog values
+extern uint16_t throttle_threshold; // Variable for max sensitivity difference in analog values
 
+/*
+ * handle_throttle
+ *
+ * Filters the sensor data so that it does not increase or decrease faster than a given threshold specified by throttle_threshold
+ *
+ * sensor_data is passed by value since it should not be used after the function is executed
+ * filtered_data and acceleration are passed by reference so that we can access both their outputs after the function is executed
+ */
 void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
 {
 	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
@@ -349,16 +361,16 @@ void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acc
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
 
 	// Check if the change of throttle data is very fast (exceeds the threshold)
-	if (abs(*acceleration) > threshold)
+	if (abs(*acceleration) > throttle_threshold)
 	{
 		// limit the smoothed_value from changing faster than the threshold
 		if((*acceleration) > 0)
 		{
-			(*filtered_data) += threshold;
+			(*filtered_data) += throttle_threshold;
 		}
 		else
 		{
-			(*filtered_data) -= threshold;
+			(*filtered_data) -= throttle_threshold;
 		}
 	}
 	else
@@ -372,8 +384,50 @@ void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acc
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
 }
 
-void handle_brake(uint16_t t, float *brake_magnitude)
+extern uint16_t brake_threshold;
+
+/*
+ * handle_throttle
+ *
+ * Filters the sensor data so that it does not increase or decrease faster than a given threshold specified by brake_threshold
+ *
+ * sensor_data is passed by value since it should not be used after the function is executed
+ * filtered_data and acceleration are passed by reference so that we can access both their outputs after the function is executed
+ */
+void handle_analog_brake(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
 {
+	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
+
+	sprintf(uart_tx_2, "%d, ", abs(*acceleration));
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
+
+	// Check if the change of throttle data is very fast (exceeds the threshold)
+	if (abs(*acceleration) > brake_threshold)
+	{
+		// limit the smoothed_value from changing faster than the threshold
+		if((*acceleration) > 0)
+		{
+			(*filtered_data) += brake_threshold;
+		}
+		else
+		{
+			(*filtered_data) -= brake_threshold;
+		}
+	}
+	else
+	{
+		(*filtered_data) = sensor_data;
+	}
+	//print current values that is compatible with serial plotter
+	sprintf(uart_tx_2, "%ld, ", sensor_data);
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
+	sprintf(uart_tx_2, "%ld, ", (*filtered_data));
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
+}
+
+void handle_digital_brake(uint32_t t, float *brake_magnitude)
+{
+
 }
 
 int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)

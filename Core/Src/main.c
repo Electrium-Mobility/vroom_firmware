@@ -14,6 +14,17 @@
   * the License. You may obtain a copy of the License at:
   *                             www.st.com/SLA0044
   *
+  *
+  * Electrium Vroom Motorcycle Firmware
+  *
+  * Contributors: Alexander Hamersma, Victor Kalenda, Randira Jayasinghe
+  *
+  * Sources:
+  * Code generation through the .ioc file -
+  * CAN Protocol bit timing - http://www.bittiming.can-wiki.info/
+  * CAN Protocol peripheral initialization - stm32f469_MCU.pdf (included on this repository)
+  *
+  *
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -54,6 +65,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 
 CAN_HandleTypeDef hcan1;
 CAN_HandleTypeDef hcan2;
@@ -69,8 +81,6 @@ I2C_HandleTypeDef hi2c1;
 LTDC_HandleTypeDef hltdc;
 
 QSPI_HandleTypeDef hqspi;
-
-TIM_HandleTypeDef htim14;
 
 UART_HandleTypeDef huart3;
 
@@ -97,6 +107,13 @@ const osThreadAttr_t motorTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for diagnosticsTask */
+osThreadId_t diagnosticsTaskHandle;
+const osThreadAttr_t diagnosticsTask_attributes = {
+  .name = "diagnosticsTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* Definitions for adcQueue */
 osMessageQueueId_t adcQueueHandle;
 const osMessageQueueAttr_t adcQueue_attributes = {
@@ -114,6 +131,7 @@ const osMutexAttr_t settingMutex_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_CRC_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_DSIHOST_DSI_Init(void);
@@ -125,10 +143,10 @@ static void MX_CAN2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_CAN1_Init(void);
-static void MX_TIM14_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartMotorTask(void *argument);
+void StartDiagnosticsTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -144,15 +162,6 @@ uint32_t tx_mailbox[4];
 CAN_RxHeaderTypeDef rx_header;
 uint8_t rx_data[8];
 
-// TouchGFX CONFIGURABLE VARIABLES
-// Throttle sensor sensitivity threshold variable
-uint16_t threshold = 100;
-uint16_t throttle_min = 1085;
-uint16_t throttle_max = 3205;
-
-volatile uint16_t time;
-volatile uint16_t time_delay = 50000;
-
 // UART transmission buffer
 char uart_tx[64];
 
@@ -163,15 +172,29 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	if(GPIO_Pin == BRAKE_Pin)
 	{
 		// reverse time to make the motor immediately deactivate or activate upon interrupt
-		time = (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time_delay);
-
 		if(HAL_GPIO_ReadPin(BRAKE_GPIO_Port, BRAKE_Pin) == GPIO_PIN_SET)
 		{
 			brake_sensor = 0;
+			/* PLEASE CONTACT ME
+			 * For FreeRTOS functions, I recommend sticking to the cmsis_os2.h implementations
+			 * They abstracted the FreeRTOS functions to make them safer to use. All functions start with os
+			 *
+			 * https://www.freertos.org/FreeRTOS_Support_Forum_Archive/May_2008/freertos_vTaskPrioritySet_from_an_ISR._2030373.html
+			 *
+			 * These functions are not safe to use within interrupts, you will need to design a new function for this it work
+			 * vTaskPrioritySet and osThreadSetPriority are both not designed to be used in ISR's
+			 *
+			 * It is considered dangerous to modify tasks within ISR's, preferably use semaphores or task notifications for synchronisation
+			 * https://www.freertos.org/taskresumefromisr.html?_ga=2.123565195.1898795614.1718930664-902068592.1706319440
+			 *
+			 */
+			//vTaskPrioritySet(xTask, uxNewPriority)
+			//osThreadSetPriority(motorTaskHandle, osPriorityHigh7);
 		}
 		else
 		{
 			brake_sensor = 1;
+			//osThreadSetPriority(motorTaskHandle, osPriorityIdle); // I'm not sure what the logic behind this is, please contact me
 		}
 	}
 }
@@ -206,6 +229,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CRC_Init();
   MX_DMA2D_Init();
   MX_DSIHOST_DSI_Init();
@@ -217,7 +241,6 @@ int main(void)
   MX_ADC1_Init();
   MX_USART3_UART_Init();
   MX_CAN1_Init();
-  MX_TIM14_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -231,11 +254,6 @@ int main(void)
 
   sprintf(uart_tx, "Init");
   HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 4, HAL_MAX_DELAY);
-
-  if(HAL_TIM_Base_Start(&htim14) != HAL_OK)
-  {
-	  Error_Handler();
-  }
 
   /* USER CODE END 2 */
 
@@ -275,12 +293,20 @@ int main(void)
   /* creation of motorTask */
   motorTaskHandle = osThreadNew(StartMotorTask, NULL, &motorTask_attributes);
 
+  /* creation of diagnosticsTask */
+  diagnosticsTaskHandle = osThreadNew(StartDiagnosticsTask, NULL, &diagnosticsTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+  // Suspend all control tasks until the user has logged int
+
+  osThreadSuspend(diagnosticsTaskHandle);
+  osThreadSuspend(motorTaskHandle);
+
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -419,11 +445,11 @@ static void MX_CAN1_Init(void)
 
   /* USER CODE END CAN1_Init 1 */
   hcan1.Instance = CAN1;
-  hcan1.Init.Prescaler = 15;
+  hcan1.Init.Prescaler = 5;
   hcan1.Init.Mode = CAN_MODE_SILENT_LOOPBACK;
   hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan1.Init.TimeSeg1 = CAN_BS1_4TQ;
-  hcan1.Init.TimeSeg2 = CAN_BS2_1TQ;
+  hcan1.Init.TimeSeg1 = CAN_BS1_15TQ;
+  hcan1.Init.TimeSeg2 = CAN_BS2_2TQ;
   hcan1.Init.TimeTriggeredMode = DISABLE;
   hcan1.Init.AutoBusOff = DISABLE;
   hcan1.Init.AutoWakeUp = DISABLE;
@@ -456,11 +482,11 @@ static void MX_CAN2_Init(void)
 
   /* USER CODE END CAN2_Init 1 */
   hcan2.Instance = CAN2;
-  hcan2.Init.Prescaler = 15;
+  hcan2.Init.Prescaler = 5;
   hcan2.Init.Mode = CAN_MODE_NORMAL;
   hcan2.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan2.Init.TimeSeg1 = CAN_BS1_4TQ;
-  hcan2.Init.TimeSeg2 = CAN_BS2_1TQ;
+  hcan2.Init.TimeSeg1 = CAN_BS1_15TQ;
+  hcan2.Init.TimeSeg2 = CAN_BS2_2TQ;
   hcan2.Init.TimeTriggeredMode = DISABLE;
   hcan2.Init.AutoBusOff = DISABLE;
   hcan2.Init.AutoWakeUp = DISABLE;
@@ -838,37 +864,6 @@ static void MX_QUADSPI_Init(void)
 }
 
 /**
-  * @brief TIM14 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM14_Init(void)
-{
-
-  /* USER CODE BEGIN TIM14_Init 0 */
-
-  /* USER CODE END TIM14_Init 0 */
-
-  /* USER CODE BEGIN TIM14_Init 1 */
-
-  /* USER CODE END TIM14_Init 1 */
-  htim14.Instance = TIM14;
-  htim14.Init.Prescaler = 900-1;
-  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim14.Init.Period = 65535;
-  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM14_Init 2 */
-
-  /* USER CODE END TIM14_Init 2 */
-
-}
-
-/**
   * @brief USART3 Initialization Function
   * @param None
   * @retval None
@@ -898,6 +893,22 @@ static void MX_USART3_UART_Init(void)
   /* USER CODE BEGIN USART3_Init 2 */
 
   /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
 
 }
 
@@ -1057,35 +1068,35 @@ void StartDefaultTask(void *argument)
 
 	switch(uart_buffer[0])
 	{
-	case '0':
-	{
-		comm_can_set_duty(MOTOR_CAN_ID, 0.1);
-		break;
-	}
-	case '1':
-	{
-		comm_can_set_rpm(MOTOR_CAN_ID, 2600);
-		break;
-	}
-	case '2':
-	{
+		case '0':
+		{
+			comm_can_set_duty(MOTOR_CAN_ID, 0.1);
+			break;
+		}
+		case '1':
+		{
+			comm_can_set_rpm(MOTOR_CAN_ID, 2600);
+			break;
+		}
+		case '2':
+		{
 
-		break;
-	}
-	case '3':
-	{
-		comm_can_set_current(MOTOR_CAN_ID, 1);
-		break;
-	}
-	case '4':
-	{
+			break;
+		}
+		case '3':
+		{
+			comm_can_set_current(MOTOR_CAN_ID, 1);
+			break;
+		}
+		case '4':
+		{
 
-		break;
-	}
-	default:
-	{
-		HAL_UART_Transmit(&huart3, ", Invalid Command", strlen(", Invalid Command"), HAL_MAX_DELAY);
-	}
+			break;
+		}
+		default:
+		{
+			HAL_UART_Transmit(&huart3, ", Invalid Command", strlen(", Invalid Command"), HAL_MAX_DELAY);
+		}
 	}
 	HAL_UART_Transmit(&huart3, "\r\n", strlen("\r\n"), HAL_MAX_DELAY);
 
@@ -1107,65 +1118,106 @@ void StartDefaultTask(void *argument)
 * @param argument: Not used
 * @retval None
 */
-uint32_t throttle_data;
-uint32_t filtered_data;
+
+adcRetrievalState adc_retrieval;
+
+// Analog Throttle Variables
+uint16_t throttle_threshold = 100;
+uint16_t throttle_min = 1085;
+uint16_t throttle_max = 3205;
+volatile uint16_t throttle_data;
+uint32_t filtered_throttle;
 uint32_t duty_cycle = 0;
 int32_t acceleration;
 
-float brake_magnitude = 0;
+// Analog Brake Variables
+uint16_t brake_threshold = 10;
+uint16_t brake_min = 1085;
+uint16_t brake_max = 3205;
+volatile uint16_t brake_data;
+uint32_t filtered_brake;
 
-MotorData motorDataStruct;
+
+// Digital brake Variables
+float brake_magnitude = 0;
+uint16_t brake_rate = 10; // A rate in seconds of how quickly the regen brake will reach 100% in magnitude
+
+volatile uint16_t sensor_buffer[2];
+
+uint32_t motor_task_delay = 100;
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+  throttle_data = sensor_buffer[0];
+  brake_data = sensor_buffer[1];
+  if(adc_retrieval == THROTTLE)
+  {
+	  osMessageQueuePut(adcQueueHandle, &throttle_data, 0, 0);
+  }
+  else if (adc_retrieval == BRAKE)
+  {
+	  osMessageQueuePut(adcQueueHandle, &brake_data, 0, 0);
+  }
+}
 
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
   /* USER CODE BEGIN StartMotorTask */
-  time = __HAL_TIM_GET_COUNTER(&htim14);
+  	float prevDuty;
+	float currentDuty = 0;
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)sensor_buffer, 2);
+	uint16_t temp;
+
   /* Infinite loop */
   for(;;)
   {
+	  // This is the first method of transmiting CAN messages
+//	prevDuty = currentDuty;
+//	currentDuty = map(throttle_data, 20, 4096, 0, 1);
 
-	  //CAN receive decoding - may be moved to lower priority task if needed
-	if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
-	{
-		HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
-		can_packet_read(&rx_header, rx_data, &motorDataStruct);
-		sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
-		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
-	}
+	sprintf(uart_tx, "throttle: ");
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 10, HAL_MAX_DELAY);
 
-	// read the break sensor, check if it is active
+	sprintf(uart_tx, "%u", throttle_data);
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+
+	sprintf(uart_tx, "brake: ");
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, 7, HAL_MAX_DELAY);
+
+	sprintf(uart_tx, "%u\r\n", brake_data);
+	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+
+//	handle_throttle(prevDuty, &currentDuty, throttle_threshold); // handle throttle is not designed to work like this (see comments in motor.c)
+//	temp = (uint16_t) (100 * currentDuty);
+//
+//	sprintf(uart_tx, "%u\r\n", temp);
+//	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+//	if (brakeActive == 1)
+//	{
+//		comm_can_set_duty(MOTOR_CAN_ID, 0.1);
+//	}
+
+
+//	duty_cycle = throttle_map(filtered_throttle, throttle_min, throttle_max, 0, 100);
+
+
+
+
+//This is the second method of transmitting CAN Messages
+	// This is for digital brake regen braking, it is disabled by default
 	if(brake_sensor)
 	{
 		// Activate regenerative breaking to slow the bike down to the appropriate speed
-
-		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
-		{
-			handle_brake((uint16_t)__HAL_TIM_GET_COUNTER(&htim14) - time, brake_magnitude);
-			comm_can_set_current_brake_rel(MOTOR_CAN_ID, 1);
-
-			sprintf(uart_tx, "ST %u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
-			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);
-		}
+		handle_digital_brake(osKernelGetSysTimerCount(), &brake_magnitude);
+		comm_can_set_current_brake_rel(MOTOR_CAN_ID, 1);
 	}
 	else
 	{
-		if((uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time) >= time_delay)
-		{
-			sprintf(uart_tx, "%u us\r\n", (uint16_t)(__HAL_TIM_GET_COUNTER(&htim14) - time));
-			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-			time = (uint16_t)__HAL_TIM_GET_COUNTER(&htim14);
-		}
-		// read the throttle sensor
-//		HAL_ADC_Start(&hadc1);
-//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-//		throttle_data = HAL_ADC_GetValue(&hadc1);
-//		HAL_ADC_Stop(&hadc1);
 //
 //		// ensure the sensor value is reasonable to send to the motor
-//		handle_throttle(throttle_data, &filtered_data, &acceleration);
-//		duty_cycle = map(filtered_data, throttle_min, throttle_max, 0, 100);
+//		handle_throttle(throttle_data, &filtered_throttle, &acceleration);
+//		duty_cycle = map(filtered_throttle, throttle_min, throttle_max, 0, 100);
 //
 //		sprintf(uart_tx, "%ld\r\n", duty_cycle);
 //		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
@@ -1179,9 +1231,39 @@ void StartMotorTask(void *argument)
 			// Activate regenerative breaking to slow the bike down to the appropriate speed
 		}
 	}
-    osDelay(1);
+
+    osDelay(motor_task_delay);
   }
   /* USER CODE END StartMotorTask */
+}
+
+/* USER CODE BEGIN Header_StartDiagnosticsTask */
+/**
+* @brief Function implementing the diagnosticsTask thread.
+* @param argument: Not used
+* @retval None
+*/
+
+MotorData motorDataStruct;
+
+/* USER CODE END Header_StartDiagnosticsTask */
+void StartDiagnosticsTask(void *argument)
+{
+  /* USER CODE BEGIN StartDiagnosticsTask */
+  /* Infinite loop */
+  for(;;)
+  {
+	  	//CAN receive decoding - may be moved to lower priority task if needed
+		if(HAL_CAN_GetRxFifoFillLevel(&hcan2, CAN_RX_FIFO0))
+		{
+			HAL_CAN_GetRxMessage(&hcan2, CAN_RX_FIFO0, &rx_header, rx_data);
+			can_packet_read(&rx_header, rx_data, &motorDataStruct);
+//			sprintf(uart_tx, "%u%u%u%u", rx_data[0], rx_data[1], rx_data[2], rx_data[3]);
+//			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, rx_header.DLC, HAL_MAX_DELAY);
+		}
+		osDelay(10);
+  }
+  /* USER CODE END StartDiagnosticsTask */
 }
 
 /**

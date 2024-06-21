@@ -5,19 +5,28 @@
 #include <gui/containers/function_element.hpp>
 
 #ifndef SIMULATOR
-extern "C" {
+extern "C"
+{
 #include "motor.h"
 #include "main.h"
+#include "cmsis_os.h" // includes cmsis_os2 within the header file
 
-//Parameters to be set by touchGFX Task
-extern uint16_t threshold;						// For throttle sensitivity
-extern uint16_t throttle_min;		// For throttle calibration
-extern uint16_t throttle_max;		// For throttle calibration
-// Add brake sensor Calibration parameters
-// Add motor transmit frequency variable
+	//Parameters to be set by touchGFX Task
+	extern uint16_t threshold;						// For throttle sensitivity
+	extern uint16_t throttle_min;		// For throttle calibration
+	extern uint16_t throttle_max;		// For throttle calibration
+	// Add brake sensor Calibration parameters
+	// Add motor transmit frequency variable
 
-//MotorDataStruct is for hardware
-extern MotorData motorDataStruct;
+	//MotorDataStruct is for hardware
+	extern MotorData motorDataStruct;
+
+	// Tasks
+	extern osThreadId_t motorTaskHandle;
+
+	// Mutexes
+	extern osMutexId_t settingMutexHandle;
+
 }
 #endif
 
@@ -398,9 +407,9 @@ void main_screenView::execute_function_pressed()
 						calibration_mode = false;
 						high_point = true;
 
-						// Resume the tasks that depend on the brak sensor ADC value
+						// Resume the tasks that depend on the throttle sensor ADC value
 #ifndef SIMULATOR
-						//osThreadResume(thread_id);
+						osThreadResume(motorTaskHandle);
 #endif
 					}
 				}
@@ -413,9 +422,9 @@ void main_screenView::execute_function_pressed()
 					keypad_animation_state = CALIBRATION_IN_STEP_0;
 					calibration_mode = true;
 
-					// Suspend all tasks affected by the brake sensor ADC value
+					// Suspend all tasks affected by the throttle sensor ADC value
 #ifndef SIMULATOR
-					//osThreadSuspend(thread_id);
+					osThreadSuspend(motorTaskHandle);
 #endif
 				}
 				break;
@@ -451,8 +460,9 @@ void main_screenView::execute_function_pressed()
 						calibration_mode = false;
 						high_point = true;
 
+						// Resume the tasks that depend on the brake sensor ADC value
 #ifndef SIMULATOR
-						//osThreadResume(thread_id);
+						osThreadResume(motorTaskHandle);
 #endif
 					}
 				}
@@ -466,7 +476,7 @@ void main_screenView::execute_function_pressed()
 					calibration_mode = true;
 					// Suspend all tasks affected by the brake sensor ADC Value
 #ifndef SIMULATOR
-					//osThreadSuspend(thread_id);
+					osThreadSuspend(motorTaskHandle);
 #endif
 				}
 				break;
@@ -474,11 +484,21 @@ void main_screenView::execute_function_pressed()
 			case 5:
 			{
 				// Create new User
+				// stop all control tasks
+#ifndef SIMULATOR
+				osThreadSuspend(motorTaskHandle);
+#endif // SIMULATOR
+
 				// change to user screen
 				break;
 			}
 			case 6:
 			{
+				// stop all control tasks
+#ifndef SIMULATOR
+				osThreadSuspend(motorTaskHandle);
+#endif // SIMULATOR
+
 				// Edit User
 				// change to user screen
 				break;
@@ -513,12 +533,9 @@ void main_screenView::enter_command()
 
 void main_screenView::cancel_command()
 {
-	// display the current value of the command in question
 	if (keypad_animation_state == KEYPAD_ANIMATION_READY)
 	{
 		keypad_animation_state = KEYPAD_ANIMATION_OUT_STEP_0;
-		Unicode::strncpy(value_textBuffer, keypad.getBuffer(), VALUE_TEXT_SIZE);
-		value_text.invalidate();
 	}
 
 }
