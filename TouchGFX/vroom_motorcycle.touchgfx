@@ -285,7 +285,7 @@
             "X": 78,
             "Y": 399,
             "Width": 297,
-            "Height": 48,
+            "Height": 49,
             "TextId": "__SingleUse_BCKB",
             "TextRotation": "0",
             "AutoSize": true
@@ -950,7 +950,7 @@
       "Height": 480
     },
     "SelectedColorDepth": 16,
-    "StartupScreenName": "main_screen",
+    "StartupScreenName": "startup_screen",
     "SelectedStartupLanguage": "GB",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",
     "UIPath": ".",
