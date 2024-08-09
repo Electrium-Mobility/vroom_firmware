@@ -22,9 +22,6 @@ public:
 		STARTUP_STEP_2
 	};
 
-	static const int ANIMATION_DURATION = 100;
-	static const int MOTORCYCLE_ANIMATION_DURATION = 100;
-
 protected:
 	AnimationState animation_state;
 	uint32_t animation_tick;

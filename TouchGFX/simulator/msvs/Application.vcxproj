@@ -205,6 +205,7 @@
     <ClInclude Include="..\..\gui\include\gui\common\CharKeyboard.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardKeyMapping.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardLayout.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\common\definitions.h"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc"/>

@@ -1,5 +1,6 @@
 #include <gui/model/Model.hpp>
 #include <gui/model/ModelListener.hpp>
+#include <gui/common/definitions.h>
 
 #ifndef SIMULATOR
 
@@ -15,7 +16,7 @@ extern osMessageQueueId_t adcQueueHandle;
 // Mutexes
 extern osMutexId_t settingMutexHandle;
 
-extern uint32_t motor_task_delay;
+extern float motor_frequency;
 
 // ADC's
 extern ADC_HandleTypeDef hadc1; // (may remove this if it is unnecessary)
@@ -33,6 +34,8 @@ extern uint16_t brake_max;
 extern uint16_t brake_min;
 extern volatile uint16_t brake_data;
 
+// Emulated EEPROM Data
+extern ee_Storage_t ee;
 }
 
 #endif // SIMULATOR
@@ -192,14 +195,14 @@ unsigned int Model::get_CAN_transmit_frequency()
 	// Aquire Mutex
 	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
 	{
-		temp = motor_task_delay;
+		temp = motor_frequency;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
 #endif // SIMULATOR
 
 	// Return frequency in Hz
-	return 1000 / temp;
+	return temp;
 }
 
 void Model::start_throttle_adc()
@@ -241,5 +244,57 @@ void Model::stop_adc_retrieval()
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
+#endif
+}
+
+void Model::get_username(int8_t user, char* username, uint8_t size)
+{
+#ifndef SIMULATOR
+	for(uint8_t i = 0; i < size; i++)
+	{
+		username[i] = ee.usernames[(user * USERNAME_SIZE) + i];
+	}
+#else
+	if(user == 0)
+	{
+		username[0] = 'A';
+		username[1] = 'd';
+		username[2] = 'm';
+		username[3] = 'i';
+		username[4] = 'n';
+	}
+#endif
+}
+
+void Model::get_password(int8_t user, char* password, uint8_t size)
+{
+#ifndef SIMULATOR
+	for(uint8_t i = 0; i < size; i++)
+	{
+		password[i] = ee.passwords[(user * PASSWORD_SIZE) + i];
+	}
+#else
+	if(user == 0)
+	{
+		password[0] = 'V';
+		password[1] = 'r';
+		password[2] = 'o';
+		password[3] = 'o';
+		password[4] = 'm';
+		password[5] = '2';
+		password[6] = '0';
+		password[7] = '2';
+		password[8] = '4';
+		password[9] = '!';
+	}
+#endif
+}
+
+uint8_t Model::get_num_users()
+{
+#ifndef SIMULATOR
+	return ee.num_users;
+#else
+	return 1;
 #endif
 }

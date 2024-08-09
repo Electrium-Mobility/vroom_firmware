@@ -111,6 +111,7 @@ KEEP extern const touchgfx::GlyphNode glyphs_verdana_40_4bpp[] FONT_TABLE_LOCATI
     { 30230, 0x00BF,  17,  31,  30,   2,  22,   0,   0, 0x00 },
     { 30509, 0x00D7,  22,  22,  24,   5,  33,   0,   0, 0x00 },
     { 30751, 0x00F7,  25,  26,  26,   4,  33,   0,   0, 0x00 },
+    { 31089, 0x00FC,  19,  31,  30,   3,  25,   0,   0, 0x00 },
     {     0, 0x201D,  16,  11,  31,   3,  18, 194,   8, 0x00 },
     {    88, 0x2022,  16,  15,  21,   3,  22,   0,   0, 0x00 },
     {   208, 0x20AC,  24,  32,  31,   0,  25,   0,   0, 0x00 }
@@ -137,6 +138,6 @@ touchgfx::GeneratedFont& getFont_verdana_40_4bpp();
 
 touchgfx::GeneratedFont& getFont_verdana_40_4bpp()
 {
-    static touchgfx::GeneratedFont verdana_40_4bpp(glyphs_verdana_40_4bpp, 110, 48, 40, 0, 0, 4, 1, 2, 2, unicodes_verdana_40_4bpp, kerning_verdana_40_4bpp, 63, 0, 0, 0);
+    static touchgfx::GeneratedFont verdana_40_4bpp(glyphs_verdana_40_4bpp, 111, 48, 40, 0, 0, 4, 1, 2, 2, unicodes_verdana_40_4bpp, kerning_verdana_40_4bpp, 63, 0, 0, 0);
     return verdana_40_4bpp;
 }

@@ -796,6 +796,9 @@
     <ClInclude Include="..\..\gui\include\gui\common\CharKeyboardLayout.hpp">
       <Filter>Header Files\gui\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\common\definitions.h">
+      <Filter>Source Files\gui\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc">

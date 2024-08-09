@@ -13,6 +13,8 @@
 #include <touchgfx/widgets/BoxWithBorder.hpp>
 #include <touchgfx/widgets/Image.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
+#include <touchgfx/containers/ModalWindow.hpp>
+#include <touchgfx/widgets/ButtonWithLabel.hpp>
 
 class user_screenViewBase : public touchgfx::View<user_screenPresenter>
 {
@@ -20,6 +22,11 @@ public:
     user_screenViewBase();
     virtual ~user_screenViewBase();
     virtual void setupScreen();
+
+    /*
+     * Custom Actions
+     */
+    virtual void to_main_screen();
 
     /*
      * Virtual Action Handlers
@@ -55,22 +62,25 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  view_password_button;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  password_button;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
-    touchgfx::TextAreaWithOneWildcard username;
-    touchgfx::TextAreaWithOneWildcard password;
+    touchgfx::TextAreaWithOneWildcard username_text;
+    touchgfx::TextAreaWithOneWildcard password_text;
     touchgfx::BoxWithBorder logo_background;
     touchgfx::Image bike_logo;
     touchgfx::Image password_icon;
     touchgfx::Image user_icon;
     touchgfx::Image enter_icon;
     touchgfx::TextArea view_password_title;
+    touchgfx::ModalWindow login_error_window;
+    touchgfx::ButtonWithLabel close_popup;
+    touchgfx::TextArea error_text;
 
     /*
      * Wildcard Buffers
      */
-    static const uint16_t USERNAME_SIZE = 16;
-    touchgfx::Unicode::UnicodeChar usernameBuffer[USERNAME_SIZE];
-    static const uint16_t PASSWORD_SIZE = 16;
-    touchgfx::Unicode::UnicodeChar passwordBuffer[PASSWORD_SIZE];
+    static const uint16_t USERNAME_TEXT_SIZE = 16;
+    touchgfx::Unicode::UnicodeChar username_textBuffer[USERNAME_TEXT_SIZE];
+    static const uint16_t PASSWORD_TEXT_SIZE = 16;
+    touchgfx::Unicode::UnicodeChar password_textBuffer[PASSWORD_TEXT_SIZE];
 
 private:
 
@@ -78,11 +88,13 @@ private:
      * Callback Declarations
      */
     touchgfx::Callback<user_screenViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
+    touchgfx::Callback<user_screenViewBase, const touchgfx::AbstractButton&> buttonCallback;
 
     /*
      * Callback Handler Declarations
      */
     void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
+    void buttonCallbackHandler(const touchgfx::AbstractButton& src);
 
 };
 

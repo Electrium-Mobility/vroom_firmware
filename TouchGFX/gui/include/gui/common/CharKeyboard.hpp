@@ -34,8 +34,10 @@ public:
     void set_buffer(bool password_buffer);
     touchgfx::Unicode::UnicodeChar* get_password();
     void clear_password();
-    touchgfx::Unicode::UnicodeChar* get_buffer();
+    touchgfx::Unicode::UnicodeChar* get_username();
     void clear_username();
+
+    touchgfx::Unicode::UnicodeChar* get_buffer();
 
     void reset_keyMappingList();
     bool toggle_password_visibility();

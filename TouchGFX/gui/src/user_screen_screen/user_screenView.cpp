@@ -1,23 +1,13 @@
 #include <gui/user_screen_screen/user_screenView.hpp>
 #include <touchgfx/EasingEquations.hpp>
-
-//#ifndef SIMULATOR
-//extern "C"
-//{
-//#include "cmsis_os.h"
-//#include "main.h"
-//
-//extern osThreadId_t motorTaskHandle;
-//
-//}
-//#endif // SIMULATOR
-
+#include <gui/common/definitions.h>
 
 user_screenView::user_screenView():
 	animation_state(FADE_IN),
 	user_icon_selected(true),
 	animation_tick(0),
-	user_input_mode(false)
+	user_input_mode(false),
+	user(-1)
 {
 
 }
@@ -26,33 +16,13 @@ void user_screenView::setupScreen()
 {
 	user_screenViewBase::setupScreen();
 
+	login_error_window.setVisible(true);
+	login_error_window.hide();
+
 	keyboard.setPosition(80, 480, 320*2, 240*2);
 	add(keyboard);
-	bike_logo.setAlpha(0);
-	logo_background.setAlpha(0);
-	user_button.setAlpha(0);
-	password_button.setAlpha(0);
-	username.setAlpha(0);
-	password.setAlpha(0);
-	view_password_title.setAlpha(0);
-	view_password_button.setAlpha(0);
-	enter_button.setAlpha(0);
-	enter_icon.setAlpha(0);
-	user_icon.setAlpha(0);
-	password_icon.setAlpha(0);
 
-	bike_logo.invalidate();
-	logo_background.invalidate();
-	user_button.invalidate();
-	password_button.invalidate();
-	username.invalidate();
-	password.invalidate();
-	view_password_title.invalidate();
-	view_password_button.invalidate();
-	enter_button.invalidate();
-	enter_icon.invalidate();
-	user_icon.invalidate();
-	password_icon.invalidate();
+	set_all_objects_alpha(0);
 }
 
 void user_screenView::tearDownScreen()
@@ -65,54 +35,30 @@ void user_screenView:: handleTickEvent()
 	if(animation_state != ANIMATION_READY)
 	{
 		animation_tick++;
-		int16_t delta_alpha = EasingEquations::cubicEaseInOut(animation_tick, 0, 255, ANIMATION_DURATION);
-		int16_t delta_y_keyboard = EasingEquations::cubicEaseInOut(animation_tick, 0, 480, ANIMATION_DURATION);
-		int16_t delta_y_user = EasingEquations::cubicEaseInOut(animation_tick, 0, 171, ANIMATION_DURATION);
-		int16_t delta_y_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 268, ANIMATION_DURATION);
+		int16_t delta_alpha = EasingEquations::cubicEaseInOut(animation_tick, 0, 255, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_y_keyboard = EasingEquations::cubicEaseInOut(animation_tick, 0, 480, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_y_user = EasingEquations::cubicEaseInOut(animation_tick, 0, 171, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_y_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 268, KEYBOARD_ANIMATION_DURATION);
 
-		int16_t delta_y_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 267, ANIMATION_DURATION);
-		int16_t delta_x_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 311, ANIMATION_DURATION);
-		int16_t delta_w_enter_password_view = EasingEquations::cubicEaseInOut(animation_tick, 0, 250, ANIMATION_DURATION);
-		int16_t delta_h_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 284, ANIMATION_DURATION);
+		int16_t delta_y_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 267, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_x_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 311, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_w_enter_password_view = EasingEquations::cubicEaseInOut(animation_tick, 0, 250, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_h_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 284, KEYBOARD_ANIMATION_DURATION);
 
-		int16_t delta_y_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 125, ANIMATION_DURATION);
-		int16_t delta_x_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 186, ANIMATION_DURATION);
+		int16_t delta_y_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 125, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_x_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 186, KEYBOARD_ANIMATION_DURATION);
 
 
-		int16_t delta_y_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 383, ANIMATION_DURATION);
-		int16_t delta_x_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 659, ANIMATION_DURATION);
-		int16_t delta_h_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 36, ANIMATION_DURATION);
+		int16_t delta_y_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 383, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_x_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 659, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_h_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 36, KEYBOARD_ANIMATION_DURATION);
 
 		if(animation_state == FADE_IN)
 		{
-			if(animation_tick < ANIMATION_DURATION)
+			uint8_t fade_alpha = (uint8_t) EasingEquations::cubicEaseInOut(animation_tick, 0, 255, FADE_ANIMATION_DURATION);
+			if(animation_tick < FADE_ANIMATION_DURATION)
 			{
-				// Fade in all objects
-				bike_logo.setAlpha(delta_alpha);
-				logo_background.setAlpha(delta_alpha);
-				user_button.setAlpha(delta_alpha);
-				password_button.setAlpha(delta_alpha);
-				username.setAlpha(delta_alpha);
-				password.setAlpha(delta_alpha);
-				view_password_title.setAlpha(delta_alpha);
-				view_password_button.setAlpha(delta_alpha);
-				enter_button.setAlpha(delta_alpha);
-				enter_icon.setAlpha(delta_alpha);
-				user_icon.setAlpha(delta_alpha);
-				password_icon.setAlpha(delta_alpha);
-
-				bike_logo.invalidate();
-				logo_background.invalidate();
-				user_button.invalidate();
-				password_button.invalidate();
-				username.invalidate();
-				password.invalidate();
-				view_password_title.invalidate();
-				view_password_button.invalidate();
-				enter_button.invalidate();
-				enter_icon.invalidate();
-				user_icon.invalidate();
-				password_icon.invalidate();
+				set_all_objects_alpha(fade_alpha);
 			}
 			else
 			{
@@ -122,25 +68,24 @@ void user_screenView:: handleTickEvent()
 		}
 		else if(animation_state == KEYBOARD_IN_STEP_0)
 		{
-			if(animation_tick < ANIMATION_DURATION)
+			if(animation_tick < KEYBOARD_ANIMATION_DURATION)
 			{
 				// Fade out objects
 				user_button.setAlpha(255 - delta_alpha);
 				password_button.setAlpha(255 - delta_alpha);
 				bike_logo.setAlpha(255 - delta_alpha);
 				logo_background.setAlpha(255 - delta_alpha);
-				username.setAlpha(255 - delta_alpha);
-				password.setAlpha(255 - delta_alpha);
+				username_text.setAlpha(255 - delta_alpha);
+				password_text.setAlpha(255 - delta_alpha);
 				view_password_title.setAlpha(255 - delta_alpha);
 
 				user_button.invalidate();
 				password_button.invalidate();
 				bike_logo.invalidate();
 				logo_background.invalidate();
-				username.invalidate();
-				password.invalidate();
+				username_text.invalidate();
+				password_text.invalidate();
 				view_password_title.invalidate();
-
 
 				// Fade out the necessary icon
 				if(user_icon_selected)
@@ -167,7 +112,7 @@ void user_screenView:: handleTickEvent()
 		}
 		else if (animation_state == KEYBOARD_IN_STEP_1)
 		{
-			if(animation_tick < ANIMATION_DURATION)
+			if(animation_tick < KEYBOARD_ANIMATION_DURATION)
 			{
 				// Move in the keyboard
 				keyboard.moveTo(keyboard.getX(), 480 - delta_y_keyboard);
@@ -209,7 +154,7 @@ void user_screenView:: handleTickEvent()
 		}
 		else if (animation_state == KEYBOARD_OUT_STEP_0)
 		{
-			if(animation_tick < ANIMATION_DURATION)
+			if(animation_tick < KEYBOARD_ANIMATION_DURATION)
 			{
 				// Move out the keyboard
 				keyboard.moveTo(keyboard.getX(), delta_y_keyboard);
@@ -248,23 +193,23 @@ void user_screenView:: handleTickEvent()
 		}
 		else if (animation_state == KEYBOARD_OUT_STEP_1)
 		{
-			if(animation_tick < ANIMATION_DURATION)
+			if(animation_tick < KEYBOARD_ANIMATION_DURATION)
 			{
 				// Fade in objects
 				bike_logo.setAlpha(delta_alpha);
 				logo_background.setAlpha(delta_alpha);
 				user_button.setAlpha(delta_alpha);
 				password_button.setAlpha(delta_alpha);
-				username.setAlpha(delta_alpha);
-				password.setAlpha(delta_alpha);
+				username_text.setAlpha(delta_alpha);
+				password_text.setAlpha(delta_alpha);
 				view_password_title.setAlpha(delta_alpha);
 
 				bike_logo.invalidate();
 				logo_background.invalidate();
 				user_button.invalidate();
 				password_button.invalidate();
-				username.invalidate();
-				password.invalidate();
+				username_text.invalidate();
+				password_text.invalidate();
 				view_password_title.invalidate();
 
 				// Fade in the necessary icon
@@ -291,50 +236,96 @@ void user_screenView:: handleTickEvent()
 			}
 
 		}
+		else if (animation_state == FADE_OUT)
+		{
+			uint8_t fade_alpha = (uint8_t) EasingEquations::cubicEaseInOut(animation_tick, 0, 255, FADE_ANIMATION_DURATION);
+			if(animation_tick < KEYBOARD_ANIMATION_DURATION)
+			{
+				set_all_objects_alpha(255 - fade_alpha);
+				background.setAlpha(255 - fade_alpha);
+				background.invalidate();
+			}
+			else
+			{
+				to_main_screen();
+			}
+		}
 	}
 }
 
 void user_screenView:: user_pressed()
 {
-	keyboard.set_buffer(false);
-	keyboard.set_password_mode(false);
+	if(animation_state == ANIMATION_READY)
+	{
+		keyboard.set_buffer(false);
+		keyboard.set_password_mode(false);
 
-	user_icon_selected = true;
-	animation_state = KEYBOARD_IN_STEP_0;
-	user_input_mode = true;
-
+		user_icon_selected = true;
+		animation_state = KEYBOARD_IN_STEP_0;
+		user_input_mode = true;
+	}
 }
 
 void user_screenView:: password_pressed()
 {
-	keyboard.set_buffer(true);
-	keyboard.set_password_mode(true);
+	if(animation_state == ANIMATION_READY)
+	{
+		keyboard.set_buffer(true);
+		keyboard.set_password_mode(true);
 
-	user_icon_selected = false;
-	user_input_mode = true;
-	animation_state = KEYBOARD_IN_STEP_0;
-
+		user_icon_selected = false;
+		user_input_mode = true;
+		animation_state = KEYBOARD_IN_STEP_0;
+	}
 }
 
 void user_screenView:: enter_pressed()
 {
-	if(user_input_mode)
+	if(animation_state == ANIMATION_READY)
 	{
-		animation_state = KEYBOARD_OUT_STEP_0;
-		if(user_icon_selected)
+		if(user_input_mode)
 		{
-			Unicode::strncpy(usernameBuffer, keyboard.get_buffer(), USERNAME_SIZE);
-			username.invalidate();
+			animation_state = KEYBOARD_OUT_STEP_0;
+			if(user_icon_selected)
+			{
+				Unicode::strncpy(username_textBuffer, keyboard.get_buffer(), USERNAME_TEXT_SIZE);
+				username_text.invalidate();
+
+				// This will increment the user variable accordingly
+				user = check_usernames();
+			}
+			else
+			{
+				Unicode::strncpy(password_textBuffer, keyboard.get_buffer(), PASSWORD_TEXT_SIZE);
+				password_text.invalidate();
+			}
 		}
 		else
 		{
-			Unicode::strncpy(passwordBuffer, keyboard.get_buffer(), PASSWORD_SIZE);
-			password.invalidate();
+			if(user != -1)
+			{
+				// check the credentials by calling get_password and get_buffer
+				char char_password[16] = {};
+				presenter->get_password(user, char_password, 16);
+				Unicode::UnicodeChar password[16] = {};
+				Unicode::strncpy(password, char_password, 16);
+				if(Unicode::strncmp(keyboard.get_password(), password, 16) == 0)
+				{
+					// password successful
+					animation_state = FADE_OUT;
+				}
+				else
+				{
+					// flag error
+					login_error_window.show();
+				}
+			}
+			else
+			{
+				// flag error
+				login_error_window.show();
+			}
 		}
-	}
-	else
-	{
-		// check the credentials by calling get_password and get_buffer
 	}
 }
 
@@ -345,12 +336,58 @@ void user_screenView:: toggle_password_visibility()
 	{
 		if(password_visible)
 		{
-			Unicode::strncpy(passwordBuffer, keyboard.get_password(), PASSWORD_SIZE);
+			Unicode::strncpy(password_textBuffer, keyboard.get_password(), PASSWORD_TEXT_SIZE);
 		}
 		else
 		{
-			Unicode::strncpy(passwordBuffer, keyboard.get_buffer(), PASSWORD_SIZE);
+			Unicode::strncpy(password_textBuffer, keyboard.get_buffer(), PASSWORD_TEXT_SIZE);
 		}
-		password.invalidate();
+		password_text.invalidate();
 	}
+}
+
+unsigned short user_screenView:: check_usernames()
+{
+	for(uint8_t i = 0; i < presenter->get_num_users(); i++)
+	{
+		char char_username[16] = {};
+		presenter->get_username(i, char_username, 16);
+		Unicode::UnicodeChar username[16] = {};
+		Unicode::strncpy(username, char_username, 16);
+
+		if(Unicode::strncmp(keyboard.get_username(), username, 16) == 0)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+void user_screenView:: set_all_objects_alpha(uint8_t delta_alpha)
+{
+	bike_logo.setAlpha(delta_alpha);
+	logo_background.setAlpha(delta_alpha);
+	user_button.setAlpha(delta_alpha);
+	password_button.setAlpha(delta_alpha);
+	username_text.setAlpha(delta_alpha);
+	password_text.setAlpha(delta_alpha);
+	view_password_title.setAlpha(delta_alpha);
+	view_password_button.setAlpha(delta_alpha);
+	enter_button.setAlpha(delta_alpha);
+	enter_icon.setAlpha(delta_alpha);
+	user_icon.setAlpha(delta_alpha);
+	password_icon.setAlpha(delta_alpha);
+
+	bike_logo.invalidate();
+	logo_background.invalidate();
+	user_button.invalidate();
+	password_button.invalidate();
+	username_text.invalidate();
+	password_text.invalidate();
+	view_password_title.invalidate();
+	view_password_button.invalidate();
+	enter_button.invalidate();
+	enter_icon.invalidate();
+	user_icon.invalidate();
+	password_icon.invalidate();
 }

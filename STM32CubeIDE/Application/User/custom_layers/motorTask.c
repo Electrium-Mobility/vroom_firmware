@@ -10,7 +10,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "motor.h"
-
+#include <gui/common/definitions.h>
 
 adcRetrievalState adc_retrieval;
 

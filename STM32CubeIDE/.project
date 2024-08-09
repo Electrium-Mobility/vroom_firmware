@@ -270,6 +270,41 @@
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Middlewares/Third_Party/FreeRTOS/Source/timers.c</locationURI>
 		</link>
 		<link>
+			<name>Application/User/custom_gui_layers/CharKeyboard.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/CharKeyboard.hpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/custom_gui_layers/CharKeyboardKeyMapping.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/CharKeyboardKeyMapping.hpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/custom_gui_layers/CharKeyboardLayout.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/CharKeyboardLayout.hpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/custom_gui_layers/CustomKeyboard.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/CustomKeyboard.hpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/custom_gui_layers/KeyboardKeyMapping.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/KeyboardKeyMapping.hpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/custom_gui_layers/KeyboardLayout.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/KeyboardLayout.hpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/custom_gui_layers/definitions.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/include/gui/common/definitions.h</locationURI>
+		</link>
+		<link>
 			<name>Drivers/BSP/Components/ft6x06.c</name>
 			<type>1</type>
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Drivers/BSP/Components/ft6x06/ft6x06.c</locationURI>
@@ -333,6 +368,11 @@
 			<name>Application/User/TouchGFX/target/TouchGFXHAL.cpp</name>
 			<type>1</type>
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/TouchGFX/target/TouchGFXHAL.cpp</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/I-CUBE-EE/Driver/EE/ee.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/Third_Party/NimaLTD_Driver/EE/ee.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/generated/OSWrappers.cpp</name>
@@ -580,6 +620,21 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_alternate_theme_images_backgrounds_800x480_lines.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/generated/image_alternate_theme_images_containers_large_wide_neutral.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_alternate_theme_images_containers_large_wide_neutral.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_alternate_theme_images_widgets_button_regular_height_60_large_round_disabled.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_alternate_theme_images_widgets_button_regular_height_60_large_round_disabled.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_alternate_theme_images_widgets_button_regular_height_60_large_round_pressed.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_alternate_theme_images_widgets_button_regular_height_60_large_round_pressed.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/generated/image_alternate_theme_images_widgets_swipecontainer_medium_off_normal.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_alternate_theme_images_widgets_swipecontainer_medium_off_normal.cpp</locationURI>
@@ -673,6 +728,11 @@
 			<name>Application/User/generated/image_username_icon.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_username_icon.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/LanguageDe.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/texts/src/LanguageDe.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/LanguageGb.cpp</name>

@@ -1,6 +1,8 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
+#include <stdint.h>
+
 class ModelListener;
 
 class Model
@@ -27,6 +29,11 @@ public:
     void start_throttle_adc();
     void start_brake_adc();
     void stop_adc_retrieval();
+
+    void get_username(int8_t user, char* username, uint8_t size);
+    void get_password(int8_t user, char* password, uint8_t size);
+    uint8_t get_num_users();
+
 
     void tick();
 

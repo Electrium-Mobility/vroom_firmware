@@ -2,118 +2,154 @@
 <TextDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="texts.xsd" Version="4.22.1">
   <Languages>
     <Language Id="GB" />
+    <Language Id="DE" />
   </Languages>
   <Texts>
-    <TextGroup Id="Calibration">
+    <TextGroup Id="Keypad">
+      <Text Id="keypad_value" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+        <Translation Language="DE">&lt;zusatz&gt;</Translation>
+      </Text>
+      <Text Id="value_title" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">Value</Translation>
+        <Translation Language="DE">Wert</Translation>
+      </Text>
+      <Text Id="value_set" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">Value Set</Translation>
+        <Translation Language="DE">Eingestellt</Translation>
+      </Text>
+      <Text Id="keypad_entered_text" Alignment="Left" TypographyId="Keypad">
+        <Translation Language="GB">&lt;placeholder&gt;</Translation>
+        <Translation Language="DE">&lt;zusatz&gt;</Translation>
+      </Text>
+    </TextGroup>
+    <TextGroup Id="Keyboard">
+      <Text Id="view_password" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">View Password</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+      <Text Id="NumMode" Alignment="Center" TypographyId="Mode">
+        <Translation Language="GB">ABC</Translation>
+        <Translation Language="DE">ABC</Translation>
+      </Text>
+      <Text Id="keyboard_entered_text" Alignment="Left" TypographyId="Display">
+        <Translation Language="GB">&lt;placeholder&gt;</Translation>
+        <Translation Language="DE">&lt;zusatz&gt;</Translation>
+      </Text>
+      <Text Id="AlphaMode" Alignment="Center" TypographyId="Mode">
+        <Translation Language="GB">123</Translation>
+        <Translation Language="DE">123</Translation>
+      </Text>
+    </TextGroup>
+    <TextGroup Id="Diagnostics">
+      <Text Id="zero" Alignment="Left" TypographyId="Medium">
+        <Translation Language="GB">0</Translation>
+        <Translation Language="DE">0</Translation>
+      </Text>
+      <Text Id="temperature_value" Alignment="Left" TypographyId="numbers">
+        <Translation Language="GB">&lt;value&gt; °C</Translation>
+        <Translation Language="DE">&lt;wert&gt; °C</Translation>
+      </Text>
+      <Text Id="current_value" Alignment="Left" TypographyId="numbers">
+        <Translation Language="GB">&lt;value&gt; A</Translation>
+        <Translation Language="DE">&lt;wert&gt; A</Translation>
+      </Text>
+      <Text Id="voltage_value" Alignment="Left" TypographyId="numbers">
+        <Translation Language="GB">&lt;value&gt; V</Translation>
+        <Translation Language="DE">&lt;wert&gt; V</Translation>
+      </Text>
+      <Text Id="voltage_in" Alignment="Left" TypographyId="Medium">
+        <Translation Language="GB">Voltage In       : </Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+      <Text Id="current_in" Alignment="Left" TypographyId="Medium">
+        <Translation Language="GB">Current In       :</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+      <Text Id="motor_temp" Alignment="Left" TypographyId="Medium">
+        <Translation Language="GB">Motor Temp.    :</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+      <Text Id="fet_temp" Alignment="Left" TypographyId="Medium">
+        <Translation Language="GB">FET Temp.       :</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+      <Text Id="motor_diagnostics" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">Motor Diagnostics</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+    </TextGroup>
+    <TextGroup Id="Login">
+      <Text Id="close_popup" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Close</Translation>
+        <Translation Language="DE">Schliessen</Translation>
+      </Text>
+      <Text Id="password_title" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Password: &lt;value&gt;</Translation>
+        <Translation Language="DE">Kennwort: &lt;wert&gt;</Translation>
+      </Text>
+      <Text Id="username_title" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">User: &lt;value&gt;</Translation>
+        <Translation Language="DE">Benutzer: &lt;wert&gt;</Translation>
+      </Text>
+      <Text Id="login_error" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Invalid Credentials</Translation>
+        <Translation Language="DE">Ungültige Anmeldeinformationen</Translation>
+      </Text>
+    </TextGroup>
+    <TextGroup Id="Function_Setting">
+      <Text Id="function" Alignment="Left" TypographyId="Keypad">
+        <Translation Language="GB">Function</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+      <Text Id="execute_function" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Execute Function</Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
       <Text Id="set_analog_value" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Analog Value</Translation>
+        <Translation Language="DE">Analogwert Einstellen</Translation>
       </Text>
       <Text Id="low_point" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">Low Point</Translation>
+        <Translation Language="DE">Tiefpunkt</Translation>
       </Text>
       <Text Id="high_point" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">High Point</Translation>
+        <Translation Language="DE">Hochpunkt</Translation>
       </Text>
     </TextGroup>
     <TextGroup Id="Function_Names">
       <Text Id="function_6" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Edit User</Translation>
+        <Translation Language="DE">Benutzer Bearbeiten</Translation>
       </Text>
       <Text Id="function_5" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Create New User</Translation>
+        <Translation Language="DE">Benutzer Erstellen</Translation>
       </Text>
       <Text Id="function_4" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Calibrate Brake Sensor</Translation>
+        <Translation Language="DE">Bremssensor Kalibrieren</Translation>
       </Text>
       <Text Id="function_3" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Motor CAN Transmit Frequency</Translation>
+        <Translation Language="DE">CAN TX Frequenz Einstellen</Translation>
       </Text>
       <Text Id="function_2" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Calibrate Throttle Sensor</Translation>
+        <Translation Language="DE">Drosselsensor Kalibrieren</Translation>
       </Text>
       <Text Id="function_1" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Brake Sensitivity</Translation>
+        <Translation Language="DE">Bremsempfindlichkeit Einstellen</Translation>
       </Text>
       <Text Id="function_0" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Throttle Sensitivity</Translation>
+        <Translation Language="DE">Drosselempfindlichkeit Einstellen</Translation>
       </Text>
     </TextGroup>
-    <TextGroup Id="Keyboard">
-      <Text Id="keyboard_entered_text" Alignment="Left" TypographyId="Display">
-        <Translation Language="GB">&lt;placeholder&gt;</Translation>
-      </Text>
-      <Text Id="NumMode" Alignment="Center" TypographyId="Mode">
-        <Translation Language="GB">ABC</Translation>
-      </Text>
-      <Text Id="AlphaMode" Alignment="Center" TypographyId="Mode">
-        <Translation Language="GB">123</Translation>
-      </Text>
-      <Text Id="password_title" Alignment="Left" TypographyId="Keypad_command_descriptions">
-        <Translation Language="GB">Password: &lt;value&gt;</Translation>
-      </Text>
-      <Text Id="username_title" Alignment="Left" TypographyId="Keypad_command_descriptions">
-        <Translation Language="GB">User: &lt;value&gt;</Translation>
-      </Text>
-      <Text Id="value_title" Alignment="Center" TypographyId="Keypad">
-        <Translation Language="GB">Value</Translation>
-      </Text>
-      <Text Id="value_set" Alignment="Center" TypographyId="Keypad">
-        <Translation Language="GB">Value Set</Translation>
-      </Text>
-      <Text Id="keypad_entered_text" Alignment="Left" TypographyId="Keypad">
-        <Translation Language="GB">&lt;placeholder&gt;</Translation>
-      </Text>
-    </TextGroup>
-    <TextGroup Id="Unsorted">
-      <Text Id="__SingleUse_BCKB" Alignment="Left" TypographyId="Keypad_command_descriptions">
-        <Translation Language="GB">View Password</Translation>
-      </Text>
-      <Text Id="__SingleUse_FPGL" Alignment="Center" TypographyId="Keypad_command_descriptions">
-        <Translation Language="GB">Execute Function</Translation>
-      </Text>
-      <Text Id="__SingleUse_2KO1" Alignment="Left" TypographyId="numbers">
-        <Translation Language="GB">&lt;value&gt; V</Translation>
-      </Text>
-      <Text Id="__SingleUse_3C6S" Alignment="Left" TypographyId="numbers">
-        <Translation Language="GB">&lt;value&gt; A</Translation>
-      </Text>
-      <Text Id="__SingleUse_PAWH" Alignment="Left" TypographyId="numbers">
-        <Translation Language="GB">&lt;value&gt; °C</Translation>
-      </Text>
-      <Text Id="voltIn" Alignment="Left" TypographyId="Medium">
-        <Translation Language="GB">0</Translation>
-      </Text>
-      <Text Id="__SingleUse_RJB5" Alignment="Left" TypographyId="numbers">
-        <Translation Language="GB">&lt;value&gt; °C</Translation>
-      </Text>
-      <Text Id="__SingleUse_BX1B" Alignment="Left" TypographyId="Medium">
-        <Translation Language="GB">Voltage In       : </Translation>
-      </Text>
-      <Text Id="__SingleUse_1WUV" Alignment="Left" TypographyId="Medium">
-        <Translation Language="GB">Current In       :</Translation>
-      </Text>
-      <Text Id="__SingleUse_DGJ5" Alignment="Left" TypographyId="Medium">
-        <Translation Language="GB">Motor Temp.    :</Translation>
-      </Text>
-      <Text Id="__SingleUse_5ZT6" Alignment="Left" TypographyId="Medium">
-        <Translation Language="GB">FET Temp.       :</Translation>
-      </Text>
-      <Text Id="__SingleUse_L6ZD" Alignment="Left" TypographyId="Large">
-        <Translation Language="GB">Motor Diagnostics</Translation>
-      </Text>
-      <Text Id="value_text" Alignment="Left" TypographyId="Keypad">
-        <Translation Language="GB"></Translation>
-      </Text>
-      <Text Id="__SingleUse_HU9G" Alignment="Center" TypographyId="Keypad">
-        <Translation Language="GB">&lt;value&gt;</Translation>
-      </Text>
-      <Text Id="function_text" Alignment="Left" TypographyId="Keypad">
-        <Translation Language="GB"></Translation>
-      </Text>
-      <Text Id="__SingleUse_W5VS" Alignment="Left" TypographyId="Keypad">
-        <Translation Language="GB">Function</Translation>
-      </Text>
-    </TextGroup>
+    <TextGroup Id="Unsorted" />
   </Texts>
   <Typographies>
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />

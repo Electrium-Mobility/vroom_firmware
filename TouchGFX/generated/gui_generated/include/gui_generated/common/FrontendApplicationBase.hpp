@@ -26,6 +26,9 @@ public:
     // user_screen
     void gotouser_screenScreenNoTransition();
 
+    // main_screen
+    void gotomain_screenScreenNoTransition();
+
 protected:
     touchgfx::Callback<FrontendApplicationBase> transitionCallback;
     FrontendHeap& frontendHeap;
@@ -36,6 +39,9 @@ protected:
 
     // user_screen
     void gotouser_screenScreenNoTransitionImpl();
+
+    // main_screen
+    void gotomain_screenScreenNoTransitionImpl();
 };
 
 #endif // FRONTENDAPPLICATIONBASE_HPP

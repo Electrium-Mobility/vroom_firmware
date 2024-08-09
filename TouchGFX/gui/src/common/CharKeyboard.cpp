@@ -160,11 +160,6 @@ void CharKeyboard::set_password_mode(bool password_mode)
 	passwordMode = password_mode;
 }
 
-touchgfx::Unicode::UnicodeChar* CharKeyboard::get_password()
-{
-	return password_buffer;
-}
-
 void CharKeyboard::set_buffer(bool password_mode)
 {
 	memset(buffer, 0, BUFFER_SIZE + 1);
@@ -174,7 +169,7 @@ void CharKeyboard::set_buffer(bool password_mode)
 		{
 			for(int i = 0; i < password_buffer_position; i++)
 			{
-				buffer[i] = 8226;
+				buffer[i] = 8226; // this is the value for a dot
 			}
 		}
 		else
@@ -208,21 +203,31 @@ void CharKeyboard::set_buffer(bool password_mode)
 	}
 }
 
+touchgfx::Unicode::UnicodeChar* CharKeyboard::get_password()
+{
+	return password_buffer;
+}
+
 void CharKeyboard::clear_password()
 {
 	memset(password_buffer, 0, BUFFER_SIZE +1);
 	password_buffer_position = 0;
 }
 
-touchgfx::Unicode::UnicodeChar* CharKeyboard::get_buffer()
+touchgfx::Unicode::UnicodeChar* CharKeyboard::get_username()
 {
-	return buffer;
+	return username_buffer;
 }
 
 void CharKeyboard::clear_username()
 {
 	memset(username_buffer, 0, BUFFER_SIZE +1);
 	username_buffer_position = 0;
+}
+
+touchgfx::Unicode::UnicodeChar* CharKeyboard::get_buffer()
+{
+	return buffer;
 }
 
 void CharKeyboard::reset_keyMappingList()

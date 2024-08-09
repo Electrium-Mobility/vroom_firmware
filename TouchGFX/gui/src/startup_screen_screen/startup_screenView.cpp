@@ -1,5 +1,6 @@
 #include <gui/startup_screen_screen/startup_screenView.hpp>
 #include <touchgfx/EasingEquations.hpp>
+#include <gui/common/definitions.h>
 
 startup_screenView::startup_screenView() :
 		animation_state(STARTUP_STEP_0),
@@ -29,7 +30,7 @@ void startup_screenView::handleTickEvent()
 
 		if (animation_state == STARTUP_STEP_0)
 		{
-			if (animation_tick < ANIMATION_DURATION)
+			if (animation_tick < STARTUP_ANIMATION_DURATION)
 			{
 				// Do nothing, Wait for a bit
 			}
@@ -41,13 +42,13 @@ void startup_screenView::handleTickEvent()
 		}
 		else if (animation_state == STARTUP_STEP_1)
 		{
-			int16_t delta_x_bike = EasingEquations::cubicEaseInOut(animation_tick, 0, 775, MOTORCYCLE_ANIMATION_DURATION);
-			uint8_t delta_color_16 = EasingEquations::cubicEaseInOut(animation_tick, 0, 0xFF - 0x49, MOTORCYCLE_ANIMATION_DURATION);
-			uint8_t delta_color_8 = EasingEquations::cubicEaseInOut(animation_tick, 0, 0xFF - 0xB8, MOTORCYCLE_ANIMATION_DURATION);
-			uint8_t delta_color_0 = EasingEquations::cubicEaseInOut(animation_tick, 0, 0xFF - 48, MOTORCYCLE_ANIMATION_DURATION);
+			int16_t delta_x_bike = EasingEquations::cubicEaseInOut(animation_tick, 0, 775, STARTUP_ANIMATION_DURATION);
+			uint8_t delta_color_16 = EasingEquations::cubicEaseInOut(animation_tick, 0, 0xFF - 0x49, STARTUP_ANIMATION_DURATION);
+			uint8_t delta_color_8 = EasingEquations::cubicEaseInOut(animation_tick, 0, 0xFF - 0xB8, STARTUP_ANIMATION_DURATION);
+			uint8_t delta_color_0 = EasingEquations::cubicEaseInOut(animation_tick, 0, 0xFF - 48, STARTUP_ANIMATION_DURATION);
 
 			uint32_t color = ((0xFF - delta_color_16) << 16) + ((0xFF - delta_color_8) << 8) + (0xFF - delta_color_0);
-			if (animation_tick < MOTORCYCLE_ANIMATION_DURATION)
+			if (animation_tick < STARTUP_ANIMATION_DURATION)
 			{
 				// Move the bike across the screen and fade out the name
 				bike_logo.moveTo(25 + delta_x_bike, bike_logo.getY());

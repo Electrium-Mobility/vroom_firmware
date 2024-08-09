@@ -7,7 +7,8 @@
 #include <images/BitmapDatabase.hpp>
 
 user_screenViewBase::user_screenViewBase() :
-    flexButtonCallback(this, &user_screenViewBase::flexButtonCallbackHandler)
+    flexButtonCallback(this, &user_screenViewBase::flexButtonCallbackHandler),
+    buttonCallback(this, &user_screenViewBase::buttonCallbackHandler)
 {
     __background.setPosition(0, 0, 800, 480);
     __background.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -45,21 +46,21 @@ user_screenViewBase::user_screenViewBase() :
     enter_button.setPosition(409, 383, 330, 80);
     add(enter_button);
 
-    username.setPosition(86, 204, 715, 48);
-    username.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    username.setLinespacing(0);
-    usernameBuffer[0] = 0;
-    username.setWildcard(usernameBuffer);
-    username.setTypedText(touchgfx::TypedText(T_USERNAME_TITLE));
-    add(username);
+    username_text.setPosition(86, 204, 715, 48);
+    username_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    username_text.setLinespacing(0);
+    username_textBuffer[0] = 0;
+    username_text.setWildcard(username_textBuffer);
+    username_text.setTypedText(touchgfx::TypedText(T_USERNAME_TITLE));
+    add(username_text);
 
-    password.setPosition(86, 301, 715, 48);
-    password.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    password.setLinespacing(0);
-    passwordBuffer[0] = 0;
-    password.setWildcard(passwordBuffer);
-    password.setTypedText(touchgfx::TypedText(T_PASSWORD_TITLE));
-    add(password);
+    password_text.setPosition(86, 301, 715, 48);
+    password_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    password_text.setLinespacing(0);
+    password_textBuffer[0] = 0;
+    password_text.setWildcard(password_textBuffer);
+    password_text.setTypedText(touchgfx::TypedText(T_PASSWORD_TITLE));
+    add(password_text);
 
     logo_background.setPosition(290, 20, 220, 150);
     logo_background.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
@@ -86,8 +87,28 @@ user_screenViewBase::user_screenViewBase() :
     view_password_title.setXY(78, 399);
     view_password_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     view_password_title.setLinespacing(0);
-    view_password_title.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BCKB));
+    view_password_title.setTypedText(touchgfx::TypedText(T_VIEW_PASSWORD));
     add(view_password_title);
+
+    login_error_window.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_LARGE_WIDE_NEUTRAL_ID), 160, 105);
+    login_error_window.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    login_error_window.setShadeAlpha(150);
+    login_error_window.hide();
+    close_popup.setXY(0, 190);
+    close_popup.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_60_LARGE_ROUND_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_60_LARGE_ROUND_DISABLED_ID));
+    close_popup.setLabelText(touchgfx::TypedText(T_CLOSE_POPUP));
+    close_popup.setLabelColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    close_popup.setLabelColorPressed(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    close_popup.setAction(buttonCallback);
+    login_error_window.add(close_popup);
+
+    error_text.setPosition(0, 75, 480, 96);
+    error_text.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    error_text.setLinespacing(0);
+    error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+    login_error_window.add(error_text);
+
+    add(login_error_window);
 }
 
 user_screenViewBase::~user_screenViewBase()
@@ -130,4 +151,24 @@ void user_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButt
         //Call toggle_password_visibility
         toggle_password_visibility();
     }
+}
+
+void user_screenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
+{
+    if (&src == &close_popup)
+    {
+        //error_popup_interaction
+        //When close_popup clicked hide login_error_window
+        //Hide login_error_window
+        login_error_window.setVisible(false);
+        login_error_window.invalidate();
+    }
+}
+
+void user_screenViewBase::to_main_screen()
+{
+    //to_main_screen_interaction
+    //When to_main_screen is called change screen to main_screen
+    //Go to main_screen with no screen transition
+    application().gotomain_screenScreenNoTransition();
 }

@@ -65,6 +65,10 @@ build/MINGW32_NT-6.2/gui/src/user_screen_screen/user_screenView.o: \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TwoWildcardTextButtonStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextAreaWithWildcard.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/WildcardTextButtonStyle.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ModalWindow.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp \
  gui/include/gui/common/CharKeyboard.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp \
  generated/texts/include/texts/TextKeysAndLanguages.hpp \
@@ -74,7 +78,8 @@ build/MINGW32_NT-6.2/gui/src/user_screen_screen/user_screenView.o: \
  generated/images/include/BitmapDatabase.hpp \
  generated/images/include/images/BitmapDatabase.hpp \
  gui/include/gui/common/CharKeyboardKeyMapping.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/EasingEquations.hpp
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/EasingEquations.hpp \
+ gui/include/gui/common/definitions.h
 
 gui/include/gui/user_screen_screen/user_screenView.hpp:
 
@@ -206,6 +211,14 @@ gui/include/gui/model/ModelListener.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/WildcardTextButtonStyle.hpp:
 
+../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ModalWindow.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp:
+
 gui/include/gui/common/CharKeyboard.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp:
@@ -225,3 +238,5 @@ generated/images/include/images/BitmapDatabase.hpp:
 gui/include/gui/common/CharKeyboardKeyMapping.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/EasingEquations.hpp:
+
+gui/include/gui/common/definitions.h:

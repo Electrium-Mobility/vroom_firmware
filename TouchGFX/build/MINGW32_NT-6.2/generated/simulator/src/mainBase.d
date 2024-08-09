@@ -96,6 +96,10 @@ build/MINGW32_NT-6.2/generated/simulator/src/mainBase.o: \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/TwoWildcardTextButtonStyle.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/TextAreaWithWildcard.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/WildcardTextButtonStyle.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ModalWindow.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp \
+ ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp \
  gui/include/gui/common/CharKeyboard.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp \
  generated/texts/include/texts/TextKeysAndLanguages.hpp \
@@ -115,9 +119,6 @@ build/MINGW32_NT-6.2/generated/simulator/src/mainBase.o: \
  generated/gui_generated/include/gui_generated/containers/function_elementBase.hpp \
  gui/include/gui/containers/function_center.hpp \
  generated/gui_generated/include/gui_generated/containers/function_centerBase.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp \
- ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp \
  gui/include/gui/common/CustomKeyboard.hpp \
  gui/include/gui/common/KeyboardLayout.hpp \
  gui/include/gui/common/KeyboardKeyMapping.hpp \
@@ -339,6 +340,14 @@ gui/include/gui/user_screen_screen/user_screenPresenter.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/buttons/WildcardTextButtonStyle.hpp:
 
+../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/ModalWindow.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp:
+
+../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp:
+
 gui/include/gui/common/CharKeyboard.hpp:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Keyboard.hpp:
@@ -376,12 +385,6 @@ generated/gui_generated/include/gui_generated/containers/function_elementBase.hp
 gui/include/gui/containers/function_center.hpp:
 
 generated/gui_generated/include/gui_generated/containers/function_centerBase.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/ButtonWithLabel.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Button.hpp:
-
-../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/AbstractButton.hpp:
 
 gui/include/gui/common/CustomKeyboard.hpp:
 

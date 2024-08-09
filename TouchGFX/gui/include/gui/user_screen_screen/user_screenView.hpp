@@ -19,18 +19,20 @@ public:
     virtual void password_pressed();
     virtual void enter_pressed();
     virtual void toggle_password_visibility();
+    unsigned short check_usernames();
 
+    void set_all_objects_alpha(uint8_t delta_alpha);
 
-    static const int ANIMATION_DURATION = 20;
     enum AnimationState
-     {
-     	ANIMATION_READY,
+	{
+		ANIMATION_READY,
 		FADE_IN,
- 		KEYBOARD_IN_STEP_0,
- 		KEYBOARD_IN_STEP_1,
- 		KEYBOARD_OUT_STEP_0,
- 		KEYBOARD_OUT_STEP_1
-     };
+		KEYBOARD_IN_STEP_0,
+		KEYBOARD_IN_STEP_1,
+		KEYBOARD_OUT_STEP_0,
+		KEYBOARD_OUT_STEP_1,
+		FADE_OUT,
+	};
 
 protected:
 	CharKeyboard keyboard;
@@ -38,6 +40,7 @@ protected:
 	bool user_icon_selected;
 	uint32_t animation_tick;
 	bool user_input_mode;
+	int8_t user;
 };
 
 #endif // USER_SCREENVIEW_HPP

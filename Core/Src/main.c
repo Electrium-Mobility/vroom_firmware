@@ -46,11 +46,14 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "ee.h"
+#include <gui/common/definitions.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+ee_Storage_t ee;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -228,6 +231,11 @@ int main(void)
   if(HAL_CAN_Start(&hcan2) != HAL_OK)
   {
 	  Error_Handler();
+  }
+
+  if(EE_Init(&ee, sizeof(ee_Storage_t)))
+  {
+	  EE_Read();
   }
 
   sprintf(uart_tx, "Init");

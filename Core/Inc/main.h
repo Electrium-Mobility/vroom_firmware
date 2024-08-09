@@ -38,13 +38,6 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 
-typedef enum
-{
-	NO_RETRIEVAL,
-	THROTTLE,
-	BRAKE
-}adcRetrievalState;
-
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

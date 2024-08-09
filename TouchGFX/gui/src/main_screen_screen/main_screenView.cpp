@@ -3,6 +3,7 @@
 #include <touchgfx/hal/HAL.hpp>
 #include <touchgfx/EasingEquations.hpp>
 #include <gui/containers/function_element.hpp>
+#include <gui/common/definitions.h>
 
 #ifndef SIMULATOR
 extern "C"
@@ -36,6 +37,7 @@ main_screenView::main_screenView() :
 		keypad_value_f(0.0),
 		keypad_value_d(0),
 		animation_tick(0),
+		animation_state(ANIMATION_READY),
 		keypad_animation_state(KEYPAD_ANIMATION_READY),
 		scrollWheelSelectedItemCallback(this,&main_screenView::scrollWheelSelectedItemHandler)
 {
@@ -61,9 +63,14 @@ void main_screenView::setupScreen()
 	value_set_background.setAlpha(0);
 	value_set_background.invalidate();
 
+	set_diagnostic_objects_alpha(0);
+	background.setAlpha(0);
+	background.invalidate();
+
 	command_page.add(keypad);
 	keypad.setVisible(true);
 	scrollWheelSelectedItemHandler();
+	animation_state = FADE_IN;
 }
 
 void main_screenView::tearDownScreen()
@@ -74,7 +81,39 @@ void main_screenView::tearDownScreen()
 
 void main_screenView::handleTickEvent()
 {
-	if (keypad_animation_state != 0)
+	if (animation_state != 0)
+	{
+		animation_tick++;
+		uint8_t delta_alpha = (uint8_t) EasingEquations::cubicEaseInOut(animation_tick, 0, 255, FADE_ANIMATION_DURATION);
+		if(animation_state == FADE_IN)
+		{
+			if(animation_tick < FADE_ANIMATION_DURATION)
+			{
+				set_diagnostic_objects_alpha(delta_alpha);
+				background.setAlpha(delta_alpha);
+				background.invalidate();
+			}
+			else
+			{
+				animation_tick = 0;
+				animation_state = ANIMATION_READY;
+			}
+		}
+		else if (animation_state == FADE_OUT)
+		{
+			if(animation_tick < KEYBOARD_ANIMATION_DURATION)
+			{
+				set_function_objects_alpha(255 - delta_alpha);
+				background.setAlpha(255 - delta_alpha);
+				background.invalidate();
+			}
+			else
+			{
+				to_user_screen();
+			}
+		}
+	}
+	if (keypad_animation_state != 0 && animation_state == ANIMATION_READY)
 	{
 		animation_tick++;
 
@@ -326,6 +365,8 @@ void main_screenView::handleTickEvent()
 			}
 			else
 			{
+				button_text.setTypedText(touchgfx::TypedText(T_EXECUTE_FUNCTION));
+				button_text.invalidate();
 				animation_tick = 0;
 				keypad_animation_state = CALIBRATION_OUT_STEP_1;
 			}
@@ -363,7 +404,7 @@ void main_screenView::handleTickEvent()
 
 void main_screenView::execute_function_pressed()
 {
-	if(keypad_animation_state == KEYPAD_ANIMATION_READY)
+	if(keypad_animation_state == KEYPAD_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		switch (function_wheel.getSelectedItem())
 		{
@@ -509,7 +550,7 @@ void main_screenView::execute_function_pressed()
 
 void main_screenView::delete_char()
 {
-	if(keypad_animation_state == KEYPAD_ANIMATION_READY)
+	if(keypad_animation_state == KEYPAD_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		keypad.delete_char();
 	}
@@ -518,7 +559,7 @@ void main_screenView::delete_char()
 void main_screenView::enter_command()
 {
 	// define what happens when the enter button is pressed for the keypad
-	if (keypad_animation_state == KEYPAD_ANIMATION_READY)
+	if (keypad_animation_state == KEYPAD_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 
 		keypad_animation_state = KEYPAD_VALUE_SET_STEP_0;
@@ -533,7 +574,7 @@ void main_screenView::enter_command()
 
 void main_screenView::cancel_command()
 {
-	if (keypad_animation_state == KEYPAD_ANIMATION_READY)
+	if (keypad_animation_state == KEYPAD_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		keypad_animation_state = KEYPAD_ANIMATION_OUT_STEP_0;
 	}
@@ -742,6 +783,32 @@ void main_screenView::scrollWheelSelectedItemHandler()
 			break;
 		}
 	}
+}
+
+void main_screenView::set_diagnostic_objects_alpha(uint8_t delta_alpha)
+{
+	fet_temp.setAlpha(delta_alpha);
+	fet_temp_wild.setAlpha(delta_alpha);
+	motor_temp.setAlpha(delta_alpha);
+	motor_temp_wild.setAlpha(delta_alpha);
+	volt_in.setAlpha(delta_alpha);
+	volt_in_wild.setAlpha(delta_alpha);
+	curr_in.setAlpha(delta_alpha);
+	curr_in_wild.setAlpha(delta_alpha);
+
+	fet_temp.invalidate();
+	fet_temp_wild.invalidate();
+	motor_temp.invalidate();
+	motor_temp_wild.invalidate();
+	volt_in.invalidate();
+	volt_in_wild.invalidate();
+	curr_in.invalidate();
+	curr_in_wild.invalidate();
+}
+
+void main_screenView::set_function_objects_alpha(uint8_t delta_alpha)
+{
+	// set the alpha of the function wheel and the buttons / texts for when the user transitions to the user screen
 }
 
 void main_screenView::display_adc(unsigned int adc_value)

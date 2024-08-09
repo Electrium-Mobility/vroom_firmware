@@ -53,7 +53,7 @@ main_screenViewBase::main_screenViewBase() :
     function_title.setXY(273, 4);
     function_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     function_title.setLinespacing(0);
-    function_title.setTypedText(touchgfx::TypedText(T___SINGLEUSE_W5VS));
+    function_title.setTypedText(touchgfx::TypedText(T_FUNCTION));
     command_page.add(function_title);
 
     delete_button.setBitmaps(Bitmap(BITMAP_KEY_ID), Bitmap(BITMAP_KEY_PRESSED_ID));
@@ -83,9 +83,9 @@ main_screenViewBase::main_screenViewBase() :
     value_text.setPosition(248, 389, 305, 76);
     value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     value_text.setLinespacing(0);
-    Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%s", touchgfx::TypedText(T_VALUE_TEXT).getText());
+    value_textBuffer[0] = 0;
     value_text.setWildcard(value_textBuffer);
-    value_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HU9G));
+    value_text.setTypedText(touchgfx::TypedText(T_KEYPAD_VALUE));
     command_page.add(value_text);
 
     function_select_button.setBoxWithBorderPosition(0, 0, 379, 55);
@@ -98,7 +98,7 @@ main_screenViewBase::main_screenViewBase() :
     button_text.setPosition(211, 260, 379, 55);
     button_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     button_text.setLinespacing(0);
-    button_text.setTypedText(touchgfx::TypedText(T___SINGLEUSE_FPGL));
+    button_text.setTypedText(touchgfx::TypedText(T_EXECUTE_FUNCTION));
     command_page.add(button_text);
 
     dummy_background_center.setPosition(25, 129, 750, 55);
@@ -155,68 +155,68 @@ main_screenViewBase::main_screenViewBase() :
     diagnostics_title.setXY(221, 35);
     diagnostics_title.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     diagnostics_title.setLinespacing(0);
-    diagnostics_title.setTypedText(touchgfx::TypedText(T___SINGLEUSE_L6ZD));
+    diagnostics_title.setTypedText(touchgfx::TypedText(T_MOTOR_DIAGNOSTICS));
     motor_data.add(diagnostics_title);
 
     fet_temp_wild.setPosition(500, 138, 150, 36);
     fet_temp_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     fet_temp_wild.setLinespacing(0);
-    Unicode::snprintf(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    Unicode::snprintf(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%s", touchgfx::TypedText(T_ZERO).getText());
     fet_temp_wild.setWildcard(fet_temp_wildBuffer);
-    fet_temp_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_RJB5));
+    fet_temp_wild.setTypedText(touchgfx::TypedText(T_TEMPERATURE_VALUE));
     motor_data.add(fet_temp_wild);
 
     motor_temp_wild.setPosition(500, 195, 150, 36);
     motor_temp_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     motor_temp_wild.setLinespacing(0);
-    Unicode::snprintf(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    Unicode::snprintf(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%s", touchgfx::TypedText(T_ZERO).getText());
     motor_temp_wild.setWildcard(motor_temp_wildBuffer);
-    motor_temp_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_PAWH));
+    motor_temp_wild.setTypedText(touchgfx::TypedText(T_TEMPERATURE_VALUE));
     motor_data.add(motor_temp_wild);
 
     curr_in_wild.setPosition(500, 315, 150, 36);
     curr_in_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     curr_in_wild.setLinespacing(0);
-    Unicode::snprintf(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    Unicode::snprintf(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%s", touchgfx::TypedText(T_ZERO).getText());
     curr_in_wild.setWildcard(curr_in_wildBuffer);
-    curr_in_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_3C6S));
+    curr_in_wild.setTypedText(touchgfx::TypedText(T_CURRENT_VALUE));
     motor_data.add(curr_in_wild);
 
     volt_in_wild.setPosition(500, 252, 150, 36);
     volt_in_wild.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     volt_in_wild.setLinespacing(0);
-    Unicode::snprintf(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%s", touchgfx::TypedText(T_VOLTIN).getText());
+    Unicode::snprintf(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%s", touchgfx::TypedText(T_ZERO).getText());
     volt_in_wild.setWildcard(volt_in_wildBuffer);
-    volt_in_wild.setTypedText(touchgfx::TypedText(T___SINGLEUSE_2KO1));
+    volt_in_wild.setTypedText(touchgfx::TypedText(T_VOLTAGE_VALUE));
     motor_data.add(volt_in_wild);
 
     volt_in.setXY(200, 252);
     volt_in.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     volt_in.setLinespacing(0);
-    volt_in.setTypedText(touchgfx::TypedText(T___SINGLEUSE_BX1B));
+    volt_in.setTypedText(touchgfx::TypedText(T_VOLTAGE_IN));
     motor_data.add(volt_in);
 
     curr_in.setXY(200, 315);
     curr_in.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     curr_in.setLinespacing(0);
-    curr_in.setTypedText(touchgfx::TypedText(T___SINGLEUSE_1WUV));
+    curr_in.setTypedText(touchgfx::TypedText(T_CURRENT_IN));
     motor_data.add(curr_in);
 
     motor_temp.setXY(200, 195);
     motor_temp.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     motor_temp.setLinespacing(0);
-    motor_temp.setTypedText(touchgfx::TypedText(T___SINGLEUSE_DGJ5));
+    motor_temp.setTypedText(touchgfx::TypedText(T_MOTOR_TEMP));
     motor_data.add(motor_temp);
 
     fet_temp.setXY(200, 138);
     fet_temp.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     fet_temp.setLinespacing(0);
-    fet_temp.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5ZT6));
+    fet_temp.setTypedText(touchgfx::TypedText(T_FET_TEMP));
     motor_data.add(fet_temp);
 
     swipe_container.add(motor_data);
 
-    swipe_container.setSelectedPage(0);
+    swipe_container.setSelectedPage(1);
     add(swipe_container);
 }
 
@@ -281,6 +281,14 @@ void main_screenViewBase::handleTickEvent()
         motorDataUpdate();
         frameCountMotorDataUpdateInterval = 0;
     }
+}
+
+void main_screenViewBase::to_user_screen()
+{
+    //to_user_screen_interaction
+    //When to_user_screen is called change screen to user_screen
+    //Go to user_screen with no screen transition
+    application().gotouser_screenScreenNoTransition();
 }
 
 void main_screenViewBase::updateItemCallbackHandler(touchgfx::DrawableListItemsInterface* items, int16_t containerIndex, int16_t itemIndex)

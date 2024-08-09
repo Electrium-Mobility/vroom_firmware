@@ -27,6 +27,21 @@ public:
 
     virtual ~user_screenPresenter() {}
 
+    void get_password(int8_t user, char* password, uint8_t size)
+	{
+		model->get_password(user, password, size);
+	}
+
+	void get_username(int8_t user, char* username, uint8_t size)
+	{
+		model->get_username(user, username, size);
+	}
+
+	uint8_t get_num_users()
+	{
+		return model->get_num_users();
+	}
+
 private:
     user_screenPresenter();
 

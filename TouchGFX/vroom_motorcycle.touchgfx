@@ -205,7 +205,7 @@
           },
           {
             "Type": "TextArea",
-            "Name": "username",
+            "Name": "username_text",
             "X": 86,
             "Y": 204,
             "Width": 715,
@@ -219,7 +219,7 @@
           },
           {
             "Type": "TextArea",
-            "Name": "password",
+            "Name": "password_text",
             "X": 86,
             "Y": 301,
             "Width": 715,
@@ -285,10 +285,60 @@
             "X": 78,
             "Y": 399,
             "Width": 297,
-            "Height": 49,
-            "TextId": "__SingleUse_BCKB",
+            "Height": 48,
+            "TextId": "view_password",
             "TextRotation": "0",
             "AutoSize": true
+          },
+          {
+            "Type": "ModalWindow",
+            "Name": "login_error_window",
+            "Width": 800,
+            "Height": 480,
+            "Visible": false,
+            "FileName": "__generated\\alternate_theme_images_containers_large_wide_neutral.png",
+            "ModalX": 160,
+            "ModalY": 105,
+            "ModalWidth": 480,
+            "ModalHeight": 270,
+            "Alpha": 150,
+            "Components": [
+              {
+                "Type": "ButtonWithLabel",
+                "Name": "close_popup",
+                "Y": 190,
+                "Width": 480,
+                "Height": 60,
+                "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_60_large_round_disabled.png",
+                "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_60_large_round_pressed.png",
+                "TextId": "close_popup",
+                "ReleasedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "PressedColor": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "TextRotation": "0"
+              },
+              {
+                "Type": "TextArea",
+                "Name": "error_text",
+                "Y": 75,
+                "Width": 480,
+                "Height": 96,
+                "TextId": "login_error",
+                "TextRotation": "0",
+                "Color": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                }
+              }
+            ]
           }
         ],
         "Interactions": [
@@ -335,6 +385,34 @@
               "Type": "ActionCustom",
               "FunctionName": "toggle_password_visibility"
             }
+          },
+          {
+            "InteractionName": "to_main_screen_interaction",
+            "Trigger": {
+              "Type": "TriggerWhen",
+              "ActionCustomTypeName": "Call user_screen to_main_screen"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "main_screen"
+            }
+          },
+          {
+            "InteractionName": "error_popup_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "close_popup"
+            },
+            "Action": {
+              "Type": "ActionHide",
+              "ActionComponent": "login_error_window"
+            }
+          }
+        ],
+        "CustomActions": [
+          {
+            "Name": "to_main_screen"
           }
         ]
       },
@@ -358,7 +436,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "command_page",
+            "SelectedPage": "motor_data",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -423,8 +501,8 @@
                     "X": 273,
                     "Y": 4,
                     "Width": 255,
-                    "Height": 73,
-                    "TextId": "__SingleUse_W5VS",
+                    "Height": 72,
+                    "TextId": "function",
                     "TextRotation": "0",
                     "AutoSize": true
                   },
@@ -502,10 +580,9 @@
                     "Y": 389,
                     "Width": 305,
                     "Height": 76,
-                    "TextId": "__SingleUse_HU9G",
+                    "TextId": "keypad_value",
                     "TextRotation": "0",
                     "Wildcard1": {
-                      "TextId": "value_text",
                       "UseBuffer": true,
                       "BufferSize": 9
                     }
@@ -554,7 +631,7 @@
                     "Y": 260,
                     "Width": 379,
                     "Height": 55,
-                    "TextId": "__SingleUse_FPGL",
+                    "TextId": "execute_function",
                     "TextRotation": "0"
                   },
                   {
@@ -658,8 +735,8 @@
                     "X": 221,
                     "Y": 35,
                     "Width": 359,
-                    "Height": 49,
-                    "TextId": "__SingleUse_L6ZD",
+                    "Height": 48,
+                    "TextId": "motor_diagnostics",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -675,7 +752,7 @@
                     "Y": 138,
                     "Width": 150,
                     "Height": 36,
-                    "TextId": "__SingleUse_RJB5",
+                    "TextId": "temperature_value",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -683,7 +760,7 @@
                       "Blue": 255
                     },
                     "Wildcard1": {
-                      "TextId": "voltIn",
+                      "TextId": "zero",
                       "UseBuffer": true,
                       "BufferSize": 3
                     }
@@ -695,7 +772,7 @@
                     "Y": 195,
                     "Width": 150,
                     "Height": 36,
-                    "TextId": "__SingleUse_PAWH",
+                    "TextId": "temperature_value",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -703,7 +780,7 @@
                       "Blue": 255
                     },
                     "Wildcard1": {
-                      "TextId": "voltIn",
+                      "TextId": "zero",
                       "UseBuffer": true,
                       "BufferSize": 3
                     }
@@ -715,7 +792,7 @@
                     "Y": 315,
                     "Width": 150,
                     "Height": 36,
-                    "TextId": "__SingleUse_3C6S",
+                    "TextId": "current_value",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -723,7 +800,7 @@
                       "Blue": 255
                     },
                     "Wildcard1": {
-                      "TextId": "voltIn",
+                      "TextId": "zero",
                       "UseBuffer": true,
                       "BufferSize": 3
                     }
@@ -735,7 +812,7 @@
                     "Y": 252,
                     "Width": 150,
                     "Height": 36,
-                    "TextId": "__SingleUse_2KO1",
+                    "TextId": "voltage_value",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -743,7 +820,7 @@
                       "Blue": 255
                     },
                     "Wildcard1": {
-                      "TextId": "voltIn",
+                      "TextId": "zero",
                       "UseBuffer": true,
                       "BufferSize": 3
                     }
@@ -755,7 +832,7 @@
                     "Y": 252,
                     "Width": 258,
                     "Height": 36,
-                    "TextId": "__SingleUse_BX1B",
+                    "TextId": "voltage_in",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -771,7 +848,7 @@
                     "Y": 315,
                     "Width": 249,
                     "Height": 36,
-                    "TextId": "__SingleUse_1WUV",
+                    "TextId": "current_in",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -787,7 +864,7 @@
                     "Y": 195,
                     "Width": 247,
                     "Height": 36,
-                    "TextId": "__SingleUse_DGJ5",
+                    "TextId": "motor_temp",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -803,7 +880,7 @@
                     "Y": 138,
                     "Width": 248,
                     "Height": 36,
-                    "TextId": "__SingleUse_5ZT6",
+                    "TextId": "fet_temp",
                     "TextRotation": "0",
                     "Color": {
                       "Red": 255,
@@ -872,6 +949,23 @@
               "Type": "ActionCustom",
               "FunctionName": "cancel_command"
             }
+          },
+          {
+            "InteractionName": "to_user_screen_interaction",
+            "Trigger": {
+              "Type": "TriggerWhen",
+              "ActionCustomTypeName": "Call main_screen to_user_screen"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionNone",
+              "ActionComponent": "user_screen"
+            }
+          }
+        ],
+        "CustomActions": [
+          {
+            "Name": "to_user_screen"
           }
         ]
       }

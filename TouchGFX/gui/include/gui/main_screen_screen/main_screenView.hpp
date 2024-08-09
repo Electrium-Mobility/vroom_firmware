@@ -18,6 +18,13 @@ public:
 
     virtual void handleTickEvent();
 
+    enum AnimationState
+	{
+    	ANIMATION_READY,
+    	FADE_IN,
+		FADE_OUT,
+	};
+
     enum KeypadAnimationState
     {
     	KEYPAD_ANIMATION_READY,
@@ -30,14 +37,10 @@ public:
 		CALIBRATION_IN_STEP_0,
 		CALIBRATION_IN_STEP_1,
 		CALIBRATION_OUT_STEP_0,
-		CALIBRATION_OUT_STEP_1
+		CALIBRATION_OUT_STEP_1,
     };
 
     // Command Page
-    static const int KEYPAD_ANIMATION_DURATION = 40;
-    static const int KEYPAD_ANIMATION_X_SIZE = 1;
-    static const int KEYPAD_SET_ANIMATION_DURATION = 100;
-
 	virtual void delete_char();
 	virtual void enter_command();
 	virtual void cancel_command();
@@ -46,9 +49,10 @@ public:
 	virtual void function_wheelUpdateCenterItem(function_center& item, int16_t itemIndex);
 	virtual void execute_function_pressed();
 
+	void set_diagnostic_objects_alpha(uint8_t delta_alpha);
+	void set_function_objects_alpha(uint8_t delta_alpha);
 
     virtual void display_adc(unsigned int adc_value);
-
 
 #ifndef SIMULATOR
      // Motor Data
@@ -64,7 +68,8 @@ protected:
 
 
 	uint32_t animation_tick;
-	int8_t keypad_animation_state; // also defines the animation direction (-1, 1)
+	AnimationState animation_state;
+	KeypadAnimationState keypad_animation_state; // also defines the animation direction (-1, 1)
 
 	Callback<main_screenView> scrollWheelSelectedItemCallback;
 	void scrollWheelSelectedItemHandler();

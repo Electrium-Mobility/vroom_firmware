@@ -38,6 +38,11 @@ public:
     virtual void handleTickEvent();
 
     /*
+     * Custom Actions
+     */
+    virtual void to_user_screen();
+
+    /*
      * Virtual Action Handlers
      */
     virtual void execute_function_pressed()
