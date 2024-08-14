@@ -12,7 +12,9 @@ CharKeyboard::CharKeyboard() : keyboard(),
     uppercaseKeys(false),
     firstCharacterEntry(false),
 	passwordMode(false),
-	password_visibility(false)
+	password_visibility(false),
+	password_buffer_position(0),
+	username_buffer_position(0)
 {
     //Set the callbacks for the callback areas of the keyboard and set its layout.
     layout.callbackAreaArray[0].callback = &capslockPressed;
@@ -23,8 +25,13 @@ CharKeyboard::CharKeyboard() : keyboard(),
     keyboard.setPosition(0, 0, 320*2, 240*2);
     keyboard.setTextIndentation();
     //Allocate the buffer associated with keyboard.
-    memset(buffer, 0, sizeof(buffer));
-    keyboard.setBuffer(buffer, BUFFER_SIZE);
+    for(uint8_t i = 0; i < MIN_BUFFER_SIZE; i++)
+    {
+    	buffer[i] = 0;
+    }
+    keyboard.setBuffer(buffer, MIN_BUFFER_SIZE);
+    clear_password();
+    clear_username();
 
     uppercaseKeys = true;
     firstCharacterEntry = true;
@@ -162,7 +169,10 @@ void CharKeyboard::set_password_mode(bool password_mode)
 
 void CharKeyboard::set_buffer(bool password_mode)
 {
-	memset(buffer, 0, BUFFER_SIZE + 1);
+	for(uint8_t i = 0; i < MIN_BUFFER_SIZE; i++)
+	{
+		buffer[i] = 0;
+	}
 	if(password_mode)
 	{
 		if(password_visibility == false)
@@ -174,7 +184,7 @@ void CharKeyboard::set_buffer(bool password_mode)
 		}
 		else
 		{
-			for(int i = 0; i < BUFFER_SIZE; i++)
+			for(int i = 0; i < PASSWORD_SIZE; i++)
 			{
 				buffer[i] = password_buffer[i];
 			}
@@ -189,7 +199,7 @@ void CharKeyboard::set_buffer(bool password_mode)
 	}
 	else
 	{
-		for(int i = 0; i < BUFFER_SIZE; i++)
+		for(int i = 0; i < USERNAME_SIZE; i++)
 		{
 			buffer[i] = username_buffer[i];
 		}
@@ -210,7 +220,10 @@ touchgfx::Unicode::UnicodeChar* CharKeyboard::get_password()
 
 void CharKeyboard::clear_password()
 {
-	memset(password_buffer, 0, BUFFER_SIZE +1);
+	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+	{
+		password_buffer[i] = 0;
+	}
 	password_buffer_position = 0;
 }
 
@@ -221,7 +234,10 @@ touchgfx::Unicode::UnicodeChar* CharKeyboard::get_username()
 
 void CharKeyboard::clear_username()
 {
-	memset(username_buffer, 0, BUFFER_SIZE +1);
+	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	{
+		username_buffer[i] = 0;
+	}
 	username_buffer_position = 0;
 }
 
@@ -249,7 +265,7 @@ bool CharKeyboard::toggle_password_visibility()
 	password_visibility = !password_visibility;
 	if(password_visibility == true)
 	{
-		for(int i = 0; i < BUFFER_SIZE; i++)
+		for(int i = 0; i < PASSWORD_SIZE; i++)
 		{
 			buffer[i] = password_buffer[i];
 		}

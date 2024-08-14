@@ -19,7 +19,10 @@ public:
     virtual void password_pressed();
     virtual void enter_pressed();
     virtual void toggle_password_visibility();
-    unsigned short check_usernames();
+    int8_t check_usernames();
+    void handle_valid_username_password();
+    void handle_valid_username_invalid_password();
+    void handle_invalid_username_password();
 
     void set_all_objects_alpha(uint8_t delta_alpha);
 
@@ -41,6 +44,7 @@ protected:
 	uint32_t animation_tick;
 	bool user_input_mode;
 	int8_t user;
+	uint8_t edit_user;
 };
 
 #endif // USER_SCREENVIEW_HPP

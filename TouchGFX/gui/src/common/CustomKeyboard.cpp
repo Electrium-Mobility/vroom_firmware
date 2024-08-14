@@ -18,7 +18,10 @@ CustomKeyboard::CustomKeyboard() : keyboard(),
     keyboard.setTextIndentation();
 
     //Allocate the buffer associated with keyboard.
-    memset(buffer, 0, sizeof(buffer));
+    for(uint8_t i = 0; i < BUFFER_SIZE; i++)
+    {
+    	buffer[i] = 0;
+    }
     keyboard.setBuffer(buffer, BUFFER_SIZE);
     setKeyMappingList();
     add(keyboard);
@@ -100,7 +103,10 @@ uint16_t CustomKeyboard:: getBufferPosition()
 
 void CustomKeyboard::clearBuffer ()
 {
-	memset(buffer, 0, BUFFER_SIZE+1);
+	for(uint8_t i = 0; i < BUFFER_SIZE; i++)
+	{
+		buffer[i] = 0;
+	}
 	keyboard.setBufferPosition(0);
     setKeyMappingList();
 }

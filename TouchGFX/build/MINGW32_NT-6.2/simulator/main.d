@@ -104,6 +104,7 @@ build/MINGW32_NT-6.2/simulator/main.o: simulator/main.cpp \
  generated/texts/include/texts/TextKeysAndLanguages.hpp \
  gui/include/gui/common/CharKeyboardLayout.hpp \
  gui/include/gui/common/CharKeyboardKeyMapping.hpp \
+ gui/include/gui/common/definitions.h \
  gui/include/gui/main_screen_screen/main_screenView.hpp \
  generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp \
  gui/include/gui/main_screen_screen/main_screenPresenter.hpp \
@@ -335,6 +336,8 @@ generated/texts/include/texts/TextKeysAndLanguages.hpp:
 gui/include/gui/common/CharKeyboardLayout.hpp:
 
 gui/include/gui/common/CharKeyboardKeyMapping.hpp:
+
+gui/include/gui/common/definitions.h:
 
 gui/include/gui/main_screen_screen/main_screenView.hpp:
 

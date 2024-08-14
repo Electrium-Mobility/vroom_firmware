@@ -40,7 +40,7 @@ main_screenViewBase::main_screenViewBase() :
     command_box.setBorderSize(3);
     command_page.add(command_box);
 
-    command_box_2.setPosition(248, 395, 305, 70);
+    command_box_2.setPosition(247, 395, 306, 70);
     command_box_2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     command_box_2.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     command_box_2.setBorderSize(3);
@@ -80,7 +80,7 @@ main_screenViewBase::main_screenViewBase() :
     enter_button.setPosition(-89, 287, 89, 192);
     command_page.add(enter_button);
 
-    value_text.setPosition(248, 389, 305, 76);
+    value_text.setPosition(247, 388, 306, 78);
     value_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     value_text.setLinespacing(0);
     value_textBuffer[0] = 0;
@@ -137,7 +137,7 @@ main_screenViewBase::main_screenViewBase() :
     function_wheel.setEasingEquation(touchgfx::EasingEquations::backEaseOut);
     function_wheel.setSwipeAcceleration(10);
     function_wheel.setDragAcceleration(10);
-    function_wheel.setNumberOfItems(7);
+    function_wheel.setNumberOfItems(9);
     function_wheel.setSelectedItemOffset(55);
     function_wheel.setSelectedItemExtraSize(0, 0);
     function_wheel.setSelectedItemMargin(0, 0);
@@ -216,7 +216,7 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.add(motor_data);
 
-    swipe_container.setSelectedPage(1);
+    swipe_container.setSelectedPage(0);
     add(swipe_container);
 }
 

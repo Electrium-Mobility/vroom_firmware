@@ -271,15 +271,6 @@
             "RelativeFilename": "username_icon.png"
           },
           {
-            "Type": "Image",
-            "Name": "enter_icon",
-            "X": 544,
-            "Y": 400,
-            "Width": 60,
-            "Height": 47,
-            "RelativeFilename": "enter_icon.png"
-          },
-          {
             "Type": "TextArea",
             "Name": "view_password_title",
             "X": 78,
@@ -291,8 +282,18 @@
             "AutoSize": true
           },
           {
+            "Type": "TextArea",
+            "Name": "enter_title",
+            "X": 426,
+            "Y": 399,
+            "Width": 297,
+            "Height": 48,
+            "TextId": "login",
+            "TextRotation": "0"
+          },
+          {
             "Type": "ModalWindow",
-            "Name": "login_error_window",
+            "Name": "error_window",
             "Width": 800,
             "Height": 480,
             "Visible": false,
@@ -327,7 +328,7 @@
               {
                 "Type": "TextArea",
                 "Name": "error_text",
-                "Y": 75,
+                "Y": 55,
                 "Width": 480,
                 "Height": 96,
                 "TextId": "login_error",
@@ -339,6 +340,16 @@
                 }
               }
             ]
+          },
+          {
+            "Type": "Image",
+            "Name": "enter_icon",
+            "X": 544,
+            "Y": 399,
+            "Width": 60,
+            "Height": 47,
+            "RelativeFilename": "enter_icon.png",
+            "Alpha": 0
           }
         ],
         "Interactions": [
@@ -406,7 +417,7 @@
             },
             "Action": {
               "Type": "ActionHide",
-              "ActionComponent": "login_error_window"
+              "ActionComponent": "error_window"
             }
           }
         ],
@@ -436,7 +447,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "motor_data",
+            "SelectedPage": "command_page",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -476,9 +487,9 @@
                   {
                     "Type": "BoxWithBorder",
                     "Name": "command_box_2",
-                    "X": 248,
+                    "X": 247,
                     "Y": 395,
-                    "Width": 305,
+                    "Width": 306,
                     "Height": 70,
                     "Color": {
                       "Red": 255,
@@ -576,10 +587,10 @@
                   {
                     "Type": "TextArea",
                     "Name": "value_text",
-                    "X": 248,
-                    "Y": 389,
-                    "Width": 305,
-                    "Height": 76,
+                    "X": 247,
+                    "Y": 388,
+                    "Width": 306,
+                    "Height": 78,
                     "TextId": "keypad_value",
                     "TextRotation": "0",
                     "Wildcard1": {
@@ -602,7 +613,6 @@
                         "Type": "BoxWithBorderButtonStyle",
                         "Width": 379,
                         "Height": 55,
-                        "LockToFlexButtonSize": true,
                         "BorderSize": 5,
                         "ColorReleased": {
                           "Green": 102,
@@ -715,7 +725,7 @@
                     "SelectedItemTemplateName": "function_center",
                     "IsCircular": true,
                     "ItemTemplateName": "function_element",
-                    "NumberofItems": 7,
+                    "NumberofItems": 9,
                     "Easing": "Back",
                     "EasingOption": "Out",
                     "SwipeAcceleration": 1.0,
@@ -1044,7 +1054,7 @@
       "Height": 480
     },
     "SelectedColorDepth": 16,
-    "StartupScreenName": "startup_screen",
+    "StartupScreenName": "main_screen",
     "SelectedStartupLanguage": "GB",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",
     "UIPath": ".",

@@ -9,6 +9,7 @@ extern "C"
 #include "motor.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "ee.h"
 
 // Queues
 extern osMessageQueueId_t adcQueueHandle;
@@ -42,7 +43,8 @@ extern ee_Storage_t ee;
 
 Model::Model() :
 		modelListener(0),
-		adc_value(0)
+		adc_value(0),
+		user_screen_state(LOGIN)
 {
 
 }
@@ -132,7 +134,7 @@ void Model::set_brake_low_point()
 #endif
 }
 
-unsigned int Model::get_throttle_sensitivity()
+uint32_t Model::get_throttle_sensitivity()
 {
 	unsigned int temp = 100;
 #ifndef SIMULATOR
@@ -147,7 +149,7 @@ unsigned int Model::get_throttle_sensitivity()
 	return temp;
 }
 
-void Model::set_throttle_sensitivity(unsigned int throttle_value)
+void Model::set_throttle_sensitivity(uint32_t throttle_value)
 {
 #ifndef SIMULATOR
 	// Aquire Mutex
@@ -160,7 +162,7 @@ void Model::set_throttle_sensitivity(unsigned int throttle_value)
 #endif // SIMULATOR
 }
 
-unsigned int Model::get_brake_sensitivity()
+uint32_t Model::get_brake_sensitivity()
 {
 	unsigned int temp = 100;
 #ifndef SIMULATOR
@@ -175,7 +177,7 @@ unsigned int Model::get_brake_sensitivity()
 	return temp;
 }
 
-void Model::set_brake_sensitivity(unsigned int brake_value)
+void Model::set_brake_sensitivity(uint32_t brake_value)
 {
 #ifndef SIMULATOR
 	// Aquire Mutex
@@ -188,7 +190,7 @@ void Model::set_brake_sensitivity(unsigned int brake_value)
 #endif // SIMULATOR
 }
 
-unsigned int Model::get_CAN_transmit_frequency()
+float Model::get_CAN_transmit_frequency()
 {
 	unsigned int temp = 1000;
 #ifndef SIMULATOR
@@ -203,6 +205,19 @@ unsigned int Model::get_CAN_transmit_frequency()
 
 	// Return frequency in Hz
 	return temp;
+}
+
+void Model::set_CAN_transmit_frequency(float frequency_value)
+{
+#ifndef SIMULATOR
+	// Aquire Mutex
+	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	{
+		motor_frequency = frequency_value;
+		// Release Mutex
+		osMutexRelease(settingMutexHandle);
+	}
+#endif // SIMULATOR
 }
 
 void Model::start_throttle_adc()
@@ -247,7 +262,10 @@ void Model::stop_adc_retrieval()
 #endif
 }
 
-void Model::get_username(int8_t user, char* username, uint8_t size)
+
+
+
+void Model::get_username(int8_t user, uint8_t* username, uint8_t size)
 {
 #ifndef SIMULATOR
 	for(uint8_t i = 0; i < size; i++)
@@ -266,7 +284,7 @@ void Model::get_username(int8_t user, char* username, uint8_t size)
 #endif
 }
 
-void Model::get_password(int8_t user, char* password, uint8_t size)
+void Model::get_password(int8_t user, uint8_t* password, uint8_t size)
 {
 #ifndef SIMULATOR
 	for(uint8_t i = 0; i < size; i++)
@@ -298,3 +316,68 @@ uint8_t Model::get_num_users()
 	return 1;
 #endif
 }
+
+void Model::edit_username(uint8_t user, uint8_t* username)
+{
+#ifndef SIMULATOR
+	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	{
+		ee.usernames[(user * USERNAME_SIZE) + i] = username[i];
+	}
+	EE_Write();
+#endif
+}
+
+void Model::edit_password(uint8_t user, uint8_t* password)
+{
+#ifndef SIMULATOR
+	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+	{
+		ee.passwords[(user * PASSWORD_SIZE) + i] = password[i];
+	}
+	EE_Write();
+#endif
+}
+
+void Model::add_user(uint8_t* username, uint8_t* password)
+{
+#ifndef SIMULATOR
+	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	{
+		ee.usernames[(ee.num_users * USERNAME_SIZE) * i] = username[i];
+	}
+	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+	{
+		ee.passwords[(ee.num_users * PASSWORD_SIZE) + i] = password[i];
+	}
+	ee.num_users++;
+	EE_Write();
+#endif
+}
+
+void Model::remove_user(uint8_t user)
+{
+#ifndef SIMULATOR
+	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	{
+		ee.usernames[(user * USERNAME_SIZE) + i] = 0;
+	}
+	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+	{
+		ee.passwords[(user * PASSWORD_SIZE) + i] = 0;
+	}
+	ee.num_users--;
+	EE_Write();
+#endif
+}
+
+Model::UserScreenState Model::get_user_screen_state()
+{
+	return user_screen_state;
+}
+
+void Model::set_user_screen_state(Model::UserScreenState state)
+{
+	user_screen_state = state;
+}
+

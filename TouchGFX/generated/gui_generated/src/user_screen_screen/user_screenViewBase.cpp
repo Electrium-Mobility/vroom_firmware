@@ -80,35 +80,42 @@ user_screenViewBase::user_screenViewBase() :
     user_icon.setBitmap(touchgfx::Bitmap(BITMAP_USERNAME_ICON_ID));
     add(user_icon);
 
-    enter_icon.setXY(544, 400);
-    enter_icon.setBitmap(touchgfx::Bitmap(BITMAP_ENTER_ICON_ID));
-    add(enter_icon);
-
     view_password_title.setXY(78, 399);
     view_password_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     view_password_title.setLinespacing(0);
     view_password_title.setTypedText(touchgfx::TypedText(T_VIEW_PASSWORD));
     add(view_password_title);
 
-    login_error_window.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_LARGE_WIDE_NEUTRAL_ID), 160, 105);
-    login_error_window.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
-    login_error_window.setShadeAlpha(150);
-    login_error_window.hide();
+    enter_title.setPosition(426, 399, 297, 48);
+    enter_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    enter_title.setLinespacing(0);
+    enter_title.setTypedText(touchgfx::TypedText(T_LOGIN));
+    add(enter_title);
+
+    error_window.setBackground(touchgfx::BitmapId(BITMAP_ALTERNATE_THEME_IMAGES_CONTAINERS_LARGE_WIDE_NEUTRAL_ID), 160, 105);
+    error_window.setShadeColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    error_window.setShadeAlpha(150);
+    error_window.hide();
     close_popup.setXY(0, 190);
     close_popup.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_60_LARGE_ROUND_PRESSED_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_BUTTON_REGULAR_HEIGHT_60_LARGE_ROUND_DISABLED_ID));
     close_popup.setLabelText(touchgfx::TypedText(T_CLOSE_POPUP));
     close_popup.setLabelColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     close_popup.setLabelColorPressed(touchgfx::Color::getColorFromRGB(255, 255, 255));
     close_popup.setAction(buttonCallback);
-    login_error_window.add(close_popup);
+    error_window.add(close_popup);
 
-    error_text.setPosition(0, 75, 480, 96);
+    error_text.setPosition(0, 55, 480, 96);
     error_text.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     error_text.setLinespacing(0);
     error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
-    login_error_window.add(error_text);
+    error_window.add(error_text);
 
-    add(login_error_window);
+    add(error_window);
+
+    enter_icon.setXY(544, 399);
+    enter_icon.setBitmap(touchgfx::Bitmap(BITMAP_ENTER_ICON_ID));
+    enter_icon.setAlpha(0);
+    add(enter_icon);
 }
 
 user_screenViewBase::~user_screenViewBase()
@@ -158,10 +165,10 @@ void user_screenViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& 
     if (&src == &close_popup)
     {
         //error_popup_interaction
-        //When close_popup clicked hide login_error_window
-        //Hide login_error_window
-        login_error_window.setVisible(false);
-        login_error_window.invalidate();
+        //When close_popup clicked hide error_window
+        //Hide error_window
+        error_window.setVisible(false);
+        error_window.invalidate();
     }
 }
 

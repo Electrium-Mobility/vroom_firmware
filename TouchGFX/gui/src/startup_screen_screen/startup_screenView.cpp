@@ -15,6 +15,7 @@ void startup_screenView::setupScreen()
 
 	logo_cover.setVisible(true);
 	logo_cover.setWidth(0);
+	presenter->set_user_screen_state(Model::LOGIN);
 }
 
 void startup_screenView::tearDownScreen()

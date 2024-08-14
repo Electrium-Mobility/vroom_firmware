@@ -85,6 +85,7 @@ build/MINGW32_NT-6.2/generated/gui_generated/src/common/FrontendApplicationBase.
  generated/images/include/BitmapDatabase.hpp \
  generated/images/include/images/BitmapDatabase.hpp \
  gui/include/gui/common/CharKeyboardKeyMapping.hpp \
+ gui/include/gui/common/definitions.h \
  gui/include/gui/main_screen_screen/main_screenView.hpp \
  generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp \
  gui/include/gui/main_screen_screen/main_screenPresenter.hpp \
@@ -277,6 +278,8 @@ generated/images/include/BitmapDatabase.hpp:
 generated/images/include/images/BitmapDatabase.hpp:
 
 gui/include/gui/common/CharKeyboardKeyMapping.hpp:
+
+gui/include/gui/common/definitions.h:
 
 gui/include/gui/main_screen_screen/main_screenView.hpp:
 

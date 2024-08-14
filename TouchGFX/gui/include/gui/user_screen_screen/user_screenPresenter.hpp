@@ -27,12 +27,22 @@ public:
 
     virtual ~user_screenPresenter() {}
 
-    void get_password(int8_t user, char* password, uint8_t size)
+    Model::UserScreenState get_user_screen_state()
+    {
+    	return model->get_user_screen_state();
+    }
+
+    void set_user_screen_state(Model::UserScreenState state)
+    {
+    	model->set_user_screen_state(state);
+    }
+
+    void get_password(int8_t user, uint8_t* password, uint8_t size)
 	{
 		model->get_password(user, password, size);
 	}
 
-	void get_username(int8_t user, char* username, uint8_t size)
+	void get_username(int8_t user, uint8_t* username, uint8_t size)
 	{
 		model->get_username(user, username, size);
 	}
@@ -41,6 +51,27 @@ public:
 	{
 		return model->get_num_users();
 	}
+
+	void add_user(uint8_t* username, uint8_t* password)
+	{
+		model->add_user(username, password);
+	}
+
+	void edit_username(uint8_t user, uint8_t* username)
+	{
+		model->edit_username(user, username);
+	}
+
+	void edit_password(uint8_t user, uint8_t* password)
+	{
+		model->edit_password(user, password);
+	}
+
+	void remove_user(uint8_t user)
+	{
+		model->remove_user(user);
+	}
+
 
 private:
     user_screenPresenter();

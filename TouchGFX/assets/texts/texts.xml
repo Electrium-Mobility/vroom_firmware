@@ -5,6 +5,16 @@
     <Language Id="DE" />
   </Languages>
   <Texts>
+    <TextGroup Id="Languages">
+      <Text Id="german" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">German</Translation>
+        <Translation Language="DE">Deutsch</Translation>
+      </Text>
+      <Text Id="english" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">English</Translation>
+        <Translation Language="DE">Englisch</Translation>
+      </Text>
+    </TextGroup>
     <TextGroup Id="Keypad">
       <Text Id="keypad_value" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">&lt;value&gt;</Translation>
@@ -80,6 +90,42 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Login">
+      <Text Id="edit_error" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Editting Admin Forbidden</Translation>
+        <Translation Language="DE">Admin zu Bearbeiten ist Verboten</Translation>
+      </Text>
+      <Text Id="remove_error" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Deleting Admin Forbidden</Translation>
+        <Translation Language="DE">Admin zu Enfernen ist Verboten</Translation>
+      </Text>
+      <Text Id="cancel" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Cancel</Translation>
+        <Translation Language="DE">Beenden</Translation>
+      </Text>
+      <Text Id="user_error" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">User Already Exists</Translation>
+        <Translation Language="DE">Benutzer Existiert Schon</Translation>
+      </Text>
+      <Text Id="login_error" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Invalid Credentials</Translation>
+        <Translation Language="DE">Ungültige Anmeldeinformationen</Translation>
+      </Text>
+      <Text Id="edit_user" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Edit User</Translation>
+        <Translation Language="DE">Bearbeiten</Translation>
+      </Text>
+      <Text Id="remove_user" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Remove User</Translation>
+        <Translation Language="DE">Entfernen</Translation>
+      </Text>
+      <Text Id="add_user" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Add User</Translation>
+        <Translation Language="DE">Hinzufügen</Translation>
+      </Text>
+      <Text Id="login" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Login</Translation>
+        <Translation Language="DE">Eintreten</Translation>
+      </Text>
       <Text Id="close_popup" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Close</Translation>
         <Translation Language="DE">Schliessen</Translation>
@@ -92,19 +138,19 @@
         <Translation Language="GB">User: &lt;value&gt;</Translation>
         <Translation Language="DE">Benutzer: &lt;wert&gt;</Translation>
       </Text>
-      <Text Id="login_error" Alignment="Center" TypographyId="Keypad_command_descriptions">
-        <Translation Language="GB">Invalid Credentials</Translation>
-        <Translation Language="DE">Ungültige Anmeldeinformationen</Translation>
-      </Text>
     </TextGroup>
     <TextGroup Id="Function_Setting">
+      <Text Id="set_lanuage" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Set Language</Translation>
+        <Translation Language="DE">Sprache Einstellen</Translation>
+      </Text>
       <Text Id="function" Alignment="Left" TypographyId="Keypad">
         <Translation Language="GB">Function</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Funktion</Translation>
       </Text>
       <Text Id="execute_function" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Execute Function</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Funktion Ausführen</Translation>
       </Text>
       <Text Id="set_analog_value" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Analog Value</Translation>
@@ -120,6 +166,14 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Function_Names">
+      <Text Id="function_8" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Select Language</Translation>
+        <Translation Language="DE">Sprachauswahl</Translation>
+      </Text>
+      <Text Id="function_7" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Delete User</Translation>
+        <Translation Language="DE">Benutzer Löschen</Translation>
+      </Text>
       <Text Id="function_6" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Edit User</Translation>
         <Translation Language="DE">Benutzer Bearbeiten</Translation>
@@ -133,12 +187,12 @@
         <Translation Language="DE">Bremssensor Kalibrieren</Translation>
       </Text>
       <Text Id="function_3" Alignment="Center" TypographyId="Keypad_command_descriptions">
-        <Translation Language="GB">Set Motor CAN Transmit Frequency</Translation>
-        <Translation Language="DE">CAN TX Frequenz Einstellen</Translation>
-      </Text>
-      <Text Id="function_2" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Calibrate Throttle Sensor</Translation>
         <Translation Language="DE">Drosselsensor Kalibrieren</Translation>
+      </Text>
+      <Text Id="function_2" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Set Motor CAN Transmit Frequency</Translation>
+        <Translation Language="DE">CAN TX Frequenz Einstellen</Translation>
       </Text>
       <Text Id="function_1" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Brake Sensitivity</Translation>
@@ -149,7 +203,12 @@
         <Translation Language="DE">Drosselempfindlichkeit Einstellen</Translation>
       </Text>
     </TextGroup>
-    <TextGroup Id="Unsorted" />
+    <TextGroup Id="Unsorted">
+      <Text Id="none" Alignment="Left" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB"></Translation>
+        <Translation Language="DE"></Translation>
+      </Text>
+    </TextGroup>
   </Texts>
   <Typographies>
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />

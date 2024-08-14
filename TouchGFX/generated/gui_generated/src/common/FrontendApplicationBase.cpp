@@ -34,19 +34,6 @@ FrontendApplicationBase::FrontendApplicationBase(Model& m, FrontendHeap& heap)
  * Screen Transition Declarations
  */
 
-// startup_screen
-
-void FrontendApplicationBase::gotostartup_screenScreenNoTransition()
-{
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotostartup_screenScreenNoTransitionImpl);
-    pendingScreenTransitionCallback = &transitionCallback;
-}
-
-void FrontendApplicationBase::gotostartup_screenScreenNoTransitionImpl()
-{
-    touchgfx::makeTransition<startup_screenView, startup_screenPresenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
-}
-
 // user_screen
 
 void FrontendApplicationBase::gotouser_screenScreenNoTransition()

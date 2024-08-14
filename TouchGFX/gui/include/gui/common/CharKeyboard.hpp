@@ -8,6 +8,7 @@
 #include <gui/common/CharKeyboardLayout.hpp>
 #include <fonts/ApplicationFontProvider.hpp>
 #include <gui/common/CharKeyboardKeyMapping.hpp>
+#include <gui/common/definitions.h>
 
 using namespace touchgfx;
 
@@ -45,12 +46,6 @@ public:
 
 
 private:
-    /*
-     * The size of the buffer that is used by the keyboard.
-     * The size determines how much text the keyboard can contain in its textfield.
-     */
-    static const uint8_t BUFFER_SIZE = 16;
-
     /**
      * The keyboard which this CharKeyboard wraps.
      */
@@ -59,7 +54,7 @@ private:
     /**
      * The buffer used by the keyboard for text input.
      */
-    Unicode::UnicodeChar buffer[BUFFER_SIZE];
+    Unicode::UnicodeChar buffer[MIN_BUFFER_SIZE];
 
     /**
      * Used to display text on top of the button for changing keyboard mode.
@@ -105,10 +100,10 @@ private:
     bool password_visibility;
 
     uint16_t password_buffer_position;
-    Unicode::UnicodeChar password_buffer[BUFFER_SIZE];
+    Unicode::UnicodeChar password_buffer[PASSWORD_SIZE];
 
     uint16_t username_buffer_position;
-    Unicode::UnicodeChar username_buffer[BUFFER_SIZE];
+    Unicode::UnicodeChar username_buffer[USERNAME_SIZE];
 
     /*
      * Sets the correct key mappings of the keyboard according to alpha/numeric and upper-case/lower-case.

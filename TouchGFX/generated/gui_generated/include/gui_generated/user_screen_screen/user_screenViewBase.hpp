@@ -68,11 +68,12 @@ protected:
     touchgfx::Image bike_logo;
     touchgfx::Image password_icon;
     touchgfx::Image user_icon;
-    touchgfx::Image enter_icon;
     touchgfx::TextArea view_password_title;
-    touchgfx::ModalWindow login_error_window;
+    touchgfx::TextArea enter_title;
+    touchgfx::ModalWindow error_window;
     touchgfx::ButtonWithLabel close_popup;
     touchgfx::TextArea error_text;
+    touchgfx::Image enter_icon;
 
     /*
      * Wildcard Buffers

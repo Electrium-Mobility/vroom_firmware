@@ -77,7 +77,8 @@ build/MINGW32_NT-6.2/gui/src/user_screen_screen/user_screenPresenter.o: \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/FontManager.hpp \
  generated/images/include/BitmapDatabase.hpp \
  generated/images/include/images/BitmapDatabase.hpp \
- gui/include/gui/common/CharKeyboardKeyMapping.hpp
+ gui/include/gui/common/CharKeyboardKeyMapping.hpp \
+ gui/include/gui/common/definitions.h
 
 gui/include/gui/user_screen_screen/user_screenView.hpp:
 
@@ -234,3 +235,5 @@ generated/images/include/BitmapDatabase.hpp:
 generated/images/include/images/BitmapDatabase.hpp:
 
 gui/include/gui/common/CharKeyboardKeyMapping.hpp:
+
+gui/include/gui/common/definitions.h:

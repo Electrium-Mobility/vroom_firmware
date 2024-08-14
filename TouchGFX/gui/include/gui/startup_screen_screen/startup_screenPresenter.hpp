@@ -27,6 +27,11 @@ public:
 
     virtual ~startup_screenPresenter() {}
 
+    void set_user_screen_state(Model::UserScreenState state)
+    {
+    	model->set_user_screen_state(state);
+    }
+
 private:
     startup_screenPresenter();
 

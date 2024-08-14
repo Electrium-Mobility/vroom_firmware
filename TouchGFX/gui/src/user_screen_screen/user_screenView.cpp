@@ -7,7 +7,8 @@ user_screenView::user_screenView():
 	user_icon_selected(true),
 	animation_tick(0),
 	user_input_mode(false),
-	user(-1)
+	user(-1),
+	edit_user(0)
 {
 
 }
@@ -16,13 +17,50 @@ void user_screenView::setupScreen()
 {
 	user_screenViewBase::setupScreen();
 
-	login_error_window.setVisible(true);
-	login_error_window.hide();
+	error_window.setVisible(true);
+	error_window.hide();
 
 	keyboard.setPosition(80, 480, 320*2, 240*2);
 	add(keyboard);
 
 	set_all_objects_alpha(0);
+	animation_state = FADE_IN;
+
+	error_text.setWideTextAction(WIDE_TEXT_WORDWRAP);
+
+	switch(presenter->get_user_screen_state())
+	{
+		case Model::LOGIN:
+		{
+			enter_title.setTypedText(touchgfx::TypedText(T_LOGIN));
+			background.setAlpha(255);
+			break;
+		}
+		case Model::EDIT:
+		{
+			enter_title.setTypedText(touchgfx::TypedText(T_LOGIN));
+			background.setAlpha(0);
+			break;
+		}
+		case Model::REMOVE:
+		{
+			enter_title.setTypedText(touchgfx::TypedText(T_REMOVE_USER));
+			background.setAlpha(0);
+			break;
+		}
+		case Model::ADD:
+		{
+			enter_title.setTypedText(touchgfx::TypedText(T_ADD_USER));
+			background.setAlpha(0);
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+	background.invalidate();
+	enter_title.invalidate();
 }
 
 void user_screenView::tearDownScreen()
@@ -59,6 +97,11 @@ void user_screenView:: handleTickEvent()
 			if(animation_tick < FADE_ANIMATION_DURATION)
 			{
 				set_all_objects_alpha(fade_alpha);
+				if(background.getAlpha() != 255)
+				{
+					background.setAlpha(fade_alpha);
+					background.invalidate();
+				}
 			}
 			else
 			{
@@ -78,6 +121,7 @@ void user_screenView:: handleTickEvent()
 				username_text.setAlpha(255 - delta_alpha);
 				password_text.setAlpha(255 - delta_alpha);
 				view_password_title.setAlpha(255 - delta_alpha);
+				enter_title.setAlpha(255 - delta_alpha);
 
 				user_button.invalidate();
 				password_button.invalidate();
@@ -86,6 +130,7 @@ void user_screenView:: handleTickEvent()
 				username_text.invalidate();
 				password_text.invalidate();
 				view_password_title.invalidate();
+				enter_title.invalidate();
 
 				// Fade out the necessary icon
 				if(user_icon_selected)
@@ -124,6 +169,7 @@ void user_screenView:: handleTickEvent()
 				enter_button.setBoxWithBorderHeight(80 + delta_h_enter);
 				enter_button.invalidate();
 				enter_icon.moveTo(544 + delta_x_enter_icon, 400 - delta_y_enter_icon);
+				enter_icon.setAlpha(delta_alpha);
 
 				// Move up the icon
 				if(user_icon_selected)
@@ -166,6 +212,7 @@ void user_screenView:: handleTickEvent()
 				enter_button.setBoxWithBorderHeight(364 - delta_h_enter);
 				enter_button.invalidate();
 				enter_icon.moveTo(730 - delta_x_enter_icon, 275 + delta_y_enter_icon);
+				enter_icon.setAlpha(255 - delta_alpha);
 
 				// Move down the icon
 				if(user_icon_selected)
@@ -203,6 +250,7 @@ void user_screenView:: handleTickEvent()
 				username_text.setAlpha(delta_alpha);
 				password_text.setAlpha(delta_alpha);
 				view_password_title.setAlpha(delta_alpha);
+				enter_title.setAlpha(delta_alpha);
 
 				bike_logo.invalidate();
 				logo_background.invalidate();
@@ -211,6 +259,7 @@ void user_screenView:: handleTickEvent()
 				username_text.invalidate();
 				password_text.invalidate();
 				view_password_title.invalidate();
+				enter_title.invalidate();
 
 				// Fade in the necessary icon
 				if(user_icon_selected)
@@ -302,29 +351,190 @@ void user_screenView:: enter_pressed()
 		}
 		else
 		{
+			if(error_text.getTypedText().getId() == T_CANCEL)
+			{
+				animation_state = FADE_OUT;
+			}
+
 			if(user != -1)
 			{
 				// check the credentials by calling get_password and get_buffer
-				char char_password[16] = {};
-				presenter->get_password(user, char_password, 16);
-				Unicode::UnicodeChar password[16] = {};
-				Unicode::strncpy(password, char_password, 16);
-				if(Unicode::strncmp(keyboard.get_password(), password, 16) == 0)
+				uint8_t byte_password[PASSWORD_SIZE] = {};
+				presenter->get_password(user, byte_password, PASSWORD_SIZE);
+				Unicode::UnicodeChar password[PASSWORD_SIZE] = {};
+				Unicode::fromUTF8(byte_password, password, PASSWORD_SIZE);
+				if(Unicode::strncmp(keyboard.get_password(), password, PASSWORD_SIZE) == 0)
 				{
 					// password successful
-					animation_state = FADE_OUT;
+					handle_valid_username_password();
 				}
 				else
 				{
-					// flag error
-					login_error_window.show();
+					handle_valid_username_invalid_password();
 				}
 			}
 			else
 			{
-				// flag error
-				login_error_window.show();
+				handle_invalid_username_password();
 			}
+		}
+	}
+}
+
+void user_screenView:: handle_valid_username_password()
+{
+	switch(presenter->get_user_screen_state())
+	{
+		case Model::LOGIN:
+		{
+			animation_state = FADE_OUT;
+			break;
+		}
+		case Model::EDIT:
+		{
+			if(edit_user != 0)
+			{
+				edit_user = user;
+				enter_title.setTypedText(touchgfx::TypedText(T_EDIT_USER));
+			}
+			else
+			{
+				// You're not allowed to edit the Admin profile
+				error_text.setTypedText(touchgfx::TypedText(T_EDIT_ERROR));
+				error_window.show();
+			}
+			break;
+		}
+		case Model::REMOVE:
+		{
+			if(user != 0)
+			{
+				presenter->remove_user(user);
+				animation_state = FADE_OUT;
+			}
+			else
+			{
+				// You're not allowed to remove the Admin profile
+				error_text.setTypedText(touchgfx::TypedText(T_REMOVE_ERROR));
+				error_window.show();
+			}
+			break;
+		}
+		case Model::ADD:
+		{
+			// User already exists
+			error_text.setTypedText(touchgfx::TypedText(T_USER_ERROR));
+			enter_title.setTypedText(touchgfx::TypedText(T_CANCEL));
+			error_window.show();
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
+
+void user_screenView:: handle_valid_username_invalid_password()
+{
+	switch(presenter->get_user_screen_state())
+	{
+		case Model::LOGIN:
+		{
+			// flag error
+			error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+			error_window.show();
+			break;
+		}
+		case Model::EDIT:
+		{
+			if(edit_user != 0)
+			{
+				// Username is valid, change the password
+				uint8_t password[PASSWORD_SIZE] = {};
+				Unicode::toUTF8(keyboard.get_password(), password, PASSWORD_SIZE);
+				presenter->edit_password(edit_user, password);
+				animation_state = FADE_OUT;
+			}
+			else
+			{
+				// flag error
+				error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+				error_window.show();
+			}
+			break;
+		}
+		case Model::REMOVE:
+		{
+			// flag error
+			error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+			error_window.show();
+			break;
+		}
+		case Model::ADD:
+		{
+			// User already exists
+			error_text.setTypedText(touchgfx::TypedText(T_USER_ERROR));
+			enter_title.setTypedText(touchgfx::TypedText(T_CANCEL));
+			error_window.show();
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
+
+void user_screenView:: handle_invalid_username_password()
+{
+	switch(presenter->get_user_screen_state())
+	{
+		case Model::LOGIN:
+		{
+			// flag error
+			error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+			error_window.show();
+			break;
+		}
+		case Model::EDIT:
+		{
+			if(edit_user != 0)
+			{
+				uint8_t username[USERNAME_SIZE] = {};
+				uint8_t password[PASSWORD_SIZE] = {};
+				presenter->edit_username(edit_user, username);
+				presenter->edit_password(edit_user, password);
+				animation_state = FADE_OUT;
+			}
+			else
+			{
+				// flag error
+				error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+				error_window.show();
+			}
+			break;
+		}
+		case Model::REMOVE:
+		{
+			// flag error
+			error_text.setTypedText(touchgfx::TypedText(T_LOGIN_ERROR));
+			error_window.show();
+			break;
+		}
+		case Model::ADD:
+		{
+			uint8_t username[USERNAME_SIZE] = {};
+			uint8_t password[PASSWORD_SIZE] = {};
+			Unicode::toUTF8(keyboard.get_username(), username, USERNAME_SIZE);
+			Unicode::toUTF8(keyboard.get_password(), password, PASSWORD_SIZE);
+			presenter->add_user(username, password);
+			animation_state = FADE_OUT;
+			break;
+		}
+		default:
+		{
+			break;
 		}
 	}
 }
@@ -346,16 +556,16 @@ void user_screenView:: toggle_password_visibility()
 	}
 }
 
-unsigned short user_screenView:: check_usernames()
+int8_t user_screenView:: check_usernames()
 {
 	for(uint8_t i = 0; i < presenter->get_num_users(); i++)
 	{
-		char char_username[16] = {};
-		presenter->get_username(i, char_username, 16);
-		Unicode::UnicodeChar username[16] = {};
-		Unicode::strncpy(username, char_username, 16);
+		uint8_t byte_username[USERNAME_SIZE] = {};
+		presenter->get_username(i, byte_username, USERNAME_SIZE);
+		Unicode::UnicodeChar username[USERNAME_SIZE] = {};
+		Unicode::fromUTF8(byte_username, username, USERNAME_SIZE);
 
-		if(Unicode::strncmp(keyboard.get_username(), username, 16) == 0)
+		if(Unicode::strncmp(keyboard.get_username(), username, USERNAME_SIZE) == 0)
 		{
 			return i;
 		}
@@ -374,7 +584,7 @@ void user_screenView:: set_all_objects_alpha(uint8_t delta_alpha)
 	view_password_title.setAlpha(delta_alpha);
 	view_password_button.setAlpha(delta_alpha);
 	enter_button.setAlpha(delta_alpha);
-	enter_icon.setAlpha(delta_alpha);
+	enter_title.setAlpha(delta_alpha);
 	user_icon.setAlpha(delta_alpha);
 	password_icon.setAlpha(delta_alpha);
 
@@ -387,7 +597,7 @@ void user_screenView:: set_all_objects_alpha(uint8_t delta_alpha)
 	view_password_title.invalidate();
 	view_password_button.invalidate();
 	enter_button.invalidate();
-	enter_icon.invalidate();
+	enter_title.invalidate();
 	user_icon.invalidate();
 	password_icon.invalidate();
 }

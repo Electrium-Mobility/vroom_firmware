@@ -30,6 +30,15 @@ public:
 
     virtual void display_adc(unsigned int adc_value);
 
+    void set_user_screen_state(Model::UserScreenState state)
+    {
+    	model->set_user_screen_state(state);
+    }
+
+    uint8_t get_num_users()
+    {
+    	return model->get_num_users();
+    }
 
     void set_throttle_high_point()
     {
@@ -53,30 +62,35 @@ public:
 
 
 
-    unsigned int get_throttle_sensitivity()
+    uint32_t get_throttle_sensitivity()
     {
     	return model->get_throttle_sensitivity();
     }
 
-    void set_throttle_sensitivity(unsigned int throttle_value)
+    void set_throttle_sensitivity(uint32_t throttle_value)
     {
     	model->set_throttle_sensitivity(throttle_value);
     }
 
-    unsigned int get_brake_sensitivity()
+    uint32_t get_brake_sensitivity()
     {
     	return model->get_brake_sensitivity();
     }
 
-    void set_brake_sensitivity(unsigned int brake_value)
+    void set_brake_sensitivity(uint32_t brake_value)
     {
     	model->set_brake_sensitivity(brake_value);
     }
 
-    unsigned int get_CAN_transmit_frequency()
+    float get_CAN_transmit_frequency()
 	{
 		return model->get_CAN_transmit_frequency();
 	}
+
+    void set_CAN_transmit_frequency(float frequency_value)
+    {
+    	model->set_CAN_transmit_frequency(frequency_value);
+    }
 
     void start_throttle_adc()
     {

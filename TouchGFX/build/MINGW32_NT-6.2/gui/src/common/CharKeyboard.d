@@ -28,6 +28,7 @@ build/MINGW32_NT-6.2/gui/src/common/CharKeyboard.o: \
  generated/images/include/BitmapDatabase.hpp \
  generated/images/include/images/BitmapDatabase.hpp \
  gui/include/gui/common/CharKeyboardKeyMapping.hpp \
+ gui/include/gui/common/definitions.h \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/lcd/LCD.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/TextureMapTypes.hpp \
@@ -90,6 +91,8 @@ generated/images/include/BitmapDatabase.hpp:
 generated/images/include/images/BitmapDatabase.hpp:
 
 gui/include/gui/common/CharKeyboardKeyMapping.hpp:
+
+gui/include/gui/common/definitions.h:
 
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/Color.hpp:
 
