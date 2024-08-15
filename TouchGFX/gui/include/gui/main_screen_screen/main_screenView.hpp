@@ -82,11 +82,13 @@ public:
 	TEXTS get_language_text(int16_t itemIndex);
 
 	virtual void execute_function_pressed();
+	void execute_default_function();
 
 	void set_diagnostic_objects_alpha(uint8_t delta_alpha);
 	void set_function_objects_alpha(uint8_t delta_alpha);
 	void handle_dummy_function_names(const TEXTS top_function, const TEXTS center_function, const TEXTS lower_function);
 	void set_dummy_objects_alpha(uint8_t delta_alpha);
+	void set_dummy_objects_visibility(bool visible);
 	void set_value_objects(bool visible, uint16_t text_width);
 	void display_current_language();
 	void handle_list_type();
@@ -104,7 +106,6 @@ protected:
     bool calibration_mode;
 	float keypad_value_f;
 	uint32_t keypad_value_d;
-	uint8_t list_value;
 	uint16_t value_text_width;
 	uint16_t prev_value_text_width;
 	ListType list_type;
@@ -118,6 +119,9 @@ protected:
 
 	Callback<main_screenView> scrollWheelSelectedItemCallback;
 	void scrollWheelSelectedItemHandler();
+	void show_default_value();
+
+	void refresh_function_wheel();
 
 	// Other Pages
 	CustomKeyboard keypad;

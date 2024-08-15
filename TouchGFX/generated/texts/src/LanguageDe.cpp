@@ -10,8 +10,10 @@ KEEP extern const uint32_t indicesDe[] TEXT_LOCATION_FLASH_ATTRIBUTE;
 // Remap all strings
 TEXT_LOCATION_FLASH_PRAGMA
 KEEP extern const uint32_t indicesDe[] TEXT_LOCATION_FLASH_ATTRIBUTE = {
-    1028, // T_GERMAN: "Deutsch"
-    1002, // T_ENGLISH: "Englisch"
+    1028, // T_GERMAN_SMALL: "Deutsch"
+    1002, // T_ENGLISH_SMALL: "Englisch"
+    1028, // T_GERMAN_LARGE: "Deutsch"
+    1002, // T_ENGLISH_LARGE: "Englisch"
     666,  // T_KEYPAD_VALUE: "<>"
     1070, // T_VALUE_TITLE: "Wert"
     853,  // T_VALUE_SET: "Eingestellt"

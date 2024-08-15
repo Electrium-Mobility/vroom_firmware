@@ -6,11 +6,19 @@
   </Languages>
   <Texts>
     <TextGroup Id="Languages">
-      <Text Id="german" Alignment="Center" TypographyId="Keypad">
+      <Text Id="german_small" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">German</Translation>
         <Translation Language="DE">Deutsch</Translation>
       </Text>
-      <Text Id="english" Alignment="Center" TypographyId="Keypad">
+      <Text Id="english_small" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">English</Translation>
+        <Translation Language="DE">Englisch</Translation>
+      </Text>
+      <Text Id="german_large" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">German</Translation>
+        <Translation Language="DE">Deutsch</Translation>
+      </Text>
+      <Text Id="english_large" Alignment="Center" TypographyId="Keypad">
         <Translation Language="GB">English</Translation>
         <Translation Language="DE">Englisch</Translation>
       </Text>

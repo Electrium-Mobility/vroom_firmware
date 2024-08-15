@@ -36,7 +36,6 @@ main_screenView::main_screenView() :
 		calibration_mode(false),
 		keypad_value_f(0.0),
 		keypad_value_d(0),
-		list_value(0),
 		value_text_width(306),
 		prev_value_text_width(306),
 		list_type(DEFAULT),
@@ -80,7 +79,7 @@ void main_screenView::setupScreen()
 	animation_state = FADE_IN;
 
 	// NEW FUNCTION CODE START
-	function_wheel.setNumberOfItems(9);
+	function_wheel.setNumberOfItems(NB_FUNCTIONS);
 	// NEW FUNCTION CODE END
 }
 
@@ -136,10 +135,10 @@ void main_screenView::handleTickEvent()
 		// Keypad transition in out variables
 		int16_t delta_x_keypad = EasingEquations::cubicEaseInOut(animation_tick, 0, 443, KEYPAD_ANIMATION_DURATION);
 		int16_t function_title_x = EasingEquations::cubicEaseInOut(animation_tick, 273, 494 - 273, KEYPAD_ANIMATION_DURATION);
-		int16_t delta_y_function_name = EasingEquations::cubicEaseInOut(animation_tick, 132, function_wheel.getY() - 132, KEYPAD_ANIMATION_DURATION);
+		int16_t delta_y_function_name = EasingEquations::cubicEaseInOut(animation_tick, 130, function_wheel.getY() - 130, KEYPAD_ANIMATION_DURATION);
 		int16_t delta_h_function_name = EasingEquations::cubicEaseInOut(animation_tick, 50, function_wheel.getHeight() - 50, KEYPAD_ANIMATION_DURATION);
-		int16_t delta_y_function_background = EasingEquations::cubicEaseInOut(animation_tick, 129, function_wheel.getY() - 129, KEYPAD_ANIMATION_DURATION);
-		int16_t delta_h_function_background = EasingEquations::cubicEaseInOut(animation_tick, 55, function_wheel.getHeight() - 55, KEYPAD_ANIMATION_DURATION);
+		int16_t delta_y_function_background = EasingEquations::cubicEaseInOut(animation_tick, 128, function_wheel.getY() - 128, KEYPAD_ANIMATION_DURATION);
+		int16_t delta_h_function_background = EasingEquations::cubicEaseInOut(animation_tick, 54, function_wheel.getHeight() - 54, KEYPAD_ANIMATION_DURATION);
 		int16_t delta_y_value_title = EasingEquations::cubicEaseInOut(animation_tick, 315, 264 - 315, KEYPAD_ANIMATION_DURATION);
 
 		if (keypad_animation_state == KEYPAD_ANIMATION_IN_STEP_0)
@@ -150,9 +149,7 @@ void main_screenView::handleTickEvent()
 				if (function_wheel.isVisible())
 				{
 					function_wheel.setVisible(false);
-					dummy_function_name_1.setVisible(true);
-					dummy_function_name_center.setVisible(true);
-					dummy_function_name_2.setVisible(true);
+					set_dummy_objects_visibility(true);
 				}
 
 				set_dummy_objects_alpha(255 - delta_alpha);
@@ -208,10 +205,10 @@ void main_screenView::handleTickEvent()
 				enter_button.moveTo(cancel_button.getX(), cancel_button.getY() + cancel_button.getHeight() + keypad.get_button_h_offset());
 				command_box.moveTo( keypad_image.getX() - (command_box.getWidth() - keypad_image.getWidth()) / 2, keypad_image.getY());
 
-				dummy_function_name_center.moveTo(468 - delta_x_keypad, 132 + 74 - delta_y_function_name);
+				dummy_function_name_center.moveTo(468 - delta_x_keypad, 130 + 74 - delta_y_function_name);
 				dummy_function_name_center.setWidthHeight(307 + delta_x_keypad, 215 - delta_h_function_name);
-				dummy_background_center.moveTo(468 - delta_x_keypad, 129 + 74 - delta_y_function_background);
-				dummy_background_center.setWidthHeight(307 + delta_x_keypad, 220 - (delta_h_function_background));
+				dummy_background_center.moveTo(468 - delta_x_keypad, 128 + 74 - delta_y_function_background);
+				dummy_background_center.setWidthHeight(307 + delta_x_keypad, 216 - (delta_h_function_background));
 				function_title.moveTo(273 + 494 - function_title_x, function_title.getY());
 
 				value_title.moveTo((273 + 494 - function_title_x) - 25, 264 + (315 - delta_y_value_title));
@@ -239,11 +236,7 @@ void main_screenView::handleTickEvent()
 				if (!function_wheel.isVisible())
 				{
 					function_wheel.setVisible(true);
-					dummy_function_name_1.setVisible(false);
-					dummy_function_name_center.setVisible(false);
-					dummy_function_name_2.setVisible(false);
-
-					function_wheel.invalidate();
+					set_dummy_objects_visibility(false);
 				}
 				function_select_button.setTouchable(true);
 
@@ -258,6 +251,10 @@ void main_screenView::handleTickEvent()
 		{
 			if (animation_tick < KEYPAD_SET_ANIMATION_DURATION)
 			{
+				if(value_set_background.getX() != 445)
+				{
+					value_set_background.setPosition(445, 240, 355, 239);
+				}
 				value_set_background.setAlpha(delta_alpha);
 				value_set_background.invalidate();
 			}
@@ -311,9 +308,7 @@ void main_screenView::handleTickEvent()
 				if (function_wheel.isVisible())
 				{
 					function_wheel.setVisible(false);
-					dummy_function_name_1.setVisible(true);
-					dummy_function_name_center.setVisible(true);
-					dummy_function_name_2.setVisible(true);
+					set_dummy_objects_visibility(true);
 				}
 
 				set_dummy_objects_alpha(255 - delta_alpha);
@@ -390,9 +385,7 @@ void main_screenView::handleTickEvent()
 				if (!function_wheel.isVisible())
 				{
 					function_wheel.setVisible(true);
-					dummy_function_name_1.setVisible(false);
-					dummy_function_name_center.setVisible(false);
-					dummy_function_name_2.setVisible(false);
+					set_dummy_objects_visibility(false);
 				}
 				animation_tick = 0;
 				calibration_animation_state = CALIBRATION_ANIMATION_READY;
@@ -526,6 +519,8 @@ void main_screenView::handleTickEvent()
 		int16_t delta_alpha = EasingEquations::cubicEaseInOut(animation_tick, 0, 255, LIST_ANIMATION_DURATION);
 		int16_t delta_y_function = EasingEquations::cubicEaseInOut(animation_tick, 0, 50, LIST_ANIMATION_DURATION);
 		int16_t delta_y_list = EasingEquations::cubicEaseInOut(animation_tick, 0, 480 - 144, LIST_ANIMATION_DURATION);
+		int16_t delta_y_button = EasingEquations::cubicEaseInOut(animation_tick, 0, 75, LIST_ANIMATION_DURATION);
+		int16_t delta_h_button = EasingEquations::cubicEaseInOut(animation_tick, 0, 55, LIST_ANIMATION_DURATION);
 
 		if (list_animation_state == LIST_IN_STEP_0)
 		{
@@ -535,16 +530,16 @@ void main_screenView::handleTickEvent()
 				if (function_wheel.isVisible())
 				{
 					function_wheel.setVisible(false);
-					dummy_function_name_1.setVisible(true);
-					dummy_function_name_center.setVisible(true);
-					dummy_function_name_2.setVisible(true);
+					set_dummy_objects_visibility(true);
 				}
 
 				set_dummy_objects_alpha(255 - delta_alpha);
 				value_title.setAlpha(255 - delta_alpha);
+				value_text.setAlpha(255 - delta_alpha);
 				command_box_2.setAlpha(255 - delta_alpha);
 
 				value_title.invalidate();
+				value_text.invalidate();
 				command_box_2.invalidate();
 			}
 			else
@@ -561,15 +556,28 @@ void main_screenView::handleTickEvent()
 			if (animation_tick < LIST_ANIMATION_DURATION)
 			{
 				// Move up the function name
-				dummy_function_name_center.moveTo(dummy_function_name_center.getX(), 132 - delta_y_function);
-				dummy_background_center.moveTo(dummy_background_center.getX(), 132 - delta_y_function);
+				dummy_function_name_center.setY(130 - delta_y_function);
+				dummy_background_center.setY(128 - delta_y_function);
 
 				dummy_function_name_center.invalidate();
 				dummy_background_center.invalidate();
 
 				// Move in the function wheel
-				function_wheel.moveTo(function_wheel.getX(), 480 - delta_y_list);
+				function_wheel.setY(480 - delta_y_list);
 				function_wheel.invalidate();
+				background.invalidate();
+
+				// Move down the execute function button
+				function_select_button.setY(260 + delta_y_button);
+				button_text.setY(260 + delta_y_button);
+
+				// grow the function button
+				function_select_button.setHeight(55 + delta_h_button);
+				function_select_button.setBoxWithBorderHeight(55 + delta_h_button);
+				button_text.setY(function_select_button.getY() + (function_select_button.getHeight() / 2) - (button_text.getHeight() / 2));
+
+				function_select_button.invalidate();
+				button_text.invalidate();
 				background.invalidate();
 			}
 			else
@@ -583,19 +591,33 @@ void main_screenView::handleTickEvent()
 			if (animation_tick < LIST_ANIMATION_DURATION)
 			{
 				// Move down the function wheel
-				function_wheel.moveTo(function_wheel.getX(), 144 + delta_y_list);
+				function_wheel.setY(144 + delta_y_list);
 
 				// Move down the function name
-				dummy_function_name_center.moveTo(dummy_function_name_center.getX(), 82 + delta_y_function);
-				dummy_background_center.moveTo(dummy_background_center.getX(), 82 + delta_y_function);
+				dummy_function_name_center.setY(80 + delta_y_function);
+				dummy_background_center.setY(78 + delta_y_function);
 
 				function_wheel.invalidate();
 				dummy_function_name_center.invalidate();
 				dummy_background_center.invalidate();
+
+				// Move up the execute function button
+				function_select_button.setY(335 - delta_y_button);
+				button_text.setY(335 - delta_y_button);
+
+				// shrink the function button
+				function_select_button.setHeight(110 - delta_h_button);
+				function_select_button.setBoxWithBorderHeight(110 - delta_h_button);
+				button_text.setY(function_select_button.getY() + (function_select_button.getHeight() / 2) - (button_text.getHeight() / 2));
+
+				function_select_button.invalidate();
+				button_text.invalidate();
 				background.invalidate();
 			}
 			else
 			{
+				list_type = DEFAULT;
+				function_wheel.setNumberOfItems(NB_FUNCTIONS);
 				list_animation_state = LIST_OUT_STEP_1;
 				animation_tick = 0;
 			}
@@ -605,22 +627,26 @@ void main_screenView::handleTickEvent()
 			if (animation_tick < LIST_ANIMATION_DURATION)
 			{
 				set_dummy_objects_alpha(delta_alpha);
-				function_select_button.setAlpha(delta_alpha);
-				button_text.setAlpha(delta_alpha);
-				function_select_button.invalidate();
-				button_text.invalidate();
+
+				if(value_title.getY() != 315)
+				{
+					value_title.setY(315);
+				}
+				value_title.setAlpha(delta_alpha);
+				value_text.setAlpha(delta_alpha);
+				command_box_2.setAlpha(delta_alpha);
+
+				value_title.invalidate();
+				value_text.invalidate();
+				command_box_2.invalidate();
 			}
 			else
 			{
-				if (!function_wheel.isVisible())
-				{
-					function_wheel.setVisible(true);
-					dummy_function_name_1.setVisible(false);
-					dummy_function_name_center.setVisible(false);
-					dummy_function_name_2.setVisible(false);
+				function_wheel.animateToItem(8, 0);
+				function_wheel.setY(74);
+				function_wheel.setVisible(true);
+				set_dummy_objects_visibility(false);
 
-					function_wheel.invalidate();
-				}
 				list_animation_state = LIST_ANIMATION_READY;
 				animation_tick = 0;
 			}
@@ -629,7 +655,19 @@ void main_screenView::handleTickEvent()
 		{
 			if (animation_tick < LIST_SET_ANIMATION_DURATION)
 			{
+				if(value_set_background.getX() != 25)
+				{
+					value_set_background.setPosition(25, 144, 750, 162);
+				}
+				if(value_title.getY() != (value_set_background.getY() + value_set_background.getHeight() / 2 - value_title.getHeight() / 2))
+				{
+					value_title.setTypedText(touchgfx::TypedText(T_VALUE_SET));
+					value_title.setY(value_set_background.getY() + value_set_background.getHeight() / 2 - value_title.getHeight() / 2);
+				}
+				value_title.setAlpha(delta_alpha);
 				value_set_background.setAlpha(delta_alpha);
+
+				value_title.invalidate();
 				value_set_background.invalidate();
 			}
 			else
@@ -642,12 +680,16 @@ void main_screenView::handleTickEvent()
 		{
 			if (animation_tick < KEYPAD_ANIMATION_DURATION)
 			{
+				value_title.setAlpha(255 - delta_alpha);
 				value_set_background.setAlpha(255 - delta_alpha);
+
+				value_title.invalidate();
 				value_set_background.invalidate();
 			}
 			else
 			{
 				value_title.setTypedText(touchgfx::TypedText(T_VALUE_TITLE));
+				value_title.setY(315);
 				value_title.invalidate();
 				list_animation_state = LIST_OUT_STEP_0;
 				animation_tick = 0;
@@ -657,6 +699,29 @@ void main_screenView::handleTickEvent()
 }
 
 void main_screenView::execute_function_pressed()
+{
+	switch(list_type)
+	{
+		case DEFAULT:
+		{
+			execute_default_function();
+			break;
+		}
+		case LANGUAGE:
+		{
+			Texts::setLanguage(function_wheel.getSelectedItem());
+			display_current_language();
+			list_animation_state = LIST_VALUE_SET_STEP_0;
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
+
+void main_screenView::execute_default_function()
 {
 	if(keypad_animation_state == KEYPAD_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
@@ -1019,12 +1084,12 @@ TEXTS main_screenView::get_language_text(int16_t itemIndex)
 	{
 		case GB:
 		{
-			return T_ENGLISH;
+			return T_ENGLISH_SMALL;
 			break;
 		}
 		case DE:
 		{
-			return T_GERMAN;
+			return T_GERMAN_SMALL;
 			break;
 		}
 		// NEW_LANGUAGE CODE START
@@ -1040,10 +1105,29 @@ TEXTS main_screenView::get_language_text(int16_t itemIndex)
 void main_screenView::scrollWheelSelectedItemHandler()
 {
 	// Show the value of the parameter
+	switch(list_type)
+	{
+		case DEFAULT:
+		{
+			show_default_value();
+			break;
+		}
+		case LANGUAGE:
+		{
+			// do nothing
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+}
 
+void main_screenView::show_default_value()
+{
 	presenter->stop_adc_retrieval();
-
-	switch (function_wheel.getSelectedItem())
+	switch(function_wheel.getSelectedItem())
 	{
 		case 0:
 		{
@@ -1162,9 +1246,16 @@ void main_screenView::set_dummy_objects_alpha(uint8_t delta_alpha)
 	dummy_function_name_1.invalidate();
 	dummy_background_2.invalidate();
 	dummy_function_name_2.invalidate();
+}
 
-	function_select_button.invalidate();
-	button_text.invalidate();
+void main_screenView::set_dummy_objects_visibility(bool visible)
+{
+	dummy_background_1.setVisible(visible);
+	dummy_function_name_1.setVisible(visible);
+	dummy_background_2.setVisible(visible);
+	dummy_function_name_2.setVisible(visible);
+	dummy_background_center.setVisible(visible);
+	dummy_function_name_center.setVisible(visible);
 }
 
 void main_screenView::set_value_objects(bool visible, uint16_t text_width)
@@ -1199,18 +1290,16 @@ void main_screenView::set_value_objects(bool visible, uint16_t text_width)
 
 void main_screenView::display_current_language()
 {
-	list_value = Texts::getLanguage();
-
-	switch(list_value)
+	switch(Texts::getLanguage())
 	{
 		case GB:
 		{
-			value_text.setTypedText(touchgfx::TypedText(T_ENGLISH));
+			value_text.setTypedText(touchgfx::TypedText(T_ENGLISH_LARGE));
 			break;
 		}
 		case DE:
 		{
-			value_text.setTypedText(touchgfx::TypedText(T_GERMAN));
+			value_text.setTypedText(touchgfx::TypedText(T_GERMAN_LARGE));
 			break;
 		}
 		// NEW_LANGUAGE CODE START
@@ -1220,6 +1309,7 @@ void main_screenView::display_current_language()
 			break;
 		}
 	}
+	value_text.invalidate();
 }
 
 void main_screenView::handle_dummy_function_names(const TEXTS top_function, const TEXTS center_function, const TEXTS lower_function)
@@ -1261,6 +1351,7 @@ void main_screenView::handle_list_type()
 		case 8:
 		{
 			function_wheel.setNumberOfItems(NUMBER_OF_LANGUAGES);
+			function_wheel.animateToItem(Texts::getLanguage(), 0);
 			list_type = LANGUAGE;
 			break;
 		}
@@ -1269,11 +1360,24 @@ void main_screenView::handle_list_type()
 			break;
 		}
 	}
+	refresh_function_wheel();
 }
 
 void main_screenView::set_function_objects_alpha(uint8_t delta_alpha)
 {
 	// set the alpha of the function wheel and the buttons / texts for when the user transitions to the user screen
+}
+
+void main_screenView::refresh_function_wheel()
+{
+	for(uint8_t i = 0; i < function_wheelSelectedListItems.getNumberOfDrawables(); i++)
+	{
+		function_wheelUpdateCenterItem((*((function_center*)function_wheelSelectedListItems.getDrawable(i))), function_wheel.getSelectedItem());
+	}
+	for(uint8_t i = 0; i < function_wheelListItems.getNumberOfDrawables(); i++)
+	{
+		function_wheelUpdateItem((*((function_element*)function_wheelListItems.getDrawable(i))), i + 1);
+	}
 }
 
 void main_screenView::display_adc(unsigned int adc_value)

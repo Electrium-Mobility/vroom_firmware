@@ -11,13 +11,13 @@
 #include <touchgfx/widgets/Image.hpp>
 #include <touchgfx/containers/SwipeContainer.hpp>
 #include <touchgfx/containers/Container.hpp>
+#include <touchgfx/containers/scrollers/ScrollWheelWithSelectionStyle.hpp>
+#include <gui/containers/function_element.hpp>
+#include <gui/containers/function_center.hpp>
 #include <touchgfx/widgets/BoxWithBorder.hpp>
 #include <touchgfx/widgets/TextArea.hpp>
 #include <touchgfx/containers/buttons/Buttons.hpp>
 #include <touchgfx/widgets/TextAreaWithWildcard.hpp>
-#include <touchgfx/containers/scrollers/ScrollWheelWithSelectionStyle.hpp>
-#include <gui/containers/function_element.hpp>
-#include <gui/containers/function_center.hpp>
 
 class main_screenViewBase : public touchgfx::View<main_screenPresenter>
 {
@@ -78,6 +78,9 @@ protected:
     touchgfx::Image background;
     touchgfx::SwipeContainer swipe_container;
     touchgfx::Container command_page;
+    touchgfx::ScrollWheelWithSelectionStyle function_wheel;
+    touchgfx::DrawableListItems<function_element, 4> function_wheelListItems;
+    touchgfx::DrawableListItems<function_center, 2> function_wheelSelectedListItems;
     touchgfx::BoxWithBorder value_set_background;
     touchgfx::BoxWithBorder command_box;
     touchgfx::BoxWithBorder command_box_2;
@@ -96,9 +99,6 @@ protected:
     touchgfx::Box dummy_background_2;
     touchgfx::TextArea dummy_function_name_1;
     touchgfx::TextArea dummy_function_name_2;
-    touchgfx::ScrollWheelWithSelectionStyle function_wheel;
-    touchgfx::DrawableListItems<function_element, 4> function_wheelListItems;
-    touchgfx::DrawableListItems<function_center, 2> function_wheelSelectedListItems;
     touchgfx::Container motor_data;
     touchgfx::TextArea diagnostics_title;
     touchgfx::TextAreaWithOneWildcard fet_temp_wild;

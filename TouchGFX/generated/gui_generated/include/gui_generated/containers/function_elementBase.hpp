@@ -16,15 +16,6 @@ public:
     virtual ~function_elementBase();
     virtual void initialize();
 
-    /*
-     * Custom Actions
-     */
-    virtual void resize_widget(int16_t value)
-    {
-        // Override and implement this function in Screen1
-    }
-    
-
 protected:
     FrontendApplication& application() {
         return *static_cast<FrontendApplication*>(touchgfx::Application::getInstance());

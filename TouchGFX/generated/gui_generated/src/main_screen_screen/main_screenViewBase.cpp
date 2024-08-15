@@ -27,6 +27,23 @@ main_screenViewBase::main_screenViewBase() :
 
     command_page.setWidth(800);
     command_page.setHeight(480);
+    function_wheel.setPosition(25, 74, 750, 162);
+    function_wheel.setHorizontal(false);
+    function_wheel.setCircular(true);
+    function_wheel.setEasingEquation(touchgfx::EasingEquations::backEaseOut);
+    function_wheel.setSwipeAcceleration(10);
+    function_wheel.setDragAcceleration(10);
+    function_wheel.setNumberOfItems(9);
+    function_wheel.setSelectedItemOffset(54);
+    function_wheel.setSelectedItemExtraSize(0, 0);
+    function_wheel.setSelectedItemMargin(0, 0);
+    function_wheel.setDrawableSize(54, 0);
+    function_wheel.setDrawables(function_wheelListItems, updateItemCallback,
+    
+                          function_wheelSelectedListItems, updateItemCallback);
+    function_wheel.animateToItem(0, 0);
+    command_page.add(function_wheel);
+
     value_set_background.setPosition(445, 240, 355, 239);
     value_set_background.setColor(touchgfx::Color::getColorFromRGB(0, 102, 153));
     value_set_background.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -88,65 +105,54 @@ main_screenViewBase::main_screenViewBase() :
     value_text.setTypedText(touchgfx::TypedText(T_KEYPAD_VALUE));
     command_page.add(value_text);
 
-    function_select_button.setBoxWithBorderPosition(0, 0, 379, 55);
+    function_select_button.setBoxWithBorderPosition(0, 0, 420, 55);
     function_select_button.setBorderSize(5);
     function_select_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(0, 102, 153), touchgfx::Color::getColorFromRGB(0, 153, 204), touchgfx::Color::getColorFromRGB(0, 51, 102), touchgfx::Color::getColorFromRGB(51, 102, 153));
     function_select_button.setAction(flexButtonCallback);
-    function_select_button.setPosition(211, 260, 379, 55);
+    function_select_button.setPosition(190, 260, 420, 55);
     command_page.add(function_select_button);
 
-    button_text.setPosition(211, 260, 379, 55);
+    button_text.setPosition(190, 260, 420, 55);
     button_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     button_text.setLinespacing(0);
     button_text.setTypedText(touchgfx::TypedText(T_EXECUTE_FUNCTION));
     command_page.add(button_text);
 
-    dummy_background_center.setPosition(25, 129, 750, 55);
+    dummy_background_center.setPosition(25, 128, 750, 54);
     dummy_background_center.setColor(touchgfx::Color::getColorFromRGB(163, 163, 163));
+    dummy_background_center.setVisible(false);
     command_page.add(dummy_background_center);
 
-    dummy_function_name_center.setPosition(25, 132, 750, 50);
+    dummy_function_name_center.setPosition(25, 130, 750, 50);
     dummy_function_name_center.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     dummy_function_name_center.setLinespacing(0);
     dummy_function_name_center.setTypedText(touchgfx::TypedText(T_FUNCTION_0));
+    dummy_function_name_center.setVisible(false);
     command_page.add(dummy_function_name_center);
 
-    dummy_background_1.setPosition(25, 74, 750, 55);
+    dummy_background_1.setPosition(25, 74, 750, 54);
     dummy_background_1.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    dummy_background_1.setVisible(false);
     command_page.add(dummy_background_1);
 
-    dummy_background_2.setPosition(25, 184, 750, 55);
+    dummy_background_2.setPosition(25, 182, 750, 54);
     dummy_background_2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
+    dummy_background_2.setVisible(false);
     command_page.add(dummy_background_2);
 
-    dummy_function_name_1.setPosition(25, 73, 750, 50);
+    dummy_function_name_1.setPosition(25, 76, 750, 50);
     dummy_function_name_1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     dummy_function_name_1.setLinespacing(0);
     dummy_function_name_1.setTypedText(touchgfx::TypedText(T_FUNCTION_6));
+    dummy_function_name_1.setVisible(false);
     command_page.add(dummy_function_name_1);
 
-    dummy_function_name_2.setPosition(25, 185, 750, 50);
+    dummy_function_name_2.setPosition(25, 184, 750, 50);
     dummy_function_name_2.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     dummy_function_name_2.setLinespacing(0);
     dummy_function_name_2.setTypedText(touchgfx::TypedText(T_FUNCTION_1));
+    dummy_function_name_2.setVisible(false);
     command_page.add(dummy_function_name_2);
-
-    function_wheel.setPosition(25, 74, 750, 165);
-    function_wheel.setHorizontal(false);
-    function_wheel.setCircular(true);
-    function_wheel.setEasingEquation(touchgfx::EasingEquations::backEaseOut);
-    function_wheel.setSwipeAcceleration(10);
-    function_wheel.setDragAcceleration(10);
-    function_wheel.setNumberOfItems(9);
-    function_wheel.setSelectedItemOffset(55);
-    function_wheel.setSelectedItemExtraSize(0, 0);
-    function_wheel.setSelectedItemMargin(0, 0);
-    function_wheel.setDrawableSize(56, 0);
-    function_wheel.setDrawables(function_wheelListItems, updateItemCallback,
-    
-                          function_wheelSelectedListItems, updateItemCallback);
-    function_wheel.animateToItem(0, 0);
-    command_page.add(function_wheel);
 
     swipe_container.add(command_page);
 

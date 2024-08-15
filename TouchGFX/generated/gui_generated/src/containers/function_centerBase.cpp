@@ -8,12 +8,12 @@
 function_centerBase::function_centerBase()
 {
     setWidth(750);
-    setHeight(56);
-    background.setPosition(0, 0, 750, 55);
+    setHeight(54);
+    background.setPosition(0, 0, 750, 54);
     background.setColor(touchgfx::Color::getColorFromRGB(163, 163, 163));
     add(background);
 
-    function_name.setPosition(0, 3, 750, 50);
+    function_name.setPosition(0, 2, 750, 50);
     function_name.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     function_name.setLinespacing(0);
     function_name.setTypedText(touchgfx::TypedText(T_FUNCTION_0));

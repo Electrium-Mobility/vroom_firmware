@@ -457,6 +457,24 @@
                 "Height": 480,
                 "Components": [
                   {
+                    "Type": "ScrollWheel",
+                    "Name": "function_wheel",
+                    "X": 25,
+                    "Y": 74,
+                    "Width": 750,
+                    "Height": 162,
+                    "SelectedItemOffset": 54,
+                    "UseSelectedStyle": true,
+                    "SelectedItemTemplateName": "function_center",
+                    "IsCircular": true,
+                    "ItemTemplateName": "function_element",
+                    "NumberofItems": 9,
+                    "Easing": "Back",
+                    "EasingOption": "Out",
+                    "SwipeAcceleration": 1.0,
+                    "DragAcceleration": 1.0
+                  },
+                  {
                     "Type": "BoxWithBorder",
                     "Name": "value_set_background",
                     "X": 445,
@@ -601,9 +619,9 @@
                   {
                     "Type": "FlexButton",
                     "Name": "function_select_button",
-                    "X": 211,
+                    "X": 190,
                     "Y": 260,
-                    "Width": 379,
+                    "Width": 420,
                     "Height": 55,
                     "ButtonTrigger": {
                       "Type": "ClickButtonTrigger"
@@ -611,7 +629,7 @@
                     "ButtonStyles": [
                       {
                         "Type": "BoxWithBorderButtonStyle",
-                        "Width": 379,
+                        "Width": 420,
                         "Height": 55,
                         "BorderSize": 5,
                         "ColorReleased": {
@@ -637,9 +655,9 @@
                   {
                     "Type": "TextArea",
                     "Name": "button_text",
-                    "X": 211,
+                    "X": 190,
                     "Y": 260,
-                    "Width": 379,
+                    "Width": 420,
                     "Height": 55,
                     "TextId": "execute_function",
                     "TextRotation": "0"
@@ -648,9 +666,10 @@
                     "Type": "Box",
                     "Name": "dummy_background_center",
                     "X": 25,
-                    "Y": 129,
+                    "Y": 128,
                     "Width": 750,
-                    "Height": 55,
+                    "Height": 54,
+                    "Visible": false,
                     "Color": {
                       "Red": 163,
                       "Green": 163,
@@ -661,9 +680,10 @@
                     "Type": "TextArea",
                     "Name": "dummy_function_name_center",
                     "X": 25,
-                    "Y": 132,
+                    "Y": 130,
                     "Width": 750,
                     "Height": 50,
+                    "Visible": false,
                     "TextId": "function_0",
                     "TextRotation": "0"
                   },
@@ -673,7 +693,8 @@
                     "X": 25,
                     "Y": 74,
                     "Width": 750,
-                    "Height": 55,
+                    "Height": 54,
+                    "Visible": false,
                     "Color": {
                       "Red": 255,
                       "Green": 255,
@@ -684,9 +705,10 @@
                     "Type": "Box",
                     "Name": "dummy_background_2",
                     "X": 25,
-                    "Y": 184,
+                    "Y": 182,
                     "Width": 750,
-                    "Height": 55,
+                    "Height": 54,
+                    "Visible": false,
                     "Color": {
                       "Red": 255,
                       "Green": 255,
@@ -697,9 +719,10 @@
                     "Type": "TextArea",
                     "Name": "dummy_function_name_1",
                     "X": 25,
-                    "Y": 73,
+                    "Y": 76,
                     "Width": 750,
                     "Height": 50,
+                    "Visible": false,
                     "TextId": "function_6",
                     "TextRotation": "0"
                   },
@@ -707,29 +730,12 @@
                     "Type": "TextArea",
                     "Name": "dummy_function_name_2",
                     "X": 25,
-                    "Y": 185,
+                    "Y": 184,
                     "Width": 750,
                     "Height": 50,
+                    "Visible": false,
                     "TextId": "function_1",
                     "TextRotation": "0"
-                  },
-                  {
-                    "Type": "ScrollWheel",
-                    "Name": "function_wheel",
-                    "X": 25,
-                    "Y": 74,
-                    "Width": 750,
-                    "Height": 165,
-                    "SelectedItemOffset": 55,
-                    "UseSelectedStyle": true,
-                    "SelectedItemTemplateName": "function_center",
-                    "IsCircular": true,
-                    "ItemTemplateName": "function_element",
-                    "NumberofItems": 9,
-                    "Easing": "Back",
-                    "EasingOption": "Out",
-                    "SwipeAcceleration": 1.0,
-                    "DragAcceleration": 1.0
                   }
                 ]
               },
@@ -984,15 +990,15 @@
       {
         "Name": "function_element",
         "X": 25,
-        "Y": -56,
+        "Y": -54,
         "Width": 750,
-        "Height": 56,
+        "Height": 54,
         "Components": [
           {
             "Type": "Box",
             "Name": "background",
             "Width": 750,
-            "Height": 56,
+            "Height": 54,
             "Color": {
               "Red": 255,
               "Green": 255,
@@ -1002,33 +1008,27 @@
           {
             "Type": "TextArea",
             "Name": "function_name",
+            "Y": 2,
             "Width": 750,
-            "Height": 56,
+            "Height": 50,
             "TextId": "function_0",
             "TextRotation": "0"
           }
         ],
-        "Interactions": [],
-        "CustomActions": [
-          {
-            "Name": "resize_widget",
-            "HasValue": true,
-            "ValueType": "int16_t"
-          }
-        ]
+        "Interactions": []
       },
       {
         "Name": "function_center",
         "X": 25,
-        "Y": -56,
+        "Y": -54,
         "Width": 750,
-        "Height": 56,
+        "Height": 54,
         "Components": [
           {
             "Type": "Box",
             "Name": "background",
             "Width": 750,
-            "Height": 55,
+            "Height": 54,
             "Color": {
               "Red": 163,
               "Green": 163,
@@ -1038,7 +1038,7 @@
           {
             "Type": "TextArea",
             "Name": "function_name",
-            "Y": 3,
+            "Y": 2,
             "Width": 750,
             "Height": 50,
             "TextId": "function_0",
