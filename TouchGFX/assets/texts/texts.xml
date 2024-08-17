@@ -42,9 +42,9 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Keyboard">
-      <Text Id="view_password" Alignment="Left" TypographyId="Keypad_command_descriptions">
+      <Text Id="view_password" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">View Password</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Zeig Kennwort</Translation>
       </Text>
       <Text Id="NumMode" Alignment="Center" TypographyId="Mode">
         <Translation Language="GB">ABC</Translation>
@@ -78,23 +78,23 @@
       </Text>
       <Text Id="voltage_in" Alignment="Left" TypographyId="Medium">
         <Translation Language="GB">Voltage In       : </Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Spannung Ein :</Translation>
       </Text>
       <Text Id="current_in" Alignment="Left" TypographyId="Medium">
         <Translation Language="GB">Current In       :</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Strom Ein :</Translation>
       </Text>
       <Text Id="motor_temp" Alignment="Left" TypographyId="Medium">
         <Translation Language="GB">Motor Temp.    :</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Motoren Temp :</Translation>
       </Text>
       <Text Id="fet_temp" Alignment="Left" TypographyId="Medium">
         <Translation Language="GB">FET Temp.       :</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">FET Temp :</Translation>
       </Text>
-      <Text Id="motor_diagnostics" Alignment="Left" TypographyId="Large">
+      <Text Id="motor_diagnostics" Alignment="Center" TypographyId="Large">
         <Translation Language="GB">Motor Diagnostics</Translation>
-        <Translation Language="DE"></Translation>
+        <Translation Language="DE">Motoren Diagnostik</Translation>
       </Text>
     </TextGroup>
     <TextGroup Id="Login">

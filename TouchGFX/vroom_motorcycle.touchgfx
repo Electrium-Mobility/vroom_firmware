@@ -116,9 +116,9 @@
           {
             "Type": "FlexButton",
             "Name": "view_password_button",
-            "X": 61,
+            "X": 30,
             "Y": 383,
-            "Width": 330,
+            "Width": 361,
             "Height": 80,
             "ButtonTrigger": {
               "Type": "ClickButtonTrigger"
@@ -126,7 +126,7 @@
             "ButtonStyles": [
               {
                 "Type": "BoxWithBorderButtonStyle",
-                "Width": 330,
+                "Width": 361,
                 "Height": 80,
                 "LockToFlexButtonSize": true,
                 "BorderSize": 5,
@@ -178,7 +178,7 @@
             "Name": "enter_button",
             "X": 409,
             "Y": 383,
-            "Width": 330,
+            "Width": 361,
             "Height": 80,
             "ButtonTrigger": {
               "Type": "ClickButtonTrigger"
@@ -186,7 +186,38 @@
             "ButtonStyles": [
               {
                 "Type": "BoxWithBorderButtonStyle",
-                "Width": 330,
+                "Width": 361,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "cancel_button",
+            "X": 690,
+            "Y": 383,
+            "Width": 80,
+            "Height": 80,
+            "Visible": false,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 80,
                 "Height": 80,
                 "LockToFlexButtonSize": true,
                 "BorderSize": 5,
@@ -273,20 +304,19 @@
           {
             "Type": "TextArea",
             "Name": "view_password_title",
-            "X": 78,
+            "X": 47,
             "Y": 399,
-            "Width": 297,
-            "Height": 48,
+            "Width": 327,
+            "Height": 49,
             "TextId": "view_password",
-            "TextRotation": "0",
-            "AutoSize": true
+            "TextRotation": "0"
           },
           {
             "Type": "TextArea",
             "Name": "enter_title",
             "X": 426,
             "Y": 399,
-            "Width": 297,
+            "Width": 327,
             "Height": 48,
             "TextId": "login",
             "TextRotation": "0"
@@ -350,6 +380,16 @@
             "Height": 47,
             "RelativeFilename": "enter_icon.png",
             "Alpha": 0
+          },
+          {
+            "Type": "Image",
+            "Name": "cancel_icon",
+            "X": 700,
+            "Y": 393,
+            "Width": 60,
+            "Height": 60,
+            "Visible": false,
+            "RelativeFilename": "cancel_icon.png"
           }
         ],
         "Interactions": [
@@ -419,6 +459,17 @@
               "Type": "ActionHide",
               "ActionComponent": "error_window"
             }
+          },
+          {
+            "InteractionName": "cancel_button_interaction",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "cancel_button"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "cancel_pressed"
+            }
           }
         ],
         "CustomActions": [
@@ -447,7 +498,7 @@
             "IndicatorImageNormal": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_off_normal.png",
             "IndicatorImageHighlight": "__generated\\alternate_theme_images_widgets_swipecontainer_medium_on_active.png",
             "EndSwipeElasticWidth": 50,
-            "SelectedPage": "command_page",
+            "SelectedPage": "motor_data",
             "Preset": "alternate_theme\\presets\\swipecontainer\\medium_active.json",
             "Components": [
               {
@@ -748,9 +799,8 @@
                   {
                     "Type": "TextArea",
                     "Name": "diagnostics_title",
-                    "X": 221,
                     "Y": 35,
-                    "Width": 359,
+                    "Width": 800,
                     "Height": 48,
                     "TextId": "motor_diagnostics",
                     "TextRotation": "0",
@@ -758,8 +808,7 @@
                       "Red": 255,
                       "Green": 255,
                       "Blue": 255
-                    },
-                    "AutoSize": true
+                    }
                   },
                   {
                     "Type": "TextArea",

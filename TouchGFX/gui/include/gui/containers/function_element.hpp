@@ -14,7 +14,7 @@ public:
 
     virtual void setupElement(TEXTS text);
 
-    virtual void resize_widget(int16_t value);
+    void set_alpha(uint8_t alpha);
 protected:
 };
 

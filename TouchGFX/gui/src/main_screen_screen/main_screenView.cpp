@@ -691,6 +691,7 @@ void main_screenView::handleTickEvent()
 				value_title.setTypedText(touchgfx::TypedText(T_VALUE_TITLE));
 				value_title.setY(315);
 				value_title.invalidate();
+				function_wheel.setTouchable(true);
 				list_animation_state = LIST_OUT_STEP_0;
 				animation_tick = 0;
 			}
@@ -711,6 +712,7 @@ void main_screenView::execute_function_pressed()
 		{
 			Texts::setLanguage(function_wheel.getSelectedItem());
 			display_current_language();
+			function_wheel.setTouchable(false);
 			list_animation_state = LIST_VALUE_SET_STEP_0;
 			break;
 		}
@@ -853,7 +855,7 @@ void main_screenView::execute_default_function()
 				else
 				{
 					presenter->set_user_screen_state(Model::ADD);
-					to_user_screen();
+					animation_state = FADE_OUT;
 				}
 				break;
 			}
@@ -866,7 +868,7 @@ void main_screenView::execute_default_function()
 
 				// Edit User
 				presenter->set_user_screen_state(Model::EDIT);
-				to_user_screen();
+				animation_state = FADE_OUT;
 				break;
 			}
 			case 7:
@@ -883,7 +885,7 @@ void main_screenView::execute_default_function()
 				else
 				{
 					presenter->set_user_screen_state(Model::REMOVE);
-					to_user_screen();
+					animation_state = FADE_OUT;
 				}
 				break;
 			}
@@ -1163,7 +1165,7 @@ void main_screenView::show_default_value()
 			handle_dummy_function_names(T_FUNCTION_1, T_FUNCTION_2, T_FUNCTION_3);
 
 			keypad_value_f = presenter->get_CAN_transmit_frequency();
-			Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%1.2f",(float) keypad_value_f);
+			Unicode::snprintfFloat(value_textBuffer, VALUE_TEXT_SIZE, "%1.2f",(float) keypad_value_f);
 
 			set_value_objects(true, 306);
 			break;
@@ -1235,12 +1237,12 @@ void main_screenView::show_default_value()
 	}
 }
 
-void main_screenView::set_dummy_objects_alpha(uint8_t delta_alpha)
+void main_screenView::set_dummy_objects_alpha(uint8_t alpha)
 {
-	dummy_background_1.setAlpha(delta_alpha);
-	dummy_function_name_1.setAlpha(delta_alpha);
-	dummy_background_2.setAlpha(delta_alpha);
-	dummy_function_name_2.setAlpha(delta_alpha);
+	dummy_background_1.setAlpha(alpha);
+	dummy_function_name_1.setAlpha(alpha);
+	dummy_background_2.setAlpha(alpha);
+	dummy_function_name_2.setAlpha(alpha);
 
 	dummy_background_1.invalidate();
 	dummy_function_name_1.invalidate();
@@ -1323,16 +1325,16 @@ void main_screenView::handle_dummy_function_names(const TEXTS top_function, cons
 	dummy_function_name_2.invalidate();
 }
 
-void main_screenView::set_diagnostic_objects_alpha(uint8_t delta_alpha)
+void main_screenView::set_diagnostic_objects_alpha(uint8_t alpha)
 {
-	fet_temp.setAlpha(delta_alpha);
-	fet_temp_wild.setAlpha(delta_alpha);
-	motor_temp.setAlpha(delta_alpha);
-	motor_temp_wild.setAlpha(delta_alpha);
-	volt_in.setAlpha(delta_alpha);
-	volt_in_wild.setAlpha(delta_alpha);
-	curr_in.setAlpha(delta_alpha);
-	curr_in_wild.setAlpha(delta_alpha);
+	fet_temp.setAlpha(alpha);
+	fet_temp_wild.setAlpha(alpha);
+	motor_temp.setAlpha(alpha);
+	motor_temp_wild.setAlpha(alpha);
+	volt_in.setAlpha(alpha);
+	volt_in_wild.setAlpha(alpha);
+	curr_in.setAlpha(alpha);
+	curr_in_wild.setAlpha(alpha);
 
 	fet_temp.invalidate();
 	fet_temp_wild.invalidate();
@@ -1363,9 +1365,25 @@ void main_screenView::handle_list_type()
 	refresh_function_wheel();
 }
 
-void main_screenView::set_function_objects_alpha(uint8_t delta_alpha)
+void main_screenView::set_function_objects_alpha(uint8_t alpha)
 {
 	// set the alpha of the function wheel and the buttons / texts for when the user transitions to the user screen
+	for(uint8_t i = 0; i < function_wheelSelectedListItems.getNumberOfDrawables(); i++)
+	{
+		(*((function_center*)function_wheelSelectedListItems.getDrawable(i))).set_alpha(alpha);
+	}
+
+	for(uint8_t i = 0; i < function_wheelListItems.getNumberOfDrawables(); i++)
+	{
+		(*((function_element*)function_wheelListItems.getDrawable(i))).set_alpha(alpha);
+	}
+
+	function_select_button.setAlpha(alpha);
+	button_text.setAlpha(alpha);
+
+	function_wheel.invalidate();
+	function_select_button.invalidate();
+	button_text.invalidate();
 }
 
 void main_screenView::refresh_function_wheel()
@@ -1378,6 +1396,7 @@ void main_screenView::refresh_function_wheel()
 	{
 		function_wheelUpdateItem((*((function_element*)function_wheelListItems.getDrawable(i))), i + 1);
 	}
+	function_wheel.setSelectedItemOffset(50);
 }
 
 void main_screenView::display_adc(unsigned int adc_value)

@@ -18,13 +18,15 @@ public:
     virtual void user_pressed();
     virtual void password_pressed();
     virtual void enter_pressed();
+    virtual void cancel_pressed();
     virtual void toggle_password_visibility();
     int8_t check_usernames();
     void handle_valid_username_password();
     void handle_valid_username_invalid_password();
     void handle_invalid_username_password();
 
-    void set_all_objects_alpha(uint8_t delta_alpha);
+    void set_all_objects_alpha(uint8_t alpha);
+    void setup_cancel_button();
 
     enum AnimationState
 	{

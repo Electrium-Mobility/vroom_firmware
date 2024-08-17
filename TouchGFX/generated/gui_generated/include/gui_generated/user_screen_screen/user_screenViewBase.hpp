@@ -47,6 +47,10 @@ public:
     {
         // Override and implement this function in user_screen
     }
+    virtual void cancel_pressed()
+    {
+        // Override and implement this function in user_screen
+    }
 
 protected:
     FrontendApplication& application() {
@@ -62,6 +66,7 @@ protected:
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  view_password_button;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  password_button;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  cancel_button;
     touchgfx::TextAreaWithOneWildcard username_text;
     touchgfx::TextAreaWithOneWildcard password_text;
     touchgfx::BoxWithBorder logo_background;
@@ -74,6 +79,7 @@ protected:
     touchgfx::ButtonWithLabel close_popup;
     touchgfx::TextArea error_text;
     touchgfx::Image enter_icon;
+    touchgfx::Image cancel_icon;
 
     /*
      * Wildcard Buffers

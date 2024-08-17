@@ -158,7 +158,7 @@ main_screenViewBase::main_screenViewBase() :
 
     motor_data.setWidth(800);
     motor_data.setHeight(480);
-    diagnostics_title.setXY(221, 35);
+    diagnostics_title.setPosition(0, 35, 800, 48);
     diagnostics_title.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     diagnostics_title.setLinespacing(0);
     diagnostics_title.setTypedText(touchgfx::TypedText(T_MOTOR_DIAGNOSTICS));
@@ -222,7 +222,7 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.add(motor_data);
 
-    swipe_container.setSelectedPage(0);
+    swipe_container.setSelectedPage(1);
     add(swipe_container);
 }
 

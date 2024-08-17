@@ -25,11 +25,11 @@ user_screenViewBase::user_screenViewBase() :
     user_button.setPosition(80, 188, 720, 80);
     add(user_button);
 
-    view_password_button.setBoxWithBorderPosition(0, 0, 330, 80);
+    view_password_button.setBoxWithBorderPosition(0, 0, 361, 80);
     view_password_button.setBorderSize(5);
     view_password_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(73, 184, 72), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     view_password_button.setAction(flexButtonCallback);
-    view_password_button.setPosition(61, 383, 330, 80);
+    view_password_button.setPosition(30, 383, 361, 80);
     add(view_password_button);
 
     password_button.setBoxWithBorderPosition(0, 0, 720, 80);
@@ -39,12 +39,20 @@ user_screenViewBase::user_screenViewBase() :
     password_button.setPosition(80, 285, 720, 80);
     add(password_button);
 
-    enter_button.setBoxWithBorderPosition(0, 0, 330, 80);
+    enter_button.setBoxWithBorderPosition(0, 0, 361, 80);
     enter_button.setBorderSize(5);
     enter_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(73, 184, 72), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
     enter_button.setAction(flexButtonCallback);
-    enter_button.setPosition(409, 383, 330, 80);
+    enter_button.setPosition(409, 383, 361, 80);
     add(enter_button);
+
+    cancel_button.setBoxWithBorderPosition(0, 0, 80, 80);
+    cancel_button.setBorderSize(5);
+    cancel_button.setBoxWithBorderColors(touchgfx::Color::getColorFromRGB(255, 255, 255), touchgfx::Color::getColorFromRGB(73, 184, 72), touchgfx::Color::getColorFromRGB(0, 0, 0), touchgfx::Color::getColorFromRGB(0, 0, 0));
+    cancel_button.setVisible(false);
+    cancel_button.setAction(flexButtonCallback);
+    cancel_button.setPosition(690, 383, 80, 80);
+    add(cancel_button);
 
     username_text.setPosition(86, 204, 715, 48);
     username_text.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -80,13 +88,13 @@ user_screenViewBase::user_screenViewBase() :
     user_icon.setBitmap(touchgfx::Bitmap(BITMAP_USERNAME_ICON_ID));
     add(user_icon);
 
-    view_password_title.setXY(78, 399);
+    view_password_title.setPosition(47, 399, 327, 49);
     view_password_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     view_password_title.setLinespacing(0);
     view_password_title.setTypedText(touchgfx::TypedText(T_VIEW_PASSWORD));
     add(view_password_title);
 
-    enter_title.setPosition(426, 399, 297, 48);
+    enter_title.setPosition(426, 399, 327, 48);
     enter_title.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     enter_title.setLinespacing(0);
     enter_title.setTypedText(touchgfx::TypedText(T_LOGIN));
@@ -116,6 +124,11 @@ user_screenViewBase::user_screenViewBase() :
     enter_icon.setBitmap(touchgfx::Bitmap(BITMAP_ENTER_ICON_ID));
     enter_icon.setAlpha(0);
     add(enter_icon);
+
+    cancel_icon.setXY(700, 393);
+    cancel_icon.setBitmap(touchgfx::Bitmap(BITMAP_CANCEL_ICON_ID));
+    cancel_icon.setVisible(false);
+    add(cancel_icon);
 }
 
 user_screenViewBase::~user_screenViewBase()
@@ -157,6 +170,13 @@ void user_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButt
         //When view_password_button clicked call virtual function
         //Call toggle_password_visibility
         toggle_password_visibility();
+    }
+    if (&src == &cancel_button)
+    {
+        //cancel_button_interaction
+        //When cancel_button clicked call virtual function
+        //Call cancel_pressed
+        cancel_pressed();
     }
 }
 

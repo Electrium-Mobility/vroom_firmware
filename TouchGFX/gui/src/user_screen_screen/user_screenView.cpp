@@ -39,18 +39,21 @@ void user_screenView::setupScreen()
 		case Model::EDIT:
 		{
 			enter_title.setTypedText(touchgfx::TypedText(T_LOGIN));
+			setup_cancel_button();
 			background.setAlpha(0);
 			break;
 		}
 		case Model::REMOVE:
 		{
 			enter_title.setTypedText(touchgfx::TypedText(T_REMOVE_USER));
+			setup_cancel_button();
 			background.setAlpha(0);
 			break;
 		}
 		case Model::ADD:
 		{
 			enter_title.setTypedText(touchgfx::TypedText(T_ADD_USER));
+			setup_cancel_button();
 			background.setAlpha(0);
 			break;
 		}
@@ -381,6 +384,11 @@ void user_screenView:: enter_pressed()
 	}
 }
 
+void user_screenView:: cancel_pressed()
+{
+	animation_state = FADE_OUT;
+}
+
 void user_screenView:: handle_valid_username_password()
 {
 	switch(presenter->get_user_screen_state())
@@ -573,20 +581,29 @@ int8_t user_screenView:: check_usernames()
 	return -1;
 }
 
-void user_screenView:: set_all_objects_alpha(uint8_t delta_alpha)
+void user_screenView:: set_all_objects_alpha(uint8_t alpha)
 {
-	bike_logo.setAlpha(delta_alpha);
-	logo_background.setAlpha(delta_alpha);
-	user_button.setAlpha(delta_alpha);
-	password_button.setAlpha(delta_alpha);
-	username_text.setAlpha(delta_alpha);
-	password_text.setAlpha(delta_alpha);
-	view_password_title.setAlpha(delta_alpha);
-	view_password_button.setAlpha(delta_alpha);
-	enter_button.setAlpha(delta_alpha);
-	enter_title.setAlpha(delta_alpha);
-	user_icon.setAlpha(delta_alpha);
-	password_icon.setAlpha(delta_alpha);
+	bike_logo.setAlpha(alpha);
+	logo_background.setAlpha(alpha);
+	user_button.setAlpha(alpha);
+	password_button.setAlpha(alpha);
+	username_text.setAlpha(alpha);
+	password_text.setAlpha(alpha);
+	view_password_title.setAlpha(alpha);
+	view_password_button.setAlpha(alpha);
+	enter_button.setAlpha(alpha);
+	enter_title.setAlpha(alpha);
+	user_icon.setAlpha(alpha);
+	password_icon.setAlpha(alpha);
+
+	if(cancel_button.isVisible())
+	{
+		cancel_button.setAlpha(alpha);
+		cancel_icon.setAlpha(alpha);
+
+		cancel_button.invalidate();
+		cancel_icon.invalidate();
+	}
 
 	bike_logo.invalidate();
 	logo_background.invalidate();
@@ -600,4 +617,21 @@ void user_screenView:: set_all_objects_alpha(uint8_t delta_alpha)
 	enter_title.invalidate();
 	user_icon.invalidate();
 	password_icon.invalidate();
+}
+
+void user_screenView::setup_cancel_button()
+{
+	cancel_icon.setVisible(true);
+	cancel_icon.setAlpha(0);
+	cancel_button.setVisible(true);
+	cancel_button.setAlpha(0);
+
+	enter_button.setWidth(enter_button.getWidth() - (cancel_button.getWidth() + 18));
+	enter_button.setBoxWithBorderWidth(enter_button.getWidth());
+	enter_title.setWidth(enter_button.getWidth() - 17);
+
+	cancel_icon.invalidate();
+	cancel_button.invalidate();
+	enter_button.invalidate();
+	enter_title.invalidate();
 }

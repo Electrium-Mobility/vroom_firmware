@@ -645,6 +645,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_alternate_theme_images_widgets_swipecontainer_medium_on_active.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/generated/image_cancel_icon.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_cancel_icon.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/generated/image_electrium_bike.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_electrium_bike.cpp</locationURI>

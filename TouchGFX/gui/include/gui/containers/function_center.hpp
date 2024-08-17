@@ -14,6 +14,8 @@ public:
 
     virtual void setupElement(TEXTS text);
 
+    void set_alpha(uint8_t alpha);
+
 protected:
 };
 
