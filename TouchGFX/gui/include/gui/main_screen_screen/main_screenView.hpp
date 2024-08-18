@@ -82,16 +82,7 @@ public:
 	TEXTS get_language_text(int16_t itemIndex);
 
 	virtual void execute_function_pressed();
-	void execute_default_function();
 
-	void set_diagnostic_objects_alpha(uint8_t alpha);
-	void set_function_objects_alpha(uint8_t alpha);
-	void handle_dummy_function_names(const TEXTS top_function, const TEXTS center_function, const TEXTS lower_function);
-	void set_dummy_objects_alpha(uint8_t alpha);
-	void set_dummy_objects_visibility(bool visible);
-	void set_value_objects(bool visible, uint16_t text_width);
-	void display_current_language();
-	void handle_list_type();
 
     virtual void display_adc(unsigned int adc_value);
 
@@ -119,8 +110,25 @@ protected:
 
 	Callback<main_screenView> scrollWheelSelectedItemCallback;
 	void scrollWheelSelectedItemHandler();
-	void show_default_value();
 
+private:
+	void handle_animation_state();
+	void handle_keypad_animation_state();
+	void handle_calibration_animation_state();
+	void handle_transition_animation_state();
+	void handle_list_animation_state();
+
+	void execute_default_function();
+
+	void set_diagnostic_objects_alpha(uint8_t alpha);
+	void set_function_objects_alpha(uint8_t alpha);
+	void handle_dummy_function_names(const TEXTS top_function, const TEXTS center_function, const TEXTS lower_function);
+	void set_dummy_objects_alpha(uint8_t alpha);
+	void set_dummy_objects_visibility(bool visible);
+	void set_value_objects(bool visible, uint16_t text_width);
+	void display_current_language();
+	void handle_list_type();
+	void show_default_value();
 	void refresh_function_wheel();
 
 	// Other Pages

@@ -628,7 +628,7 @@ void user_screenView::setup_cancel_button()
 
 	enter_button.setWidth(enter_button.getWidth() - (cancel_button.getWidth() + 18));
 	enter_button.setBoxWithBorderWidth(enter_button.getWidth());
-	enter_title.setWidth(enter_button.getWidth() - 17);
+	enter_title.setWidth(enter_button.getWidth() - 34);
 
 	cancel_icon.invalidate();
 	cancel_button.invalidate();

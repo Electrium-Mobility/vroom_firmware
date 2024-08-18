@@ -30,6 +30,11 @@ public:
 
     virtual void display_adc(unsigned int adc_value);
 
+    Model::UserScreenState get_user_screen_state()
+	{
+		return model->get_user_screen_state();
+	}
+
     void set_user_screen_state(Model::UserScreenState state)
     {
     	model->set_user_screen_state(state);

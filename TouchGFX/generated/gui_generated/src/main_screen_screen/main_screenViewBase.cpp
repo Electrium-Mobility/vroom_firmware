@@ -222,7 +222,7 @@ main_screenViewBase::main_screenViewBase() :
 
     swipe_container.add(motor_data);
 
-    swipe_container.setSelectedPage(1);
+    swipe_container.setSelectedPage(0);
     add(swipe_container);
 }
 

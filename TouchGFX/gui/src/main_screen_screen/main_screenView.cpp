@@ -73,6 +73,38 @@ void main_screenView::setupScreen()
 	background.setAlpha(0);
 	background.invalidate();
 
+	switch(presenter->get_user_screen_state())
+	{
+		case Model::LOGIN:
+		{
+			swipe_container.setSelectedPage(1);
+			break;
+		}
+		case Model::EDIT:
+		{
+			swipe_container.setSelectedPage(0);
+			function_wheel.animateToItem(6, 0);
+			set_function_objects_alpha(0);
+			break;
+		}
+		case Model::REMOVE:
+		{
+			swipe_container.setSelectedPage(0);
+			function_wheel.animateToItem(7, 0);
+			set_function_objects_alpha(0);
+			break;
+		}
+		case Model::ADD:
+		{
+			swipe_container.setSelectedPage(0);
+			function_wheel.animateToItem(5, 0);
+			set_function_objects_alpha(0);
+			break;
+		}
+	}
+	swipe_container.invalidate();
+	function_wheel.invalidate();
+
 	command_page.add(keypad);
 	keypad.setVisible(true);
 	scrollWheelSelectedItemHandler();
@@ -91,6 +123,15 @@ void main_screenView::tearDownScreen()
 
 void main_screenView::handleTickEvent()
 {
+	handle_animation_state();
+	handle_keypad_animation_state();
+	handle_calibration_animation_state();
+	handle_transition_animation_state();
+	handle_list_animation_state();
+}
+
+void main_screenView::handle_animation_state()
+{
 	if (animation_state != 0)
 	{
 		animation_tick++;
@@ -100,7 +141,21 @@ void main_screenView::handleTickEvent()
 		{
 			if(animation_tick < FADE_ANIMATION_DURATION)
 			{
-				set_diagnostic_objects_alpha(delta_alpha);
+				if(swipe_container.getSelectedPage() == 1)
+				{
+					set_diagnostic_objects_alpha(delta_alpha);
+				}
+				else
+				{
+					set_function_objects_alpha(delta_alpha);
+					value_title.setAlpha(delta_alpha);
+					value_text.setAlpha(delta_alpha);
+					command_box_2.setAlpha(delta_alpha);
+
+					value_title.invalidate();
+					value_text.invalidate();
+					command_box_2.invalidate();
+				}
 				background.setAlpha(delta_alpha);
 				background.invalidate();
 			}
@@ -124,7 +179,10 @@ void main_screenView::handleTickEvent()
 			}
 		}
 	}
+}
 
+void main_screenView::handle_keypad_animation_state()
+{
 	if (keypad_animation_state != KEYPAD_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		animation_tick++;
@@ -280,25 +338,21 @@ void main_screenView::handleTickEvent()
 			}
 		}
 	}
+}
 
-
-
-
-
-
-
-
+void main_screenView::handle_calibration_animation_state()
+{
 	if(calibration_animation_state != CALIBRATION_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		animation_tick++;
 
 		// General transition variables
-		int16_t delta_alpha = EasingEquations::cubicEaseInOut(animation_tick, 0, 255, KEYPAD_ANIMATION_DURATION);
+		int16_t delta_alpha = EasingEquations::cubicEaseInOut(animation_tick, 0, 255, CALIBRATION_ANIMATION_DURATION);
 
 		// Calibration transition in out variables
-		int16_t delta_y_calibration_title = EasingEquations::cubicEaseInOut(animation_tick, 0, 42, KEYPAD_ANIMATION_DURATION);
-		int16_t delta_y_calibration_value = EasingEquations::cubicEaseInOut(animation_tick, 0, 120, KEYPAD_ANIMATION_DURATION);
-		int16_t delta_y_calibration_button = EasingEquations::cubicEaseInOut(animation_tick, 0, 110, KEYPAD_ANIMATION_DURATION);
+		int16_t delta_y_calibration_title = EasingEquations::cubicEaseInOut(animation_tick, 0, 42, CALIBRATION_ANIMATION_DURATION);
+		int16_t delta_y_calibration_value = EasingEquations::cubicEaseInOut(animation_tick, 0, 120, CALIBRATION_ANIMATION_DURATION);
+		int16_t delta_y_calibration_button = EasingEquations::cubicEaseInOut(animation_tick, 0, 110, CALIBRATION_ANIMATION_DURATION);
 
 		if (calibration_animation_state == CALIBRATION_IN_STEP_0)
 		{
@@ -324,13 +378,13 @@ void main_screenView::handleTickEvent()
 			if (animation_tick < CALIBRATION_ANIMATION_DURATION)
 			{
 				// Move the value title and box up with the execute function button
-				dummy_function_name_center.moveTo(dummy_function_name_center.getX(), 132 - delta_y_calibration_title);
-				dummy_background_center.moveTo(dummy_background_center.getX(), 129 - delta_y_calibration_title);
-				button_text.moveTo(button_text.getX(), 260 + delta_y_calibration_button);
-				function_select_button.moveTo(function_select_button.getX(), 260 + delta_y_calibration_button);
-				value_title.moveTo(value_title.getX(), 315 - delta_y_calibration_value);
-				value_text.moveTo(value_text.getX(), 389 - delta_y_calibration_value);
-				command_box_2.moveTo(command_box_2.getX(), 395 - delta_y_calibration_value);
+				dummy_function_name_center.setY(130 - delta_y_calibration_title);
+				dummy_background_center.setY(128 - delta_y_calibration_title);
+				button_text.setY(260 + delta_y_calibration_button);
+				function_select_button.setY(260 + delta_y_calibration_button);
+				value_title.setY(315 - delta_y_calibration_value);
+				value_text.setY(388 - delta_y_calibration_value);
+				command_box_2.setY(395 - delta_y_calibration_value);
 
 				dummy_function_name_center.invalidate();
 				dummy_background_center.invalidate();
@@ -338,11 +392,29 @@ void main_screenView::handleTickEvent()
 				function_select_button.invalidate();
 				value_text.invalidate();
 				command_box_2.invalidate();
+
+				background.invalidate();
 			}
 			else
 			{
 				animation_tick = 0;
 				calibration_animation_state = CALIBRATION_ANIMATION_READY;
+
+				dummy_function_name_center.setY(88);
+				dummy_background_center.setY(86);
+				button_text.setY(370);
+				function_select_button.setY(370);
+				value_title.setY(195);
+				value_text.setY(268);
+				command_box_2.setY(275);
+
+				dummy_function_name_center.invalidate();
+				dummy_background_center.invalidate();
+				button_text.invalidate();
+				function_select_button.invalidate();
+				value_text.invalidate();
+				command_box_2.invalidate();
+				background.invalidate();
 			}
 		}
 		else if (calibration_animation_state == CALIBRATION_OUT_STEP_0)
@@ -350,13 +422,13 @@ void main_screenView::handleTickEvent()
 			if (animation_tick < CALIBRATION_ANIMATION_DURATION)
 			{
 				// Move the value title and box back to their original position
-				dummy_function_name_center.moveTo(dummy_function_name_center.getX(), 90 + delta_y_calibration_title);
-				dummy_background_center.moveTo(dummy_background_center.getX(), 87 + delta_y_calibration_title);
-				button_text.moveTo(button_text.getX(), 370 - delta_y_calibration_button);
-				function_select_button.moveTo(function_select_button.getX(),370 - delta_y_calibration_button);
-				value_title.moveTo(value_title.getX(),195 + delta_y_calibration_value);
-				value_text.moveTo(value_text.getX(),269 + delta_y_calibration_value);
-				command_box_2.moveTo(command_box_2.getX(),275 + delta_y_calibration_value);
+				dummy_function_name_center.setY(88 + delta_y_calibration_title);
+				dummy_background_center.setY(86 + delta_y_calibration_title);
+				button_text.setY(370 - delta_y_calibration_button);
+				function_select_button.setY(370 - delta_y_calibration_button);
+				value_title.setY(195 + delta_y_calibration_value);
+				value_text.setY(268 + delta_y_calibration_value);
+				command_box_2.setY(275 + delta_y_calibration_value);
 
 				dummy_function_name_center.invalidate();
 				dummy_background_center.invalidate();
@@ -364,6 +436,7 @@ void main_screenView::handleTickEvent()
 				function_select_button.invalidate();
 				value_text.invalidate();
 				command_box_2.invalidate();
+				background.invalidate();
 			}
 			else
 			{
@@ -371,6 +444,22 @@ void main_screenView::handleTickEvent()
 				button_text.invalidate();
 				animation_tick = 0;
 				calibration_animation_state = CALIBRATION_OUT_STEP_1;
+
+				dummy_function_name_center.setY(130);
+				dummy_background_center.setY(128);
+				button_text.setY(260);
+				function_select_button.setY(260);
+				value_title.setY(315);
+				value_text.setY(388);
+				command_box_2.setY(395);
+
+				dummy_function_name_center.invalidate();
+				dummy_background_center.invalidate();
+				button_text.invalidate();
+				function_select_button.invalidate();
+				value_text.invalidate();
+				command_box_2.invalidate();
+				background.invalidate();
 			}
 		}
 		else if (calibration_animation_state == CALIBRATION_OUT_STEP_1)
@@ -392,12 +481,10 @@ void main_screenView::handleTickEvent()
 			}
 		}
 	}
+}
 
-
-
-
-
-
+void main_screenView::handle_transition_animation_state()
+{
 	if(transition_animation_state != TRANSITION_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		animation_tick++;
@@ -507,10 +594,10 @@ void main_screenView::handleTickEvent()
 			}
 		}
 	}
+}
 
-
-
-
+void main_screenView::handle_list_animation_state()
+{
 	if (list_animation_state != LIST_ANIMATION_READY && animation_state == ANIMATION_READY)
 	{
 		animation_tick++;
@@ -582,6 +669,13 @@ void main_screenView::handleTickEvent()
 			}
 			else
 			{
+				function_wheel.setY(144);
+				function_wheel.invalidate();
+				dummy_function_name_center.setY(80);
+				dummy_background_center.setY(78);
+				dummy_function_name_center.invalidate();
+				dummy_background_center.invalidate();
+
 				list_animation_state = LIST_ANIMATION_READY;
 				animation_tick = 0;
 			}
@@ -616,6 +710,13 @@ void main_screenView::handleTickEvent()
 			}
 			else
 			{
+				function_wheel.setY(480);
+				function_wheel.invalidate();
+				dummy_function_name_center.setY(130);
+				dummy_background_center.setY(128);
+				dummy_function_name_center.invalidate();
+				dummy_background_center.invalidate();
+
 				list_type = DEFAULT;
 				function_wheel.setNumberOfItems(NB_FUNCTIONS);
 				list_animation_state = LIST_OUT_STEP_1;
@@ -645,6 +746,9 @@ void main_screenView::handleTickEvent()
 				function_wheel.animateToItem(8, 0);
 				function_wheel.setY(74);
 				function_wheel.setVisible(true);
+				refresh_function_wheel();
+				function_wheel.invalidate();
+
 				set_dummy_objects_visibility(false);
 
 				list_animation_state = LIST_ANIMATION_READY;
@@ -1396,7 +1500,7 @@ void main_screenView::refresh_function_wheel()
 	{
 		function_wheelUpdateItem((*((function_element*)function_wheelListItems.getDrawable(i))), i + 1);
 	}
-	function_wheel.setSelectedItemOffset(50);
+	function_wheel.setSelectedItemOffset(54);
 }
 
 void main_screenView::display_adc(unsigned int adc_value)
