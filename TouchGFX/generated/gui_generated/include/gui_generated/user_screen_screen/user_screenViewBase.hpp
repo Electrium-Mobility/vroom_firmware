@@ -63,23 +63,23 @@ protected:
     touchgfx::Box __background;
     touchgfx::Box background;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  user_button;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  view_password_button;
     touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  password_button;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
-    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  cancel_button;
     touchgfx::TextAreaWithOneWildcard username_text;
     touchgfx::TextAreaWithOneWildcard password_text;
     touchgfx::BoxWithBorder logo_background;
     touchgfx::Image bike_logo;
     touchgfx::Image password_icon;
     touchgfx::Image user_icon;
-    touchgfx::TextArea view_password_title;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  enter_button;
     touchgfx::TextArea enter_title;
+    touchgfx::Image enter_icon;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  cancel_button;
+    touchgfx::Image cancel_icon;
+    touchgfx::BoxWithBorderButtonStyle< touchgfx::ClickButtonTrigger >  view_password_button;
+    touchgfx::Image view_password_icon;
     touchgfx::ModalWindow error_window;
     touchgfx::ButtonWithLabel close_popup;
     touchgfx::TextArea error_text;
-    touchgfx::Image enter_icon;
-    touchgfx::Image cancel_icon;
 
     /*
      * Wildcard Buffers

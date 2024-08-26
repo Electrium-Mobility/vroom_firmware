@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <gui/common/definitions.h>
 
 
 extern CAN_HandleTypeDef hcan2;
@@ -37,87 +38,56 @@ void can_transmit_eid(uint32_t id, uint8_t *data, uint8_t len)
 	HAL_CAN_AddTxMessage(&hcan2, &tx_header, data, &tx_mailbox);
 }
 
-// CAN commands extracted from comm_can.c, comm_can.h, datatypes.h on vesc firmware github
-typedef enum {
-	CAN_PACKET_SET_DUTY						= 0,
-	CAN_PACKET_SET_CURRENT					= 1,
-	CAN_PACKET_SET_CURRENT_BRAKE			= 2,
-	CAN_PACKET_SET_RPM						= 3,
-	CAN_PACKET_SET_POS						= 4,
-	//CAN_PACKET_FILL_RX_BUFFER					= 5, for advanced commands
-	//CAN_PACKET_FILL_RX_BUFFER_LONG			= 6, for advanced commands
-	//CAN_PACKET_PROCESS_RX_BUFFER				= 7, for motor controllers
-	//CAN_PACKET_PROCESS_SHORT_BUFFER			= 8, for motor controllers
-	CAN_PACKET_STATUS						= 9,
-	CAN_PACKET_SET_CURRENT_REL				= 10,
-	CAN_PACKET_SET_CURRENT_BRAKE_REL		= 11,
-	CAN_PACKET_SET_CURRENT_HANDBRAKE		= 12,
-	CAN_PACKET_SET_CURRENT_HANDBRAKE_REL	= 13,
-	CAN_PACKET_STATUS_2						= 14,
-	CAN_PACKET_STATUS_3						= 15,
-	CAN_PACKET_STATUS_4						= 16,
-	CAN_PACKET_PING							= 17,
-	CAN_PACKET_PONG							= 18,
-	CAN_PACKET_DETECT_APPLY_ALL_FOC			= 19,
-	CAN_PACKET_DETECT_APPLY_ALL_FOC_RES		= 20,
-	CAN_PACKET_CONF_CURRENT_LIMITS			= 21,
-	CAN_PACKET_CONF_STORE_CURRENT_LIMITS	= 22,
-	CAN_PACKET_CONF_CURRENT_LIMITS_IN		= 23,
-	CAN_PACKET_CONF_STORE_CURRENT_LIMITS_IN	= 24,
-	CAN_PACKET_CONF_FOC_ERPMS				= 25,
-	CAN_PACKET_CONF_STORE_FOC_ERPMS			= 26,
-	CAN_PACKET_STATUS_5						= 27,
-	//CAN_PACKET_POLL_TS5700N8501_STATUS		= 28, not sure what this is
-	CAN_PACKET_CONF_BATTERY_CUT				= 29,
-	CAN_PACKET_CONF_STORE_BATTERY_CUT		= 30,
-	CAN_PACKET_SHUTDOWN						= 31,
-	//CAN_PACKET_IO_BOARD_ADC_1_TO_4			= 32, not sure if it's relevant
-	//CAN_PACKET_IO_BOARD_ADC_5_TO_8			= 33, not sure if it's relevant
-	//CAN_PACKET_IO_BOARD_ADC_9_TO_12			= 34, not sure if it's relevant
-	//CAN_PACKET_IO_BOARD_DIGITAL_IN			= 35, not sure if it's relevant
-	//CAN_PACKET_IO_BOARD_SET_OUTPUT_DIGITAL	= 36, not sure if it's relevant
-	//CAN_PACKET_IO_BOARD_SET_OUTPUT_PWM		= 37, not sure if it's relevant
-	//CAN_PACKET_BMS_V_TOT						= 38,
-	//CAN_PACKET_BMS_I							= 39,
-	//CAN_PACKET_BMS_AH_WH						= 40,
-	//CAN_PACKET_BMS_V_CELL						= 41,
-	//CAN_PACKET_BMS_BAL						= 42,
-	//CAN_PACKET_BMS_TEMPS						= 43,
-	//CAN_PACKET_BMS_HUM						= 44,
-	//CAN_PACKET_BMS_SOC_SOH_TEMP_STAT			= 45,
-	//CAN_PACKET_PSW_STAT						= 46, not sure what psw means
-	//CAN_PACKET_PSW_SWITCH						= 47, not sure what psw means
-	//CAN_PACKET_BMS_HW_DATA_1					= 48,
-	//CAN_PACKET_BMS_HW_DATA_2					= 49,
-	//CAN_PACKET_BMS_HW_DATA_3					= 50,
-	//CAN_PACKET_BMS_HW_DATA_4					= 51,
-	//CAN_PACKET_BMS_HW_DATA_5					= 52,
-	//CAN_PACKET_BMS_AH_WH_CHG_TOTAL			= 53,
-	//CAN_PACKET_BMS_AH_WH_DIS_TOTAL			= 54,
-	CAN_PACKET_UPDATE_PID_POS_OFFSET		= 55,
-	//CAN_PACKET_POLL_ROTOR_POS					= 56, not sure if it's relevant
-	//CAN_PACKET_NOTIFY_BOOT					= 57, for motor controllers
-	CAN_PACKET_STATUS_6						= 58,
-	//CAN_PACKET_GNSS_TIME						= 59, not sure if it's relevant
-	//CAN_PACKET_GNSS_LAT						= 60, not sure if it's relevant
-	//CAN_PACKET_GNSS_LON						= 61, not sure if it's relevant
-	//CAN_PACKET_GNSS_ALT_SPEED_HDOP			= 62, not sure if it's relevant
-	CAN_PACKET_MAKE_ENUM_32_BITS = 0xFFFFFFFF,
-} CAN_PACKET_ID;
-
-
-void can_packet_read(CAN_RxHeaderTypeDef *rx_header, uint8_t *data, MotorData *motorDataStruct){
-
+void can_packet_read(CAN_RxHeaderTypeDef *rx_header, uint8_t *data, motor_data_t *motor_data)
+{
 	uint8_t cmdID = (rx_header->ExtId>>8) & 0xff;							//get VESC command ID
-	switch (cmdID){
-		case CAN_PACKET_STATUS_4:											//Byte addition and scaling in accordance with VESC specifications
-			motorDataStruct->fetTemp = ((data[0]<<8) + data[1])/10;
-			motorDataStruct->motorTemp = ((data[2]<<8) + data[3])/10;
-			motorDataStruct->currIn = ((data[4]<<8) + data[5])/10;
-		case CAN_PACKET_STATUS_5:
-			motorDataStruct->voltIn = ((data[4]<<8) + data[5])/10;
+	switch (cmdID)
+	{
+		case CAN_PACKET_STATUS:
+		{
+			motor_data->erpm = 		 (uint32_t)((data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3]);
+			motor_data->current = 	 (uint16_t)((data[0] << 8) + data[1]);
+			motor_data->duty_cycle = (uint16_t)((data[0] << 8) + data[1]);
 			break;
+		}
+		case CAN_PACKET_STATUS_2:
+		{
+			motor_data->amp_hours = 		(uint32_t)((data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3]);
+			motor_data->amp_hours_charged = (uint32_t)((data[4] << 24) + (data[5] << 16) + (data[6] << 8) + data[7]);
+			break;
+		}
+		case CAN_PACKET_STATUS_3:
+		{
+			motor_data->watt_hours = 		 (uint32_t)((data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3]);
+			motor_data->watt_hours_charged = (uint32_t)((data[4] << 24) + (data[5] << 16) + (data[6] << 8) + data[7]);
+			break;
+		}
+		case CAN_PACKET_STATUS_4:
+		{
+			motor_data->fet_temperature = 	(uint16_t)((data[0] << 8) + data[1]);
+			motor_data->motor_temperature = (uint16_t)((data[2] << 8) + data[3]);
+			motor_data->current_in = 		(uint16_t)((data[4] << 8) + data[5]);
+			motor_data->pid_position = 		(uint16_t)((data[6] << 8) + data[7]);
+			break;
+		}
+		case CAN_PACKET_STATUS_5:
+		{
+			motor_data->tachometer = (uint32_t)((data[0] << 24) + (data[1] << 16) + (data[2] << 8) + data[3]);
+			motor_data->voltage_in = (uint16_t)((data[4] << 8) + data[5]);
+			break;
+		}
+		case CAN_PACKET_STATUS_6:
+		{
+			motor_data->adc_1 = (uint16_t)((data[0] << 8) + data[1]);
+			motor_data->adc_2 = (uint16_t)((data[2] << 8) + data[3]);
+			motor_data->adc_3 = (uint16_t)((data[4] << 8) + data[5]);
+			motor_data->ppm = 	(uint16_t)((data[6] << 8) + data[7]);
+			break;
+		}
 		default:
+		{
+			break;
+		}
 	}
 }
 
@@ -341,19 +311,16 @@ uint8_t comm_can_ping(uint8_t controller_id)
 
 
 
-// Throttle Filtering Algorithm
-
-extern uint16_t throttle_threshold; // Variable for max sensitivity difference in analog values
-
+// Sensor Filtering Algorithm
 /*
- * handle_throttle
+ * filter_sensor_data
  *
- * Filters the sensor data so that it does not increase or decrease faster than a given threshold specified by throttle_threshold
+ * Filters the sensor data so that it does not increase or decrease faster than a given threshold specified by threshold
  *
  * sensor_data is passed by value since it should not be used after the function is executed
  * filtered_data and acceleration are passed by reference so that we can access both their outputs after the function is executed
  */
-void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
+void filter_sensor_data(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration, uint16_t threshold)
 {
 	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
 
@@ -361,57 +328,16 @@ void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acc
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
 
 	// Check if the change of throttle data is very fast (exceeds the threshold)
-	if (abs(*acceleration) > throttle_threshold)
+	if (abs(*acceleration) > threshold)
 	{
 		// limit the smoothed_value from changing faster than the threshold
 		if((*acceleration) > 0)
 		{
-			(*filtered_data) += throttle_threshold;
+			(*filtered_data) += threshold;
 		}
 		else
 		{
-			(*filtered_data) -= throttle_threshold;
-		}
-	}
-	else
-	{
-		(*filtered_data) = sensor_data;
-	}
-	//print current values that is compatible with serial plotter
-	sprintf(uart_tx_2, "%ld, ", sensor_data);
-	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
-	sprintf(uart_tx_2, "%ld, ", (*filtered_data));
-	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
-}
-
-extern uint16_t brake_threshold;
-
-/*
- * handle_throttle
- *
- * Filters the sensor data so that it does not increase or decrease faster than a given threshold specified by brake_threshold
- *
- * sensor_data is passed by value since it should not be used after the function is executed
- * filtered_data and acceleration are passed by reference so that we can access both their outputs after the function is executed
- */
-void handle_analog_brake(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration)
-{
-	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
-
-	sprintf(uart_tx_2, "%d, ", abs(*acceleration));
-	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
-
-	// Check if the change of throttle data is very fast (exceeds the threshold)
-	if (abs(*acceleration) > brake_threshold)
-	{
-		// limit the smoothed_value from changing faster than the threshold
-		if((*acceleration) > 0)
-		{
-			(*filtered_data) += brake_threshold;
-		}
-		else
-		{
-			(*filtered_data) -= brake_threshold;
+			(*filtered_data) -= threshold;
 		}
 	}
 	else

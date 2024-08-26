@@ -5,32 +5,6 @@
 #include <gui/containers/function_element.hpp>
 #include <gui/common/definitions.h>
 
-#ifndef SIMULATOR
-extern "C"
-{
-#include "motor.h"
-#include "main.h"
-#include "cmsis_os.h" // includes cmsis_os2 within the header file
-
-	//Parameters to be set by touchGFX Task
-	extern uint16_t threshold;						// For throttle sensitivity
-	extern uint16_t throttle_min;		// For throttle calibration
-	extern uint16_t throttle_max;		// For throttle calibration
-	// Add brake sensor Calibration parameters
-	// Add motor transmit frequency variable
-
-	//MotorDataStruct is for hardware
-	extern MotorData motorDataStruct;
-
-	// Tasks
-	extern osThreadId_t motorTaskHandle;
-
-	// Mutexes
-	extern osMutexId_t settingMutexHandle;
-
-}
-#endif
-
 main_screenView::main_screenView() :
 		high_point(true),
 		calibration_mode(false),
@@ -45,6 +19,7 @@ main_screenView::main_screenView() :
 		calibration_animation_state(CALIBRATION_ANIMATION_READY),
 		transition_animation_state(TRANSITION_ANIMATION_READY),
 		list_animation_state(LIST_ANIMATION_READY),
+		display_throttle(true),
 		scrollWheelSelectedItemCallback(this,&main_screenView::scrollWheelSelectedItemHandler)
 {
 }
@@ -85,6 +60,7 @@ void main_screenView::setupScreen()
 			swipe_container.setSelectedPage(0);
 			function_wheel.animateToItem(6, 0);
 			set_function_objects_alpha(0);
+			setup_function_objects();
 			break;
 		}
 		case Model::REMOVE:
@@ -92,6 +68,7 @@ void main_screenView::setupScreen()
 			swipe_container.setSelectedPage(0);
 			function_wheel.animateToItem(7, 0);
 			set_function_objects_alpha(0);
+			setup_function_objects();
 			break;
 		}
 		case Model::ADD:
@@ -99,6 +76,7 @@ void main_screenView::setupScreen()
 			swipe_container.setSelectedPage(0);
 			function_wheel.animateToItem(5, 0);
 			set_function_objects_alpha(0);
+			setup_function_objects();
 			break;
 		}
 	}
@@ -148,13 +126,6 @@ void main_screenView::handle_animation_state()
 				else
 				{
 					set_function_objects_alpha(delta_alpha);
-					value_title.setAlpha(delta_alpha);
-					value_text.setAlpha(delta_alpha);
-					command_box_2.setAlpha(delta_alpha);
-
-					value_title.invalidate();
-					value_text.invalidate();
-					command_box_2.invalidate();
 				}
 				background.setAlpha(delta_alpha);
 				background.invalidate();
@@ -878,9 +849,7 @@ void main_screenView::execute_default_function()
 						high_point = true;
 
 						// Resume the tasks that depend on the throttle sensor ADC value
-#ifndef SIMULATOR
-						osThreadResume(motorTaskHandle);
-#endif
+						presenter->resume_motor_task();
 					}
 				}
 				else
@@ -893,9 +862,7 @@ void main_screenView::execute_default_function()
 					calibration_mode = true;
 
 					// Suspend all tasks affected by the throttle sensor ADC value
-#ifndef SIMULATOR
-					osThreadSuspend(motorTaskHandle);
-#endif
+					presenter->suspend_motor_task();
 				}
 				break;
 			}
@@ -924,9 +891,7 @@ void main_screenView::execute_default_function()
 						high_point = true;
 
 						// Resume the tasks that depend on the brake sensor ADC value
-#ifndef SIMULATOR
-						osThreadResume(motorTaskHandle);
-#endif
+						presenter->resume_motor_task();
 					}
 				}
 				else
@@ -938,18 +903,14 @@ void main_screenView::execute_default_function()
 					calibration_animation_state = CALIBRATION_IN_STEP_0;
 					calibration_mode = true;
 					// Suspend all tasks affected by the brake sensor ADC Value
-#ifndef SIMULATOR
-					osThreadSuspend(motorTaskHandle);
-#endif
+					presenter->suspend_motor_task();
 				}
 				break;
 			}
 			case 5:
 			{
 				// stop all control tasks
-#ifndef SIMULATOR
-				osThreadSuspend(motorTaskHandle);
-#endif // SIMULATOR
+				presenter->suspend_motor_task();
 
 				// Create New User
 				if(presenter->get_num_users() == MAX_NUM_USERS)
@@ -966,9 +927,7 @@ void main_screenView::execute_default_function()
 			case 6:
 			{
 				// stop all control tasks
-#ifndef SIMULATOR
-				osThreadSuspend(motorTaskHandle);
-#endif // SIMULATOR
+				presenter->suspend_motor_task();
 
 				// Edit User
 				presenter->set_user_screen_state(Model::EDIT);
@@ -978,9 +937,8 @@ void main_screenView::execute_default_function()
 			case 7:
 			{
 				// stop all control tasks
-#ifndef SIMULATOR
-				osThreadSuspend(motorTaskHandle);
-#endif // SIMULATOR
+				presenter->suspend_motor_task();
+
 				// Delete User
 				if(presenter->get_num_users() <= 1)
 				{
@@ -1232,7 +1190,7 @@ void main_screenView::scrollWheelSelectedItemHandler()
 
 void main_screenView::show_default_value()
 {
-	presenter->stop_adc_retrieval();
+	presenter->activate_adc(false);
 	switch(function_wheel.getSelectedItem())
 	{
 		case 0:
@@ -1282,7 +1240,7 @@ void main_screenView::show_default_value()
 			handle_dummy_function_names(T_FUNCTION_2, T_FUNCTION_3, T_FUNCTION_4);
 
 			// Display the raw throttle sensor analog value
-			presenter->start_throttle_adc();
+			display_throttle = true;
 
 			set_value_objects(true, 306);
 			break;
@@ -1295,7 +1253,7 @@ void main_screenView::show_default_value()
 			handle_dummy_function_names(T_FUNCTION_3, T_FUNCTION_4, T_FUNCTION_5);
 
 			// Display the raw brake sensor analog value
-			presenter->start_brake_adc();
+			display_throttle = false;
 
 			set_value_objects(true, 306);
 			break;
@@ -1392,6 +1350,22 @@ void main_screenView::set_value_objects(bool visible, uint16_t text_width)
 			transition_animation_state = FADE_VALUE_OBJECTS_OUT;
 		}
 	}
+}
+
+void main_screenView::setup_function_objects()
+{
+	value_title.setAlpha(0);
+	value_text.setAlpha(0);
+	command_box_2.setAlpha(0);
+	function_select_button.setHeight(190);
+	function_select_button.setBoxWithBorderHeight(190);
+	button_text.setY(260 + (function_select_button.getHeight() / 2) - (button_text.getHeight() / 2));
+
+	value_title.invalidate();
+	value_text.invalidate();
+	command_box_2.invalidate();
+	function_select_button.invalidate();
+	button_text.invalidate();
 }
 
 void main_screenView::display_current_language()
@@ -1503,23 +1477,27 @@ void main_screenView::refresh_function_wheel()
 	function_wheel.setSelectedItemOffset(54);
 }
 
-void main_screenView::display_adc(unsigned int adc_value)
+void main_screenView::display_adc(volatile uint16_t* adc_value)
 {
-	Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%d", adc_value);
+	if(display_throttle)
+	{
+		Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%d", adc_value[THROTTLE]);
+	}
+	else
+	{
+		Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%d", adc_value[BRAKE]);
+	}
 	value_text.invalidate();
 }
 
-#ifndef SIMULATOR
-//For simulator - comment out motorDataStruct and set wildcard data to literal (e.x. replace motorDataStruct.fetTemp with 0)
-void main_screenView::motorDataUpdate()
+void main_screenView::update_motor_data(motor_data_t *motor_data)
 {
-	Unicode::snprintf(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%d",motorDataStruct.fetTemp);
-	Unicode::snprintf(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%d",motorDataStruct.motorTemp);
-	Unicode::snprintf(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%d",motorDataStruct.voltIn);
-	Unicode::snprintf(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%d",motorDataStruct.currIn);
+	Unicode::snprintfFloat(fet_temp_wildBuffer, FET_TEMP_WILD_SIZE, "%f", (float)(motor_data->fet_temperature / 10));
+	Unicode::snprintfFloat(motor_temp_wildBuffer, MOTOR_TEMP_WILD_SIZE, "%f",(float)(motor_data->motor_temperature / 10));
+	Unicode::snprintfFloat(volt_in_wildBuffer, VOLT_IN_WILD_SIZE, "%f", (float) (motor_data->voltage_in / 10));
+	Unicode::snprintfFloat(curr_in_wildBuffer, CURR_IN_WILD_SIZE, "%f", (float) (motor_data->current_in / 10));
 	fet_temp_wild.invalidate();
 	motor_temp_wild.invalidate();
 	volt_in_wild.invalidate();
 	curr_in_wild.invalidate();
 }
-#endif

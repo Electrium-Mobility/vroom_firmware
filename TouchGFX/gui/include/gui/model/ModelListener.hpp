@@ -14,7 +14,8 @@ public:
     {
         model = m;
     }
-    virtual void display_adc(unsigned int adc_value) {}
+    virtual void display_adc(volatile uint16_t* adc_value) {}
+    virtual void update_motor_data(motor_data_t* motor_data) {}
 
 protected:
     Model* model;

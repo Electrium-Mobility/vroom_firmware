@@ -11,29 +11,38 @@ extern "C"
 #include "cmsis_os.h"
 #include "ee.h"
 
-// Queues
-extern osMessageQueueId_t adcQueueHandle;
-
 // Mutexes
 extern osMutexId_t settingMutexHandle;
 
 extern float motor_frequency;
 
-// ADC's
-extern ADC_HandleTypeDef hadc1; // (may remove this if it is unnecessary)
-extern adcRetrievalState adc_retrieval; // no need to aquire a mutex as this will only be set by the TouchGFX Task
+// Sensor Data
+extern volatile uint16_t sensor_data[2];
 
 // Throttle Sensor Varaibles
 extern uint16_t throttle_threshold;
 extern uint16_t throttle_max;
 extern uint16_t throttle_min;
-extern volatile uint16_t throttle_data;
 
 // Brake Sensor Variables
 extern uint16_t brake_threshold;
 extern uint16_t brake_max;
 extern uint16_t brake_min;
-extern volatile uint16_t brake_data;
+
+// Diagnostics Variables
+extern osSemaphoreId_t collect_diagnostic_dataHandle;
+extern motor_data_t motor_data;
+
+// Task Handling Variables
+extern osSemaphoreId_t suspend_diagnostics_taskHandle;
+extern osSemaphoreId_t suspend_motor_taskHandle;
+extern osSemaphoreId_t diagnostic_timing_modifiedHandle;
+extern osSemaphoreId_t motor_timing_modifiedHandle;
+
+extern osThreadId_t diagnosticsTaskHandle;
+extern osThreadId_t motorTaskHandle;
+
+extern osSemaphoreId_t collect_adc_dataHandle;
 
 // Emulated EEPROM Data
 extern ee_Storage_t ee;
@@ -43,27 +52,76 @@ extern ee_Storage_t ee;
 
 Model::Model() :
 		modelListener(0),
-		adc_value(0),
-		user_screen_state(LOGIN)
-{
-
-}
+		user_screen_state(LOGIN),
+		retrieve_adc_data(false)
+{}
 
 void Model::tick()
 {
 #ifndef SIMULATOR
-	if (adc_retrieval != NO_RETRIEVAL)
+	if(retrieve_adc_data)
 	{
-		// Retrieve the ADC value from the queue, can be from the throttle or the brake, but not both
-		if (osMessageQueueGetCount(adcQueueHandle) > 0)
+		if(!osSemaphoreGetCount(collect_adc_dataHandle))
 		{
-			if (osMessageQueueGet(adcQueueHandle, &adc_value, 0, 0) == osOK)
-			{
-				modelListener->display_adc(adc_value);
-			}
+			modelListener->display_adc(sensor_data);
+			osSemaphoreRelease(collect_diagnostic_dataHandle);
 		}
 	}
+
+	if(!osSemaphoreGetCount(collect_diagnostic_dataHandle))
+	{
+		modelListener->update_motor_data(&motor_data);
+		osSemaphoreRelease(collect_diagnostic_dataHandle);
+	}
 #endif // SIMULATOR
+}
+
+void Model::resume_motor_task()
+{
+#ifndef SIMULATOR
+	if(osSemaphoreGetCount(suspend_motor_taskHandle))
+	{
+		osSemaphoreAcquire(suspend_motor_taskHandle, 10);
+		osThreadResume(motorTaskHandle);
+
+	}
+#endif
+}
+
+void Model::resume_diagnostics_task()
+{
+#ifndef SIMULATOR
+	if(osSemaphoreGetCount(suspend_diagnostics_taskHandle))
+	{
+		osSemaphoreAcquire(suspend_diagnostics_taskHandle, 10);
+		osThreadResume(diagnosticsTaskHandle);
+	}
+#endif
+}
+
+void Model::suspend_motor_task()
+{
+#ifndef SIMULATOR
+	if(!osSemaphoreGetCount(suspend_motor_taskHandle))
+	{
+		osSemaphoreRelease(suspend_motor_taskHandle);
+	}
+#endif
+}
+
+void Model::suspend_diagnostics_task()
+{
+#ifndef SIMULATOR
+	if(!osSemaphoreGetCount(suspend_diagnostics_taskHandle))
+	{
+		osSemaphoreRelease(suspend_diagnostics_taskHandle);
+	}
+#endif
+}
+
+void Model::activate_adc(bool retrieve_data)
+{
+	retrieve_adc_data = retrieve_data;
 }
 
 void Model::set_throttle_high_point()
@@ -76,7 +134,7 @@ void Model::set_throttle_high_point()
 //		throttle_max = HAL_ADC_GetValue(&hadc1);
 //		HAL_ADC_Stop(&hadc1);
 		// Not sure if this will work
-		throttle_max = throttle_data;
+		throttle_max = sensor_data[THROTTLE];
 		// throttle_max = adc_value; // may also work
 		osMutexRelease(settingMutexHandle);
 	}
@@ -93,7 +151,7 @@ void Model::set_throttle_low_point()
 //		throttle_min = HAL_ADC_GetValue(&hadc1);
 //		HAL_ADC_Stop(&hadc1);
 		// Not sure if this will work
-		throttle_min = throttle_data;
+		throttle_min = sensor_data[THROTTLE];
 		// throttle_min = adc_value; // may also work
 		osMutexRelease(settingMutexHandle);
 	}
@@ -110,7 +168,7 @@ void Model::set_brake_high_point()
 		//brake_max = HAL_ADC_GetValue(&hadc2);
 		//HAL_ADC_Stop(&hadc2);
 		// Not sure if this will work
-		brake_max = brake_data;
+		brake_max = sensor_data[BRAKE];
 		// brake_max = adc_value; // may also work
 		osMutexRelease(settingMutexHandle);
 	}
@@ -127,7 +185,7 @@ void Model::set_brake_low_point()
 		//brake_min = HAL_ADC_GetValue(&hadc2);
 		//HAL_ADC_Stop(&hadc2);
 		// Not sure if this will work
-		brake_min = brake_data;
+		brake_min = sensor_data[BRAKE];
 		// brake_min = adc_value; // may also work
 		osMutexRelease(settingMutexHandle);
 	}
@@ -213,57 +271,13 @@ void Model::set_CAN_transmit_frequency(float frequency_value)
 	// Aquire Mutex
 	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
 	{
+		osSemaphoreRelease(motor_timing_modifiedHandle);
 		motor_frequency = frequency_value;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
 #endif // SIMULATOR
 }
-
-void Model::start_throttle_adc()
-{
-#ifndef SIMULATOR
-	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
-		adc_retrieval = THROTTLE;
-		// Release Mutex
-		osMutexRelease(settingMutexHandle);
-	}
-
-#endif
-}
-
-void Model::start_brake_adc()
-{
-#ifndef SIMULATOR
-	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
-		adc_retrieval = BRAKE;
-		// Release Mutex
-		osMutexRelease(settingMutexHandle);
-	}
-#endif
-}
-
-void Model::stop_adc_retrieval()
-{
-#ifndef SIMULATOR
-	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
-	{
-		// display_throttle_adc = false;
-		// display_brake_adc = false;
-		adc_retrieval = NO_RETRIEVAL;
-		// Release Mutex
-		osMutexRelease(settingMutexHandle);
-	}
-#endif
-}
-
-
-
 
 void Model::get_username(int8_t user, uint8_t* username, uint8_t size)
 {

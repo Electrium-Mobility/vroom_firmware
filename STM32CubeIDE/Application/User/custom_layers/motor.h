@@ -8,23 +8,15 @@
 #ifndef APPLICATION_USER_MOTOR_H_
 #define APPLICATION_USER_MOTOR_H_
 #include "main.h"
+#include <gui/common/definitions.h>
 /*
  *
  * CAN Protocol Commands for the VESC Motor Controller
  *
  */
 
-//Store relevant motor data here
-typedef struct {
-	uint16_t fetTemp;
-	uint16_t motorTemp;
-	uint16_t voltIn;
-	uint16_t currIn;
-
-} MotorData;
-
 //CAN data decode for insertion into motor data struct
-void can_packet_read(CAN_RxHeaderTypeDef *rx_header, uint8_t *data, MotorData *motorDataStruct);
+void can_packet_read(CAN_RxHeaderTypeDef *rx_header, uint8_t *data, motor_data_t *motor_data);
 
 
 void can_transmit_eid(uint32_t id, uint8_t *data, uint8_t len);
@@ -196,8 +188,7 @@ uint8_t comm_can_ping(uint8_t controller_id);
  * Sensor Collection and Filtering Commands
  *
  */
-void handle_throttle(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration);
-void handle_analog_brake(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration);
+void filter_sensor_data(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration, uint16_t threshold);
 void handle_digital_brake(uint32_t t, float *brake_magnitude);
 
 #endif /* APPLICATION_USER_MOTOR_H_ */

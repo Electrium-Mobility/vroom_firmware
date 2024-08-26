@@ -665,6 +665,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_enter_icon.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/generated/image_eye_closed.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_eye_closed.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_eye_open.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_eye_open.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/generated/image_key.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_key.cpp</locationURI>

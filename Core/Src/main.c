@@ -39,7 +39,6 @@
 #include "stm32469i_discovery_sdram.h"
 #include "stm32469i_discovery_qspi.h"
 
-#include "memoryTask.h"
 #include "motorTask.h"
 #include "diagnosticsTask.h"
 #include "motor.h"
@@ -119,27 +118,40 @@ const osThreadAttr_t diagnosticsTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for memoryTask */
-osThreadId_t memoryTaskHandle;
-const osThreadAttr_t memoryTask_attributes = {
-  .name = "memoryTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
-/* Definitions for adcQueue */
-osMessageQueueId_t adcQueueHandle;
-const osMessageQueueAttr_t adcQueue_attributes = {
-  .name = "adcQueue"
-};
-/* Definitions for memoryQueue */
-osMessageQueueId_t memoryQueueHandle;
-const osMessageQueueAttr_t memoryQueue_attributes = {
-  .name = "memoryQueue"
-};
 /* Definitions for settingMutex */
 osMutexId_t settingMutexHandle;
 const osMutexAttr_t settingMutex_attributes = {
   .name = "settingMutex"
+};
+/* Definitions for collect_diagnostic_data */
+osSemaphoreId_t collect_diagnostic_dataHandle;
+const osSemaphoreAttr_t collect_diagnostic_data_attributes = {
+  .name = "collect_diagnostic_data"
+};
+/* Definitions for suspend_motor_task */
+osSemaphoreId_t suspend_motor_taskHandle;
+const osSemaphoreAttr_t suspend_motor_task_attributes = {
+  .name = "suspend_motor_task"
+};
+/* Definitions for suspend_diagnostics_task */
+osSemaphoreId_t suspend_diagnostics_taskHandle;
+const osSemaphoreAttr_t suspend_diagnostics_task_attributes = {
+  .name = "suspend_diagnostics_task"
+};
+/* Definitions for collect_adc_data */
+osSemaphoreId_t collect_adc_dataHandle;
+const osSemaphoreAttr_t collect_adc_data_attributes = {
+  .name = "collect_adc_data"
+};
+/* Definitions for motor_timing_modified */
+osSemaphoreId_t motor_timing_modifiedHandle;
+const osSemaphoreAttr_t motor_timing_modified_attributes = {
+  .name = "motor_timing_modified"
+};
+/* Definitions for diagnostic_timing_modified */
+osSemaphoreId_t diagnostic_timing_modifiedHandle;
+const osSemaphoreAttr_t diagnostic_timing_modified_attributes = {
+  .name = "diagnostic_timing_modified"
 };
 /* USER CODE BEGIN PV */
 
@@ -164,7 +176,6 @@ void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartMotorTask(void *argument);
 void StartDiagnosticsTask(void *argument);
-void StartMemoryTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -253,6 +264,25 @@ int main(void)
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
+  /* Create the semaphores(s) */
+  /* creation of collect_diagnostic_data */
+  collect_diagnostic_dataHandle = osSemaphoreNew(1, 0, &collect_diagnostic_data_attributes);
+
+  /* creation of suspend_motor_task */
+  suspend_motor_taskHandle = osSemaphoreNew(1, 0, &suspend_motor_task_attributes);
+
+  /* creation of suspend_diagnostics_task */
+  suspend_diagnostics_taskHandle = osSemaphoreNew(1, 0, &suspend_diagnostics_task_attributes);
+
+  /* creation of collect_adc_data */
+  collect_adc_dataHandle = osSemaphoreNew(1, 0, &collect_adc_data_attributes);
+
+  /* creation of motor_timing_modified */
+  motor_timing_modifiedHandle = osSemaphoreNew(1, 0, &motor_timing_modified_attributes);
+
+  /* creation of diagnostic_timing_modified */
+  diagnostic_timing_modifiedHandle = osSemaphoreNew(1, 0, &diagnostic_timing_modified_attributes);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -260,13 +290,6 @@ int main(void)
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
-
-  /* Create the queue(s) */
-  /* creation of adcQueue */
-  adcQueueHandle = osMessageQueueNew (5, sizeof(uint16_t), &adcQueue_attributes);
-
-  /* creation of memoryQueue */
-  memoryQueueHandle = osMessageQueueNew (16, sizeof(uint32_t), &memoryQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -285,20 +308,12 @@ int main(void)
   /* creation of diagnosticsTask */
   diagnosticsTaskHandle = osThreadNew(StartDiagnosticsTask, NULL, &diagnosticsTask_attributes);
 
-  /* creation of memoryTask */
-  memoryTaskHandle = osThreadNew(StartMemoryTask, NULL, &memoryTask_attributes);
-
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
-  // Suspend all control tasks until the user has logged int
-
-  osThreadSuspend(diagnosticsTaskHandle);
-  osThreadSuspend(motorTaskHandle);
-
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -392,13 +407,13 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = DISABLE;
+  hadc1.Init.ScanConvMode = ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -411,6 +426,14 @@ static void MX_ADC1_Init(void)
   sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+  */
+  sConfig.Rank = 2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -1034,6 +1057,7 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -1110,20 +1134,16 @@ void StartDefaultTask(void *argument)
 * @param argument: Not used
 * @retval None
 */
-
-float motor_frequency = 1;
-
 /* USER CODE END Header_StartMotorTask */
 void StartMotorTask(void *argument)
 {
   /* USER CODE BEGIN StartMotorTask */
-  	motorTask_init();
-  /* Infinite loop */
-  for(;;)
-  {
-	motorTask_poll();
-    osDelay(1000 / motor_frequency);
-  }
+	motorTask_init();
+	/* Infinite loop */
+	for(;;)
+	{
+		motorTask_poll();
+	}
   /* USER CODE END StartMotorTask */
 }
 
@@ -1133,42 +1153,17 @@ void StartMotorTask(void *argument)
 * @param argument: Not used
 * @retval None
 */
-
-float diagnostic_frequency; // the frequency of diagnostic test data acquisition in Hz
-
 /* USER CODE END Header_StartDiagnosticsTask */
 void StartDiagnosticsTask(void *argument)
 {
   /* USER CODE BEGIN StartDiagnosticsTask */
 	diagnosticsTask_init();
-  /* Infinite loop */
-  for(;;)
-  {
-	  	diagnosticsTask_poll();
-		osDelay(1000 / diagnostic_frequency);
-  }
+	/* Infinite loop */
+	for(;;)
+	{
+		diagnosticsTask_poll();
+	}
   /* USER CODE END StartDiagnosticsTask */
-}
-
-/* USER CODE BEGIN Header_StartMemoryTask */
-/**
-* @brief Function implementing the memoryTask thread.
-* @param argument: Not used
-* @retval None
-*/
-
-/* USER CODE END Header_StartMemoryTask */
-void StartMemoryTask(void *argument)
-{
-  /* USER CODE BEGIN StartMemoryTask */
-  /* Infinite loop */
-	memoryTask_init();
-  for(;;)
-  {
-	 memoryTask_poll();
-    osDelay(100);
-  }
-  /* USER CODE END StartMemoryTask */
 }
 
 /**

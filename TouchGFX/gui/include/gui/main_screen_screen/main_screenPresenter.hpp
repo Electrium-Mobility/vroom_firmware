@@ -28,7 +28,17 @@ public:
     virtual ~main_screenPresenter() {}
 
 
-    virtual void display_adc(unsigned int adc_value);
+    virtual void display_adc(volatile uint16_t* adc_value);
+    virtual void update_motor_data(motor_data_t *motor_data);
+
+    void resume_motor_task()
+    {
+    	model->resume_motor_task();
+    }
+    void suspend_motor_task()
+    {
+    	model->suspend_motor_task();
+    }
 
     Model::UserScreenState get_user_screen_state()
 	{
@@ -43,6 +53,11 @@ public:
     uint8_t get_num_users()
     {
     	return model->get_num_users();
+    }
+
+    void activate_adc(bool retrieve_adc)
+    {
+    	model->activate_adc(retrieve_adc);
     }
 
     void set_throttle_high_point()
@@ -95,21 +110,6 @@ public:
     void set_CAN_transmit_frequency(float frequency_value)
     {
     	model->set_CAN_transmit_frequency(frequency_value);
-    }
-
-    void start_throttle_adc()
-    {
-    	return model->start_throttle_adc();
-    }
-
-    void start_brake_adc()
-    {
-    	return model->start_brake_adc();
-    }
-
-    void stop_adc_retrieval()
-    {
-    	model->stop_adc_retrieval();
     }
 
 private:

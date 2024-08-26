@@ -33,6 +33,8 @@ void user_screenView::setupScreen()
 		case Model::LOGIN:
 		{
 			enter_title.setTypedText(touchgfx::TypedText(T_LOGIN));
+			cancel_button.setVisible(false);
+			cancel_button.setTouchable(false);
 			background.setAlpha(255);
 			break;
 		}
@@ -82,16 +84,15 @@ void user_screenView:: handleTickEvent()
 		int16_t delta_y_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 268, KEYBOARD_ANIMATION_DURATION);
 
 		int16_t delta_y_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 267, KEYBOARD_ANIMATION_DURATION);
-		int16_t delta_x_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 311, KEYBOARD_ANIMATION_DURATION);
-		int16_t delta_w_enter_password_view = EasingEquations::cubicEaseInOut(animation_tick, 0, 250, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_x_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 500, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_w_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 280, KEYBOARD_ANIMATION_DURATION);
 		int16_t delta_h_enter = EasingEquations::cubicEaseInOut(animation_tick, 0, 284, KEYBOARD_ANIMATION_DURATION);
 
 		int16_t delta_y_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 125, KEYBOARD_ANIMATION_DURATION);
-		int16_t delta_x_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 186, KEYBOARD_ANIMATION_DURATION);
-
+		int16_t delta_x_enter_icon = EasingEquations::cubicEaseInOut(animation_tick, 0, 360, KEYBOARD_ANIMATION_DURATION);
 
 		int16_t delta_y_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 383, KEYBOARD_ANIMATION_DURATION);
-		int16_t delta_x_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 659, KEYBOARD_ANIMATION_DURATION);
+		int16_t delta_x_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 640, KEYBOARD_ANIMATION_DURATION);
 		int16_t delta_h_view_password = EasingEquations::cubicEaseInOut(animation_tick, 0, 36, KEYBOARD_ANIMATION_DURATION);
 
 		if(animation_state == FADE_IN)
@@ -123,8 +124,15 @@ void user_screenView:: handleTickEvent()
 				logo_background.setAlpha(255 - delta_alpha);
 				username_text.setAlpha(255 - delta_alpha);
 				password_text.setAlpha(255 - delta_alpha);
-				view_password_title.setAlpha(255 - delta_alpha);
 				enter_title.setAlpha(255 - delta_alpha);
+
+				if(cancel_button.isVisible())
+				{
+					cancel_button.setAlpha(255 - delta_alpha);
+					cancel_icon.setAlpha(255 - delta_alpha);
+					cancel_button.invalidate();
+					cancel_icon.invalidate();
+				}
 
 				user_button.invalidate();
 				password_button.invalidate();
@@ -132,7 +140,6 @@ void user_screenView:: handleTickEvent()
 				logo_background.invalidate();
 				username_text.invalidate();
 				password_text.invalidate();
-				view_password_title.invalidate();
 				enter_title.invalidate();
 
 				// Fade out the necessary icon
@@ -140,9 +147,11 @@ void user_screenView:: handleTickEvent()
 				{
 					password_icon.setAlpha(255 - delta_alpha);
 					view_password_button.setAlpha(255 - delta_alpha);
+					view_password_icon.setAlpha(255 - delta_alpha);
 
 					password_icon.invalidate();
 					view_password_button.invalidate();
+					view_password_icon.invalidate();
 				}
 				else
 				{
@@ -152,6 +161,11 @@ void user_screenView:: handleTickEvent()
 			}
 			else
 			{
+				if(user_icon_selected)
+				{
+					view_password_button.setTouchable(false);
+				}
+				cancel_button.setTouchable(false);
 				user_button.setTouchable(false);
 				password_button.setTouchable(false);
 				animation_tick = 0;
@@ -166,13 +180,14 @@ void user_screenView:: handleTickEvent()
 				keyboard.moveTo(keyboard.getX(), 480 - delta_y_keyboard);
 
 				// Move the enter button to the side
-				enter_button.moveTo(409 + delta_x_enter, 383 - delta_y_enter);
-				enter_button.setWidthHeight(330 - delta_w_enter_password_view, 80 + delta_h_enter);
-				enter_button.setBoxWithBorderWidth(330 - delta_w_enter_password_view);
+				enter_button.moveTo(220 + delta_x_enter, 383 - delta_y_enter);
+				enter_button.setWidthHeight(360 - delta_w_enter, 80 + delta_h_enter);
+				enter_button.setBoxWithBorderWidth(360 - delta_w_enter);
 				enter_button.setBoxWithBorderHeight(80 + delta_h_enter);
 				enter_button.invalidate();
-				enter_icon.moveTo(544 + delta_x_enter_icon, 400 - delta_y_enter_icon);
+				enter_icon.moveTo(370 + delta_x_enter_icon, 400 - delta_y_enter_icon);
 				enter_icon.setAlpha(delta_alpha);
+				enter_icon.invalidate();
 
 				// Move up the icon
 				if(user_icon_selected)
@@ -184,10 +199,11 @@ void user_screenView:: handleTickEvent()
 					password_icon.moveTo(password_icon.getX(), 285 - delta_y_password);
 
 					// Move up the password_visibility button
-					view_password_button.moveTo(61 + delta_x_view_password, 383 - delta_y_view_password);
-					view_password_button.setWidthHeight(330 - delta_w_enter_password_view, 80 + delta_h_view_password);
-					view_password_button.setBoxWithBorderWidth(330 - delta_w_enter_password_view);
+					view_password_button.moveTo(80 + delta_x_view_password, 383 - delta_y_view_password);
+					view_password_icon.moveTo(view_password_button.getX(), view_password_button.getY() + ((view_password_button.getHeight() - view_password_icon.getHeight()) / 2));
+					view_password_button.setHeight(80 + delta_h_view_password);
 					view_password_button.setBoxWithBorderHeight(80 + delta_h_view_password);
+					view_password_icon.invalidate();
 					view_password_button.invalidate();
 				}
 			}
@@ -210,12 +226,13 @@ void user_screenView:: handleTickEvent()
 
 				// Move the enter button to the center
 				enter_button.moveTo(720 - delta_x_enter, 116 + delta_y_enter);
-				enter_button.setWidthHeight(80 + delta_w_enter_password_view, 364 - delta_h_enter);
-				enter_button.setBoxWithBorderWidth(80 + delta_w_enter_password_view);
+				enter_button.setWidthHeight(80 + delta_w_enter, 364 - delta_h_enter);
+				enter_button.setBoxWithBorderWidth(80 + delta_w_enter);
 				enter_button.setBoxWithBorderHeight(364 - delta_h_enter);
 				enter_button.invalidate();
 				enter_icon.moveTo(730 - delta_x_enter_icon, 275 + delta_y_enter_icon);
 				enter_icon.setAlpha(255 - delta_alpha);
+				enter_icon.invalidate();
 
 				// Move down the icon
 				if(user_icon_selected)
@@ -226,11 +243,12 @@ void user_screenView:: handleTickEvent()
 				{
 					password_icon.moveTo(password_icon.getX(), 17 + delta_y_password);
 
-					// Move up the password_visibility button
+					// Move down the password_visibility button
 					view_password_button.moveTo(720 - delta_x_view_password, 0 + delta_y_view_password);
-					view_password_button.setWidthHeight(80 + delta_w_enter_password_view, 116 - delta_h_view_password);
-					view_password_button.setBoxWithBorderWidth(80 + delta_w_enter_password_view);
+					view_password_icon.moveTo(view_password_button.getX(), view_password_button.getY() + ((view_password_button.getHeight() - view_password_icon.getHeight()) / 2));
+					view_password_button.setHeight(116 - delta_h_view_password);
 					view_password_button.setBoxWithBorderHeight(116 - delta_h_view_password);
+					view_password_icon.invalidate();
 					view_password_button.invalidate();
 				}
 			}
@@ -252,8 +270,15 @@ void user_screenView:: handleTickEvent()
 				password_button.setAlpha(delta_alpha);
 				username_text.setAlpha(delta_alpha);
 				password_text.setAlpha(delta_alpha);
-				view_password_title.setAlpha(delta_alpha);
 				enter_title.setAlpha(delta_alpha);
+
+				if(cancel_button.isVisible())
+				{
+					cancel_button.setAlpha(delta_alpha);
+					cancel_icon.setAlpha(delta_alpha);
+					cancel_button.invalidate();
+					cancel_icon.invalidate();
+				}
 
 				bike_logo.invalidate();
 				logo_background.invalidate();
@@ -261,14 +286,15 @@ void user_screenView:: handleTickEvent()
 				password_button.invalidate();
 				username_text.invalidate();
 				password_text.invalidate();
-				view_password_title.invalidate();
 				enter_title.invalidate();
 
 				// Fade in the necessary icon
 				if(user_icon_selected)
 				{
+					view_password_icon.setAlpha(delta_alpha);
 					password_icon.setAlpha(delta_alpha);
 					view_password_button.setAlpha(delta_alpha);
+					view_password_icon.invalidate();
 					password_icon.invalidate();
 					view_password_button.invalidate();
 				}
@@ -280,6 +306,11 @@ void user_screenView:: handleTickEvent()
 			}
 			else
 			{
+				if(user_icon_selected)
+				{
+					view_password_button.setTouchable(true);
+				}
+				cancel_button.setTouchable(true);
 				user_button.setTouchable(true);
 				password_button.setTouchable(true);
 				user_input_mode = false;
@@ -312,6 +343,11 @@ void user_screenView:: user_pressed()
 		keyboard.set_buffer(false);
 		keyboard.set_password_mode(false);
 
+		view_password_button.setTouchable(false);
+		cancel_button.setTouchable(false);
+		user_button.setTouchable(false);
+		password_button.setTouchable(false);
+
 		user_icon_selected = true;
 		animation_state = KEYBOARD_IN_STEP_0;
 		user_input_mode = true;
@@ -324,6 +360,10 @@ void user_screenView:: password_pressed()
 	{
 		keyboard.set_buffer(true);
 		keyboard.set_password_mode(true);
+
+		cancel_button.setTouchable(false);
+		user_button.setTouchable(false);
+		password_button.setTouchable(false);
 
 		user_icon_selected = false;
 		user_input_mode = true;
@@ -562,6 +602,15 @@ void user_screenView:: toggle_password_visibility()
 		}
 		password_text.invalidate();
 	}
+	if(password_visible)
+	{
+		view_password_icon.setBitmap(touchgfx::Bitmap(BITMAP_EYE_OPEN_ID));
+	}
+	else
+	{
+		view_password_icon.setBitmap(touchgfx::Bitmap(BITMAP_EYE_CLOSED_ID));
+	}
+	view_password_icon.invalidate();
 }
 
 int8_t user_screenView:: check_usernames()
@@ -589,7 +638,7 @@ void user_screenView:: set_all_objects_alpha(uint8_t alpha)
 	password_button.setAlpha(alpha);
 	username_text.setAlpha(alpha);
 	password_text.setAlpha(alpha);
-	view_password_title.setAlpha(alpha);
+	view_password_icon.setAlpha(alpha);
 	view_password_button.setAlpha(alpha);
 	enter_button.setAlpha(alpha);
 	enter_title.setAlpha(alpha);
@@ -611,7 +660,7 @@ void user_screenView:: set_all_objects_alpha(uint8_t alpha)
 	password_button.invalidate();
 	username_text.invalidate();
 	password_text.invalidate();
-	view_password_title.invalidate();
+	view_password_icon.invalidate();
 	view_password_button.invalidate();
 	enter_button.invalidate();
 	enter_title.invalidate();
@@ -619,19 +668,13 @@ void user_screenView:: set_all_objects_alpha(uint8_t alpha)
 	password_icon.invalidate();
 }
 
-void user_screenView::setup_cancel_button()
+void user_screenView:: setup_cancel_button()
 {
 	cancel_icon.setVisible(true);
 	cancel_icon.setAlpha(0);
 	cancel_button.setVisible(true);
 	cancel_button.setAlpha(0);
 
-	enter_button.setWidth(enter_button.getWidth() - (cancel_button.getWidth() + 18));
-	enter_button.setBoxWithBorderWidth(enter_button.getWidth());
-	enter_title.setWidth(enter_button.getWidth() - 34);
-
 	cancel_icon.invalidate();
 	cancel_button.invalidate();
-	enter_button.invalidate();
-	enter_title.invalidate();
 }

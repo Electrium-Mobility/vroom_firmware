@@ -115,36 +115,6 @@
           },
           {
             "Type": "FlexButton",
-            "Name": "view_password_button",
-            "X": 30,
-            "Y": 383,
-            "Width": 361,
-            "Height": 80,
-            "ButtonTrigger": {
-              "Type": "ClickButtonTrigger"
-            },
-            "ButtonStyles": [
-              {
-                "Type": "BoxWithBorderButtonStyle",
-                "Width": 361,
-                "Height": 80,
-                "LockToFlexButtonSize": true,
-                "BorderSize": 5,
-                "ColorReleased": {
-                  "Red": 255,
-                  "Green": 255,
-                  "Blue": 255
-                },
-                "ColorPressed": {
-                  "Red": 73,
-                  "Green": 184,
-                  "Blue": 72
-                }
-              }
-            ]
-          },
-          {
-            "Type": "FlexButton",
             "Name": "password_button",
             "X": 80,
             "Y": 285,
@@ -157,67 +127,6 @@
               {
                 "Type": "BoxWithBorderButtonStyle",
                 "Width": 720,
-                "Height": 80,
-                "LockToFlexButtonSize": true,
-                "BorderSize": 5,
-                "ColorReleased": {
-                  "Red": 255,
-                  "Green": 255,
-                  "Blue": 255
-                },
-                "ColorPressed": {
-                  "Red": 73,
-                  "Green": 184,
-                  "Blue": 72
-                }
-              }
-            ]
-          },
-          {
-            "Type": "FlexButton",
-            "Name": "enter_button",
-            "X": 409,
-            "Y": 383,
-            "Width": 361,
-            "Height": 80,
-            "ButtonTrigger": {
-              "Type": "ClickButtonTrigger"
-            },
-            "ButtonStyles": [
-              {
-                "Type": "BoxWithBorderButtonStyle",
-                "Width": 361,
-                "Height": 80,
-                "LockToFlexButtonSize": true,
-                "BorderSize": 5,
-                "ColorReleased": {
-                  "Red": 255,
-                  "Green": 255,
-                  "Blue": 255
-                },
-                "ColorPressed": {
-                  "Red": 73,
-                  "Green": 184,
-                  "Blue": 72
-                }
-              }
-            ]
-          },
-          {
-            "Type": "FlexButton",
-            "Name": "cancel_button",
-            "X": 690,
-            "Y": 383,
-            "Width": 80,
-            "Height": 80,
-            "Visible": false,
-            "ButtonTrigger": {
-              "Type": "ClickButtonTrigger"
-            },
-            "ButtonStyles": [
-              {
-                "Type": "BoxWithBorderButtonStyle",
-                "Width": 80,
                 "Height": 80,
                 "LockToFlexButtonSize": true,
                 "BorderSize": 5,
@@ -302,24 +211,132 @@
             "RelativeFilename": "username_icon.png"
           },
           {
-            "Type": "TextArea",
-            "Name": "view_password_title",
-            "X": 47,
-            "Y": 399,
-            "Width": 327,
-            "Height": 49,
-            "TextId": "view_password",
-            "TextRotation": "0"
+            "Type": "FlexButton",
+            "Name": "enter_button",
+            "X": 220,
+            "Y": 383,
+            "Width": 360,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 360,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
           },
           {
             "Type": "TextArea",
             "Name": "enter_title",
-            "X": 426,
+            "X": 237,
             "Y": 399,
-            "Width": 327,
+            "Width": 326,
             "Height": 48,
             "TextId": "login",
             "TextRotation": "0"
+          },
+          {
+            "Type": "Image",
+            "Name": "enter_icon",
+            "X": 370,
+            "Y": 399,
+            "Width": 60,
+            "Height": 47,
+            "RelativeFilename": "enter_icon.png",
+            "Alpha": 0
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "cancel_button",
+            "X": 640,
+            "Y": 383,
+            "Width": 80,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 80,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Image",
+            "Name": "cancel_icon",
+            "X": 650,
+            "Y": 393,
+            "Width": 60,
+            "Height": 60,
+            "RelativeFilename": "cancel_icon.png"
+          },
+          {
+            "Type": "FlexButton",
+            "Name": "view_password_button",
+            "X": 80,
+            "Y": 383,
+            "Width": 80,
+            "Height": 80,
+            "ButtonTrigger": {
+              "Type": "ClickButtonTrigger"
+            },
+            "ButtonStyles": [
+              {
+                "Type": "BoxWithBorderButtonStyle",
+                "Width": 80,
+                "Height": 80,
+                "LockToFlexButtonSize": true,
+                "BorderSize": 5,
+                "ColorReleased": {
+                  "Red": 255,
+                  "Green": 255,
+                  "Blue": 255
+                },
+                "ColorPressed": {
+                  "Red": 73,
+                  "Green": 184,
+                  "Blue": 72
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Image",
+            "Name": "view_password_icon",
+            "X": 80,
+            "Y": 406,
+            "Width": 80,
+            "Height": 40,
+            "RelativeFilename": "eye_closed.png"
           },
           {
             "Type": "ModalWindow",
@@ -370,26 +387,6 @@
                 }
               }
             ]
-          },
-          {
-            "Type": "Image",
-            "Name": "enter_icon",
-            "X": 544,
-            "Y": 399,
-            "Width": 60,
-            "Height": 47,
-            "RelativeFilename": "enter_icon.png",
-            "Alpha": 0
-          },
-          {
-            "Type": "Image",
-            "Name": "cancel_icon",
-            "X": 700,
-            "Y": 393,
-            "Width": 60,
-            "Height": 60,
-            "Visible": false,
-            "RelativeFilename": "cancel_icon.png"
           }
         ],
         "Interactions": [

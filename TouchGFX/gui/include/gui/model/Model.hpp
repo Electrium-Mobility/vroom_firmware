@@ -2,6 +2,7 @@
 #define MODEL_HPP
 
 #include <stdint.h>
+#include <gui/common/definitions.h>
 
 class ModelListener;
 
@@ -23,6 +24,14 @@ public:
 		ADD,
 	};
 
+    void tick();
+
+    void resume_motor_task();
+    void resume_diagnostics_task();
+    void suspend_motor_task();
+    void suspend_diagnostics_task();
+
+    void activate_adc(bool retrieve_data);
     void set_throttle_high_point();
     void set_throttle_low_point();
     void set_brake_high_point();
@@ -50,13 +59,10 @@ public:
     UserScreenState get_user_screen_state();
     void set_user_screen_state(UserScreenState state);
 
-
-    void tick();
-
 protected:
     ModelListener* modelListener;
-    unsigned int adc_value;
     UserScreenState user_screen_state;
+    bool retrieve_adc_data;
 };
 
 #endif // MODEL_HPP

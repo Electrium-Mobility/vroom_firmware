@@ -62,7 +62,6 @@ public:
 		LIST_OUT_STEP_1,
 		LIST_VALUE_SET_STEP_0,
 		LIST_VALUE_SET_STEP_1,
-
 	};
 
     enum ListType
@@ -83,13 +82,8 @@ public:
 
 	virtual void execute_function_pressed();
 
-
-    virtual void display_adc(unsigned int adc_value);
-
-#ifndef SIMULATOR
-     // Motor Data
-     virtual void motorDataUpdate();
-#endif
+    virtual void display_adc(volatile uint16_t* adc_value);
+    virtual void update_motor_data(motor_data_t *motor_data);
 
 protected:
     // Command Page
@@ -130,10 +124,11 @@ private:
 	void handle_list_type();
 	void show_default_value();
 	void refresh_function_wheel();
+	void setup_function_objects();
 
 	// Other Pages
 	CustomKeyboard keypad;
-
+	bool display_throttle;
 };
 
 #endif // MAIN_SCREENVIEW_HPP
