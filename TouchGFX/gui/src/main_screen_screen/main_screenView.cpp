@@ -19,8 +19,8 @@ main_screenView::main_screenView() :
 		calibration_animation_state(CALIBRATION_ANIMATION_READY),
 		transition_animation_state(TRANSITION_ANIMATION_READY),
 		list_animation_state(LIST_ANIMATION_READY),
-		display_throttle(true),
-		scrollWheelSelectedItemCallback(this,&main_screenView::scrollWheelSelectedItemHandler)
+		scrollWheelSelectedItemCallback(this,&main_screenView::scrollWheelSelectedItemHandler),
+		display_throttle(true)
 {
 }
 

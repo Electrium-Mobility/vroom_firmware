@@ -36,7 +36,7 @@ build/MINGW32_NT-6.2/gui/src/common/FrontendApplication.o: \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/hal/Gestures.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/transitions/Transition.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Widget.hpp \
- gui/include/gui/model/Model.hpp
+ gui/include/gui/model/Model.hpp gui/include/gui/common/definitions.h
 
 gui/include/gui/common/FrontendApplication.hpp:
 
@@ -111,3 +111,5 @@ generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Widget.hpp:
 
 gui/include/gui/model/Model.hpp:
+
+gui/include/gui/common/definitions.h:

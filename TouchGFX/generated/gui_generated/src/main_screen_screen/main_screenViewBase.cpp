@@ -8,8 +8,7 @@
 
 main_screenViewBase::main_screenViewBase() :
     updateItemCallback(this, &main_screenViewBase::updateItemCallbackHandler),
-    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler),
-    frameCountMotorDataUpdateInterval(0)
+    flexButtonCallback(this, &main_screenViewBase::flexButtonCallbackHandler)
 {
     __background.setPosition(0, 0, 800, 480);
     __background.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -273,19 +272,6 @@ void main_screenViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButt
         //When cancel_button clicked call virtual function
         //Call cancel_command
         cancel_command();
-    }
-}
-
-void main_screenViewBase::handleTickEvent()
-{
-    frameCountMotorDataUpdateInterval++;
-    if(frameCountMotorDataUpdateInterval == TICK_MOTORDATAUPDATE_INTERVAL)
-    {
-        //motorDataUpdate
-        //When every N tick call virtual function
-        //Call motorDataUpdate
-        motorDataUpdate();
-        frameCountMotorDataUpdateInterval = 0;
     }
 }
 

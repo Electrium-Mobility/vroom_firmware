@@ -65,7 +65,7 @@ build/MINGW32_NT-6.2/simulator/main.o: simulator/main.cpp \
  ../Middlewares/ST/touchgfx/framework/include/mvp/MVPApplication.hpp \
  ../Middlewares/ST/touchgfx/framework/include/mvp/Presenter.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/Screen.hpp \
- gui/include/gui/model/Model.hpp \
+ gui/include/gui/model/Model.hpp gui/include/gui/common/definitions.h \
  gui/include/gui/startup_screen_screen/startup_screenView.hpp \
  generated/gui_generated/include/gui_generated/startup_screen_screen/startup_screenViewBase.hpp \
  ../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp \
@@ -104,7 +104,6 @@ build/MINGW32_NT-6.2/simulator/main.o: simulator/main.cpp \
  generated/texts/include/texts/TextKeysAndLanguages.hpp \
  gui/include/gui/common/CharKeyboardLayout.hpp \
  gui/include/gui/common/CharKeyboardKeyMapping.hpp \
- gui/include/gui/common/definitions.h \
  gui/include/gui/main_screen_screen/main_screenView.hpp \
  generated/gui_generated/include/gui_generated/main_screen_screen/main_screenViewBase.hpp \
  gui/include/gui/main_screen_screen/main_screenPresenter.hpp \
@@ -261,6 +260,8 @@ generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp
 
 gui/include/gui/model/Model.hpp:
 
+gui/include/gui/common/definitions.h:
+
 gui/include/gui/startup_screen_screen/startup_screenView.hpp:
 
 generated/gui_generated/include/gui_generated/startup_screen_screen/startup_screenViewBase.hpp:
@@ -336,8 +337,6 @@ generated/texts/include/texts/TextKeysAndLanguages.hpp:
 gui/include/gui/common/CharKeyboardLayout.hpp:
 
 gui/include/gui/common/CharKeyboardKeyMapping.hpp:
-
-gui/include/gui/common/definitions.h:
 
 gui/include/gui/main_screen_screen/main_screenView.hpp:
 

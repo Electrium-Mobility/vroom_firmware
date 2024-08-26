@@ -38,7 +38,7 @@ build/MINGW32_NT-6.2/gui/src/startup_screen_screen/startup_screenPresenter.o: \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/hal/Gestures.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/transitions/Transition.hpp \
  ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Widget.hpp \
- gui/include/gui/model/Model.hpp \
+ gui/include/gui/model/Model.hpp gui/include/gui/common/definitions.h \
  ../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp \
  gui/include/gui/startup_screen_screen/startup_screenPresenter.hpp \
  gui/include/gui/model/ModelListener.hpp \
@@ -122,6 +122,8 @@ generated/gui_generated/include/gui_generated/common/FrontendApplicationBase.hpp
 ../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Widget.hpp:
 
 gui/include/gui/model/Model.hpp:
+
+gui/include/gui/common/definitions.h:
 
 ../Middlewares/ST/touchgfx/framework/include/mvp/View.hpp:
 

@@ -35,7 +35,6 @@ public:
     {
         // Override and implement this function in main_screen
     }
-    virtual void handleTickEvent();
 
     /*
      * Custom Actions
@@ -54,10 +53,6 @@ public:
         // Override and implement this function in main_screen
     }
     virtual void enter_command()
-    {
-        // Override and implement this function in main_screen
-    }
-    virtual void motorDataUpdate()
     {
         // Override and implement this function in main_screen
     }
@@ -137,12 +132,6 @@ private:
      */
     void updateItemCallbackHandler(touchgfx::DrawableListItemsInterface* items, int16_t containerIndex, int16_t itemIndex);
     void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
-
-    /*
-     * Tick Counter Declarations
-     */
-    static const uint32_t TICK_MOTORDATAUPDATE_INTERVAL = 20;
-    uint32_t frameCountMotorDataUpdateInterval;
 
 };
 

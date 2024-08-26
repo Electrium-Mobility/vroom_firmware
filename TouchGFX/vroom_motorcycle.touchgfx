@@ -991,17 +991,6 @@
             }
           },
           {
-            "InteractionName": "motorDataUpdate",
-            "Trigger": {
-              "Type": "TriggerOnEveryTick",
-              "TickCount": 20
-            },
-            "Action": {
-              "Type": "ActionCustom",
-              "FunctionName": "motorDataUpdate"
-            }
-          },
-          {
             "InteractionName": "cancel_interaction",
             "Trigger": {
               "Type": "TriggerClicked",
