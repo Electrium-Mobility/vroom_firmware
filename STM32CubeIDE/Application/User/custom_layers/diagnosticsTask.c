@@ -69,8 +69,7 @@ void handle_diagnostics_timing()
 	if(osSemaphoreGetCount(diagnostic_timing_modifiedHandle))
 	{
 		// the refresh rate has been changed
-		int8_t status = osMutexAcquire(settingMutexHandle, osWaitForever);
-		if(status == osOK)
+		if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 		{
 			// Safety Check, ensure that an invalid value doesn't result in no diagnostic_delay
 			if(ee.diagnostic_frequency < 0 || ee.diagnostic_frequency > 1000)

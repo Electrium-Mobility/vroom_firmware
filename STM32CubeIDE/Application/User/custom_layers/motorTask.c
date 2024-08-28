@@ -102,43 +102,47 @@ void motorTask_poll()
 	sprintf(uart_tx, "%u\r\n", adc_buffer[BRAKE]);
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
 
-	// This is for digital brake regen braking, it is disabled by default
-	if(brake_sensor)
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		if(!ee.analog_brake_active)
+		if(brake_sensor)
 		{
-			// Activate regenerative breaking to slow the bike down to the appropriate speed
-			handle_digital_brake(osKernelGetSysTimerCount() - start_time, &brake_magnitude, ee.brake_rate);
-			comm_can_set_current_brake_rel(MOTOR_CAN_ID, brake_magnitude);
-		}
-	}
-	else
-	{
-		// ensure the sensor value is reasonable to send to the motor
-		filter_sensor_data(adc_buffer[THROTTLE], &filtered_throttle, &acceleration, ee.throttle_threshold);
-		duty_cycle = map(filtered_throttle, ee.throttle_min, ee.throttle_max, 0, 100);
-
-		sprintf(uart_tx, "%d\r\n", duty_cycle);
-		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
-
-		if(acceleration > 0)
-		{
-			// Activate the motor to accelerate to the desired speed
+			// Digital brake handling
+			if(!ee.analog_brake_active)
+			{
+				// Activate regenerative breaking to slow the bike down to the appropriate speed
+				handle_digital_brake(osKernelGetSysTimerCount() - start_time, &brake_magnitude, ee.brake_rate);
+				comm_can_set_current_brake_rel(MOTOR_CAN_ID, brake_magnitude);
+			}
 		}
 		else
 		{
-			// Activate regenerative breaking to slow the bike down to the appropriate speed
+			// Ensure the sensor value is reasonable to send to the motor
+			filter_sensor_data(adc_buffer[THROTTLE], &filtered_throttle, &acceleration, ee.throttle_threshold);
+			duty_cycle = map(filtered_throttle, ee.throttle_min, ee.throttle_max, 0, 100);
+
+			sprintf(uart_tx, "%d\r\n", duty_cycle);
+			HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
+
+			if(acceleration > 0)
+			{
+				// Activate the motor to accelerate to the desired speed
+			}
+			else
+			{
+				// Activate regenerative breaking to slow the bike down to the appropriate speed
+			}
 		}
-	}
-	// handle_the analog brake sensor
-	if(ee.analog_brake_active)
-	{
-		filter_sensor_data(adc_buffer[BRAKE], &filtered_brake, &acceleration, ee.brake_threshold);
-		duty_cycle = map(filtered_brake, ee.brake_min, ee.brake_max, 0, 100);
-		if(acceleration > 0)
+		if(ee.analog_brake_active)
 		{
-			// Activate the regen brake to accelerate to the desired brake magnitude
+			// Analog brake handling
+			filter_sensor_data(adc_buffer[BRAKE], &filtered_brake, &acceleration, ee.brake_threshold);
+			duty_cycle = map(filtered_brake, ee.brake_min, ee.brake_max, 0, 100);
+			if(acceleration > 0)
+			{
+				// Activate the regen brake to accelerate to the desired brake magnitude
+			}
 		}
+		osMutexRelease(settingMutexHandle);
 	}
 
 	handle_motor_timing();
@@ -157,8 +161,7 @@ void handle_motor_timing()
 	if(osSemaphoreGetCount(motor_timing_modifiedHandle))
 	{
 		// the refresh rate has been changed
-		int8_t status = osMutexAcquire(settingMutexHandle, osWaitForever);
-		if(status == osOK)
+		if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 		{
 			// Safety Check, ensure that an invalid value doesn't result in no motor_delay
 			if(ee.motor_frequency < 0 || ee.motor_frequency > 1000)

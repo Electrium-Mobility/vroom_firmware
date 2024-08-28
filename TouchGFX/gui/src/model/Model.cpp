@@ -254,7 +254,7 @@ void Model::set_brake_sensitivity(uint16_t brake_value)
 void Model::toggle_analog_brake()
 {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		ee.analog_brake_active = (ee.analog_brake_active == 1) ? 0 : 1;
 		osMutexRelease(settingMutexHandle);
@@ -268,7 +268,7 @@ uint8_t Model::get_analog_brake()
 {
 	uint8_t temp = 0;
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		temp = ee.analog_brake_active;
 		osMutexRelease(settingMutexHandle);
@@ -339,7 +339,7 @@ void Model::get_username(int8_t user, uint8_t* username, uint8_t size)
 void Model::get_password(int8_t user, uint8_t* password, uint8_t size)
 {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		for(uint8_t i = 0; i < size; i++)
 		{
@@ -366,20 +366,21 @@ void Model::get_password(int8_t user, uint8_t* password, uint8_t size)
 
 uint8_t Model::get_num_users()
 {
+	uint8_t temp = 1;
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		return ee.num_users;
+		temp = ee.num_users;
+		osMutexRelease(settingMutexHandle);
 	}
-#else
-	return 1;
 #endif
+	return temp;
 }
 
 void Model::edit_username(uint8_t user, uint8_t* username)
 {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		for(uint8_t i = 0; i < USERNAME_SIZE; i++)
 		{
@@ -394,7 +395,7 @@ void Model::edit_username(uint8_t user, uint8_t* username)
 void Model::edit_password(uint8_t user, uint8_t* password)
 {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
 		{
@@ -409,7 +410,7 @@ void Model::edit_password(uint8_t user, uint8_t* password)
 void Model::add_user(uint8_t* username, uint8_t* password)
 {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		for(uint8_t i = 0; i < USERNAME_SIZE; i++)
 		{
@@ -429,7 +430,7 @@ void Model::add_user(uint8_t* username, uint8_t* password)
 void Model::remove_user(uint8_t user)
 {
 #ifndef SIMULATOR
-	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	if(osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		for(uint8_t i = 0; i < USERNAME_SIZE; i++)
 		{
