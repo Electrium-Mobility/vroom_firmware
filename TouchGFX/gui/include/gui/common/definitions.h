@@ -20,7 +20,7 @@
 #define FADE_ANIMATION_DURATION 40
 
 // Main screen defines
-#define NB_FUNCTIONS 9
+#define NB_FUNCTIONS 10
 #define TRANSITION_ANIMATION_DURATION 10
 #define CALIBRATION_ANIMATION_DURATION 30
 
@@ -46,8 +46,19 @@ enum
 // Emulated EEPROM Structure
 typedef struct
 {
-	uint8_t num_users;
+	float motor_frequency;
+	float diagnostic_frequency;
+	uint16_t throttle_threshold;
+	uint16_t throttle_max;
+	uint16_t throttle_min;
 
+	uint16_t brake_threshold;
+	uint16_t brake_max;
+	uint16_t brake_min;
+	uint8_t analog_brake_active;
+	float brake_rate;
+
+	uint8_t num_users;
 	uint8_t usernames[USERNAME_SIZE * MAX_NUM_USERS];
 	uint8_t passwords[PASSWORD_SIZE * MAX_NUM_USERS];
 }ee_Storage_t;

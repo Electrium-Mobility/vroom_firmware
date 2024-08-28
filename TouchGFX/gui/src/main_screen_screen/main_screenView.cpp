@@ -958,6 +958,12 @@ void main_screenView::execute_default_function()
 				list_animation_state = LIST_IN_STEP_0;
 				break;
 			}
+			case 9:
+			{
+				// Toggle the Analog Brake
+				presenter->toggle_analog_brake();
+				display_boolean_state(presenter->get_analog_brake());
+			}
 			// NEW_FUNCTION CODE START
 			// NEW_FUNCTION CODE END
 			default:
@@ -1132,6 +1138,11 @@ TEXTS main_screenView::get_default_text(int16_t itemIndex)
 			return T_FUNCTION_8;
 			break;
 		}
+		case 9:
+		{
+			return T_FUNCTION_9;
+			break;
+		}
 		//NEW_FUNCTION CODE START
 		//NEW_FUNCTION CODE END
 		default:
@@ -1198,7 +1209,7 @@ void main_screenView::show_default_value()
 			// Set throttle sensitivity
 			value_text.setTypedText(touchgfx::TypedText(T_KEYPAD_VALUE));
 
-			handle_dummy_function_names(T_FUNCTION_8, T_FUNCTION_0, T_FUNCTION_1);
+			handle_dummy_function_names(T_FUNCTION_9, T_FUNCTION_0, T_FUNCTION_1);
 
 			keypad_value_d = presenter->get_throttle_sensitivity();
 			Unicode::snprintf(value_textBuffer, VALUE_TEXT_SIZE, "%d",(uint16_t) keypad_value_d);
@@ -1285,8 +1296,15 @@ void main_screenView::show_default_value()
 		case 8:
 		{
 			// Set language
-			handle_dummy_function_names(T_FUNCTION_7, T_FUNCTION_8, T_FUNCTION_0);
+			handle_dummy_function_names(T_FUNCTION_7, T_FUNCTION_8, T_FUNCTION_9);
 			display_current_language();
+			set_value_objects(true, 450);
+			break;
+		}
+		case 9:
+		{
+			handle_dummy_function_names(T_FUNCTION_8, T_FUNCTION_9, T_FUNCTION_0);
+			display_boolean_state((bool)presenter->get_analog_brake());
 			set_value_objects(true, 450);
 			break;
 		}
@@ -1388,6 +1406,19 @@ void main_screenView::display_current_language()
 		{
 			break;
 		}
+	}
+	value_text.invalidate();
+}
+
+void main_screenView::display_boolean_state(bool active)
+{
+	if(active)
+	{
+		value_text.setTypedText(touchgfx::TypedText(T_ACTIVE));
+	}
+	else
+	{
+		value_text.setTypedText(touchgfx::TypedText(T_INACTIVE));
 	}
 	value_text.invalidate();
 }

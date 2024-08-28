@@ -121,6 +121,8 @@ private:
 	void set_dummy_objects_visibility(bool visible);
 	void set_value_objects(bool visible, uint16_t text_width);
 	void display_current_language();
+	void display_boolean_state(bool active);
+
 	void handle_list_type();
 	void show_default_value();
 	void refresh_function_wheel();

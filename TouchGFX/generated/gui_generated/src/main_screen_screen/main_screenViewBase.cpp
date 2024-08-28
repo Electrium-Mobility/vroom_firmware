@@ -32,7 +32,7 @@ main_screenViewBase::main_screenViewBase() :
     function_wheel.setEasingEquation(touchgfx::EasingEquations::backEaseOut);
     function_wheel.setSwipeAcceleration(10);
     function_wheel.setDragAcceleration(10);
-    function_wheel.setNumberOfItems(9);
+    function_wheel.setNumberOfItems(10);
     function_wheel.setSelectedItemOffset(54);
     function_wheel.setSelectedItemExtraSize(0, 0);
     function_wheel.setSelectedItemMargin(0, 0);

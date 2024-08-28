@@ -80,24 +80,34 @@ public:
     	model->set_brake_low_point();
     }
 
+    void toggle_analog_brake()
+    {
+    	model->toggle_analog_brake();
+    }
+
+    uint8_t get_analog_brake()
+    {
+    	return model->get_analog_brake();
+    }
 
 
-    uint32_t get_throttle_sensitivity()
+
+    uint16_t get_throttle_sensitivity()
     {
     	return model->get_throttle_sensitivity();
     }
 
-    void set_throttle_sensitivity(uint32_t throttle_value)
+    void set_throttle_sensitivity(uint16_t throttle_value)
     {
     	model->set_throttle_sensitivity(throttle_value);
     }
 
-    uint32_t get_brake_sensitivity()
+    uint16_t get_brake_sensitivity()
     {
     	return model->get_brake_sensitivity();
     }
 
-    void set_brake_sensitivity(uint32_t brake_value)
+    void set_brake_sensitivity(uint16_t brake_value)
     {
     	model->set_brake_sensitivity(brake_value);
     }

@@ -516,7 +516,7 @@
                     "SelectedItemTemplateName": "function_center",
                     "IsCircular": true,
                     "ItemTemplateName": "function_element",
-                    "NumberofItems": 9,
+                    "NumberofItems": 10,
                     "Easing": "Back",
                     "EasingOption": "Out",
                     "SwipeAcceleration": 1.0,
@@ -578,7 +578,7 @@
                     "X": 273,
                     "Y": 4,
                     "Width": 255,
-                    "Height": 73,
+                    "Height": 72,
                     "TextId": "function",
                     "TextRotation": "0",
                     "AutoSize": true

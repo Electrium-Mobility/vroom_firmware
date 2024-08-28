@@ -37,10 +37,12 @@ public:
     void set_brake_high_point();
     void set_brake_low_point();
 
-    uint32_t get_throttle_sensitivity();
-    void set_throttle_sensitivity(uint32_t throttle_value);
-    uint32_t get_brake_sensitivity();
-    void set_brake_sensitivity(uint32_t brake_value);
+    uint16_t get_throttle_sensitivity();
+    void set_throttle_sensitivity(uint16_t throttle_value);
+    uint16_t get_brake_sensitivity();
+    void set_brake_sensitivity(uint16_t brake_value);
+    void toggle_analog_brake();
+    uint8_t get_analog_brake();
     float get_CAN_transmit_frequency();
     void set_CAN_transmit_frequency(float frequency_value);
 
@@ -63,6 +65,10 @@ protected:
     ModelListener* modelListener;
     UserScreenState user_screen_state;
     bool retrieve_adc_data;
+
+#ifdef SIMULATOR
+    uint8_t test_bool;
+#endif
 };
 
 #endif // MODEL_HPP

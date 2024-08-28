@@ -320,9 +320,9 @@ uint8_t comm_can_ping(uint8_t controller_id)
  * sensor_data is passed by value since it should not be used after the function is executed
  * filtered_data and acceleration are passed by reference so that we can access both their outputs after the function is executed
  */
-void filter_sensor_data(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration, uint16_t threshold)
+void filter_sensor_data(uint16_t sensor_data, uint16_t *filtered_data, int32_t *acceleration, uint16_t threshold)
 {
-	(*acceleration) = (uint32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
+	(*acceleration) = (int32_t)(sensor_data - (*filtered_data)); // change in sensor_data / time
 
 	sprintf(uart_tx_2, "%d, ", abs(*acceleration));
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY); //actual sensor analog value (0 to 4096)
@@ -351,7 +351,7 @@ void filter_sensor_data(uint32_t sensor_data, uint32_t *filtered_data, int32_t *
 	HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx_2, strlen(uart_tx_2), HAL_MAX_DELAY);
 }
 
-void handle_digital_brake(uint32_t t, float *brake_magnitude)
+void handle_digital_brake(uint32_t t, float *brake_magnitude, float brake_rate)
 {
 
 }

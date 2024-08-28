@@ -11,6 +11,7 @@
 #include "cmsis_os.h"
 #include "motor.h"
 #include <gui/common/definitions.h>
+#include "ee.h"
 
 // Public Variables
 motor_data_t motor_data;
@@ -19,15 +20,22 @@ motor_data_t motor_data;
 CAN_RxHeaderTypeDef rx_header;
 uint8_t rx_data[8];
 
-float diagnostic_frequency = 1; // the frequency of diagnostic test data acquisition in Hz
-
 extern CAN_HandleTypeDef hcan2;
 
 extern osSemaphoreId_t collect_diagnostic_dataHandle;
 
 extern osSemaphoreId_t suspend_diagnostics_taskHandle;
 
+extern osSemaphoreId_t diagnostic_timing_modifiedHandle;
+
 extern osThreadId_t diagnosticsTaskHandle;
+
+extern osMutexId_t settingMutexHandle;
+
+extern ee_Storage_t ee;
+
+uint32_t diagnostic_delay = 0;
+
 
 void handle_diagnostics_task_suspension();
 void handle_diagnostics_timing();
@@ -58,7 +66,42 @@ void diagnosticsTask_poll()
 
 void handle_diagnostics_timing()
 {
-	osDelayUntil(osKernelGetTickCount() + ((1000 / diagnostic_frequency) / portTICK_PERIOD_MS));
+	if(osSemaphoreGetCount(diagnostic_timing_modifiedHandle))
+	{
+		// the refresh rate has been changed
+		int8_t status = osMutexAcquire(settingMutexHandle, osWaitForever);
+		if(status == osOK)
+		{
+			// Safety Check, ensure that an invalid value doesn't result in no diagnostic_delay
+			if(ee.diagnostic_frequency < 0 || ee.diagnostic_frequency > 1000)
+			{
+				ee.diagnostic_frequency = 1.0;
+
+				// Setup the diagnostic_delay variable regardless of EE is written properly
+				diagnostic_delay = (uint32_t) (1000 / ee.diagnostic_frequency);
+
+				if(EE_Write())
+				{
+					// Only change the state of the timing semaphore if the refresh rate
+					// was successfully written to EE, otherwise make the task retry
+					osSemaphoreAcquire(diagnostic_timing_modifiedHandle, 0);
+				}
+				else
+				{
+					// Ensure the next iteration will attempt the EE_Write operation again
+					ee.diagnostic_frequency = 0;
+				}
+			}
+			else
+			{
+				diagnostic_delay = (uint32_t)(1000 / ee.diagnostic_frequency);
+
+				osSemaphoreAcquire(diagnostic_timing_modifiedHandle, 0);
+			}
+			osMutexRelease(settingMutexHandle);
+		}
+	}
+	osDelayUntil(osKernelGetTickCount() + (diagnostic_delay / portTICK_PERIOD_MS));
 }
 
 void handle_diagnostics_task_suspension()

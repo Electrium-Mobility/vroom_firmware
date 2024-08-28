@@ -148,6 +148,14 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Function_Setting">
+      <Text Id="inactive" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">Inactive</Translation>
+        <Translation Language="DE">Inaktiv</Translation>
+      </Text>
+      <Text Id="active" Alignment="Center" TypographyId="Keypad">
+        <Translation Language="GB">Active</Translation>
+        <Translation Language="DE">Aktiv</Translation>
+      </Text>
       <Text Id="set_lanuage" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Set Language</Translation>
         <Translation Language="DE">Sprache Einstellen</Translation>
@@ -174,6 +182,10 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Function_Names">
+      <Text Id="function_9" Alignment="Center" TypographyId="Keypad_command_descriptions">
+        <Translation Language="GB">Toggle Analog Brake</Translation>
+        <Translation Language="DE">Analogbremse Umschalten</Translation>
+      </Text>
       <Text Id="function_8" Alignment="Center" TypographyId="Keypad_command_descriptions">
         <Translation Language="GB">Select Language</Translation>
         <Translation Language="DE">Sprachauswahl</Translation>

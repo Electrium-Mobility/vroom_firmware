@@ -14,20 +14,8 @@ extern "C"
 // Mutexes
 extern osMutexId_t settingMutexHandle;
 
-extern float motor_frequency;
-
 // Sensor Data
 extern volatile uint16_t sensor_data[2];
-
-// Throttle Sensor Varaibles
-extern uint16_t throttle_threshold;
-extern uint16_t throttle_max;
-extern uint16_t throttle_min;
-
-// Brake Sensor Variables
-extern uint16_t brake_threshold;
-extern uint16_t brake_max;
-extern uint16_t brake_min;
 
 // Diagnostics Variables
 extern osSemaphoreId_t collect_diagnostic_dataHandle;
@@ -127,15 +115,17 @@ void Model::activate_adc(bool retrieve_data)
 void Model::set_throttle_high_point()
 {
 #ifndef SIMULATOR
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 //		HAL_ADC_Start(&hadc1);
 //		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 //		throttle_max = HAL_ADC_GetValue(&hadc1);
 //		HAL_ADC_Stop(&hadc1);
 		// Not sure if this will work
-		throttle_max = sensor_data[THROTTLE];
-		// throttle_max = adc_value; // may also work
+		ee.throttle_max = sensor_data[THROTTLE];
+
+		EE_Write();
+
 		osMutexRelease(settingMutexHandle);
 	}
 #endif
@@ -144,15 +134,17 @@ void Model::set_throttle_high_point()
 void Model::set_throttle_low_point()
 {
 #ifndef SIMULATOR
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 //		HAL_ADC_Start(&hadc1);
 //		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 //		throttle_min = HAL_ADC_GetValue(&hadc1);
 //		HAL_ADC_Stop(&hadc1);
 		// Not sure if this will work
-		throttle_min = sensor_data[THROTTLE];
-		// throttle_min = adc_value; // may also work
+		ee.throttle_min = sensor_data[THROTTLE];
+
+		EE_Write();
+
 		osMutexRelease(settingMutexHandle);
 	}
 #endif
@@ -161,15 +153,17 @@ void Model::set_throttle_low_point()
 void Model::set_brake_high_point()
 {
 #ifndef SIMULATOR
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		//HAL_ADC_Start(&hadc2);
 		//HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
 		//brake_max = HAL_ADC_GetValue(&hadc2);
 		//HAL_ADC_Stop(&hadc2);
 		// Not sure if this will work
-		brake_max = sensor_data[BRAKE];
-		// brake_max = adc_value; // may also work
+		ee.brake_max = sensor_data[BRAKE];
+
+		EE_Write();
+
 		osMutexRelease(settingMutexHandle);
 	}
 #endif
@@ -178,28 +172,31 @@ void Model::set_brake_high_point()
 void Model::set_brake_low_point()
 {
 #ifndef SIMULATOR
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		//HAL_ADC_Start(&hadc2);
 		//HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
 		//brake_min = HAL_ADC_GetValue(&hadc2);
 		//HAL_ADC_Stop(&hadc2);
 		// Not sure if this will work
-		brake_min = sensor_data[BRAKE];
-		// brake_min = adc_value; // may also work
+		ee.brake_min = sensor_data[BRAKE];
+
+		EE_Write();
+
 		osMutexRelease(settingMutexHandle);
 	}
 #endif
 }
 
-uint32_t Model::get_throttle_sensitivity()
+uint16_t Model::get_throttle_sensitivity()
 {
 	unsigned int temp = 100;
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		temp = throttle_threshold;
+		temp = ee.throttle_threshold;
+
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
@@ -207,27 +204,30 @@ uint32_t Model::get_throttle_sensitivity()
 	return temp;
 }
 
-void Model::set_throttle_sensitivity(uint32_t throttle_value)
+void Model::set_throttle_sensitivity(uint16_t throttle_value)
 {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		throttle_threshold = throttle_value;
+		ee.throttle_threshold = throttle_value;
+
+		EE_Write();
+
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
 #endif // SIMULATOR
 }
 
-uint32_t Model::get_brake_sensitivity()
+uint16_t Model::get_brake_sensitivity()
 {
 	unsigned int temp = 100;
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		temp = brake_threshold;
+		temp = ee.brake_threshold;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
@@ -235,17 +235,48 @@ uint32_t Model::get_brake_sensitivity()
 	return temp;
 }
 
-void Model::set_brake_sensitivity(uint32_t brake_value)
+void Model::set_brake_sensitivity(uint16_t brake_value)
 {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		brake_threshold = brake_value;
+		ee.brake_threshold = brake_value;
+
+		EE_Write();
+
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
 #endif // SIMULATOR
+}
+
+void Model::toggle_analog_brake()
+{
+#ifndef SIMULATOR
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	{
+		ee.analog_brake_active = (ee.analog_brake_active == 1) ? 0 : 1;
+		osMutexRelease(settingMutexHandle);
+	}
+#else
+	test_bool = (test_bool == 1) ? 0 : 1;
+#endif
+}
+
+uint8_t Model::get_analog_brake()
+{
+	uint8_t temp = 0;
+#ifndef SIMULATOR
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	{
+		temp = ee.analog_brake_active;
+		osMutexRelease(settingMutexHandle);
+	}
+#else
+	temp = test_bool;
+#endif
+	return temp;
 }
 
 float Model::get_CAN_transmit_frequency()
@@ -253,9 +284,9 @@ float Model::get_CAN_transmit_frequency()
 	unsigned int temp = 1000;
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		temp = motor_frequency;
+		temp = ee.motor_frequency;
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
@@ -269,10 +300,13 @@ void Model::set_CAN_transmit_frequency(float frequency_value)
 {
 #ifndef SIMULATOR
 	// Aquire Mutex
-	if (osMutexAcquire(settingMutexHandle, 10) == osOK)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
 		osSemaphoreRelease(motor_timing_modifiedHandle);
-		motor_frequency = frequency_value;
+		ee.motor_frequency = frequency_value;
+
+		EE_Write();
+
 		// Release Mutex
 		osMutexRelease(settingMutexHandle);
 	}
@@ -282,9 +316,13 @@ void Model::set_CAN_transmit_frequency(float frequency_value)
 void Model::get_username(int8_t user, uint8_t* username, uint8_t size)
 {
 #ifndef SIMULATOR
-	for(uint8_t i = 0; i < size; i++)
+	if (osMutexAcquire(settingMutexHandle, osWaitForever) == osOK)
 	{
-		username[i] = ee.usernames[(user * USERNAME_SIZE) + i];
+		for(uint8_t i = 0; i < size; i++)
+		{
+			username[i] = ee.usernames[(user * USERNAME_SIZE) + i];
+		}
+		osMutexRelease(settingMutexHandle);
 	}
 #else
 	if(user == 0)
@@ -301,9 +339,13 @@ void Model::get_username(int8_t user, uint8_t* username, uint8_t size)
 void Model::get_password(int8_t user, uint8_t* password, uint8_t size)
 {
 #ifndef SIMULATOR
-	for(uint8_t i = 0; i < size; i++)
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
 	{
-		password[i] = ee.passwords[(user * PASSWORD_SIZE) + i];
+		for(uint8_t i = 0; i < size; i++)
+		{
+			password[i] = ee.passwords[(user * PASSWORD_SIZE) + i];
+		}
+		osMutexRelease(settingMutexHandle);
 	}
 #else
 	if(user == 0)
@@ -325,7 +367,10 @@ void Model::get_password(int8_t user, uint8_t* password, uint8_t size)
 uint8_t Model::get_num_users()
 {
 #ifndef SIMULATOR
-	return ee.num_users;
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
+	{
+		return ee.num_users;
+	}
 #else
 	return 1;
 #endif
@@ -334,54 +379,70 @@ uint8_t Model::get_num_users()
 void Model::edit_username(uint8_t user, uint8_t* username)
 {
 #ifndef SIMULATOR
-	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
 	{
-		ee.usernames[(user * USERNAME_SIZE) + i] = username[i];
+		for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+		{
+			ee.usernames[(user * USERNAME_SIZE) + i] = username[i];
+		}
+		EE_Write();
+		osMutexRelease(settingMutexHandle);
 	}
-	EE_Write();
 #endif
 }
 
 void Model::edit_password(uint8_t user, uint8_t* password)
 {
 #ifndef SIMULATOR
-	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
 	{
-		ee.passwords[(user * PASSWORD_SIZE) + i] = password[i];
+		for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+		{
+			ee.passwords[(user * PASSWORD_SIZE) + i] = password[i];
+		}
+		EE_Write();
+		osMutexRelease(settingMutexHandle);
 	}
-	EE_Write();
 #endif
 }
 
 void Model::add_user(uint8_t* username, uint8_t* password)
 {
 #ifndef SIMULATOR
-	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
 	{
-		ee.usernames[(ee.num_users * USERNAME_SIZE) * i] = username[i];
+		for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+		{
+			ee.usernames[(ee.num_users * USERNAME_SIZE) * i] = username[i];
+		}
+		for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+		{
+			ee.passwords[(ee.num_users * PASSWORD_SIZE) + i] = password[i];
+		}
+		ee.num_users++;
+		EE_Write();
+		osMutexRelease(settingMutexHandle);
 	}
-	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
-	{
-		ee.passwords[(ee.num_users * PASSWORD_SIZE) + i] = password[i];
-	}
-	ee.num_users++;
-	EE_Write();
 #endif
 }
 
 void Model::remove_user(uint8_t user)
 {
 #ifndef SIMULATOR
-	for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+	if(osMutexAcquire(settingMutexHandle, osWaitForever))
 	{
-		ee.usernames[(user * USERNAME_SIZE) + i] = 0;
+		for(uint8_t i = 0; i < USERNAME_SIZE; i++)
+		{
+			ee.usernames[(user * USERNAME_SIZE) + i] = 0;
+		}
+		for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
+		{
+			ee.passwords[(user * PASSWORD_SIZE) + i] = 0;
+		}
+		ee.num_users--;
+		EE_Write();
+		osMutexRelease(settingMutexHandle);
 	}
-	for(uint8_t i = 0; i < PASSWORD_SIZE; i++)
-	{
-		ee.passwords[(user * PASSWORD_SIZE) + i] = 0;
-	}
-	ee.num_users--;
-	EE_Write();
 #endif
 }
 

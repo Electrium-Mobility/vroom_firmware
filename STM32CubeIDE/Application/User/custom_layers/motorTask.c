@@ -11,31 +11,24 @@
 #include "cmsis_os.h"
 #include "motor.h"
 #include <gui/common/definitions.h>
+#include <stdio.h>
+#include "ee.h"
 
 // Timing
 volatile uint32_t start_time = 0;
-uint32_t delay = 0;
+uint32_t motor_delay = 0;
 
 // Analog Throttle Variables
-uint16_t throttle_threshold = 100;
-uint16_t throttle_min = 1085;
-uint16_t throttle_max = 3205;
-uint32_t filtered_throttle;
+uint16_t filtered_throttle = 0;
+
+// Analog Brake Variables
+uint16_t filtered_brake = 0;
+
 int32_t duty_cycle = 0;
 int32_t acceleration;
 
-// Analog Brake Variables
-uint16_t brake_threshold = 10;
-uint16_t brake_min = 1085;
-uint16_t brake_max = 3205;
-uint32_t filtered_brake;
-uint8_t analog_brake_active = 0;
-
 // Digital Brake Variables
 float brake_magnitude = 0;
-uint16_t brake_rate = 10; // A rate in seconds of how quickly the regen brake will reach 100% in magnitude
-
-float motor_frequency = 1;
 
 volatile uint16_t adc_buffer[2];
 volatile uint16_t sensor_data[2];
@@ -51,6 +44,8 @@ extern osSemaphoreId_t suspend_motor_taskHandle;
 extern osSemaphoreId_t motor_timing_modifiedHandle;
 extern osSemaphoreId_t collect_adc_dataHandle;
 extern osMutexId_t settingMutexHandle;
+
+extern ee_Storage_t ee;
 
 extern char uart_tx[64];
 
@@ -110,18 +105,18 @@ void motorTask_poll()
 	// This is for digital brake regen braking, it is disabled by default
 	if(brake_sensor)
 	{
-		if(!analog_brake_active)
+		if(!ee.analog_brake_active)
 		{
 			// Activate regenerative breaking to slow the bike down to the appropriate speed
-			handle_digital_brake(osKernelGetSysTimerCount() - start_time, &brake_magnitude);
+			handle_digital_brake(osKernelGetSysTimerCount() - start_time, &brake_magnitude, ee.brake_rate);
 			comm_can_set_current_brake_rel(MOTOR_CAN_ID, brake_magnitude);
 		}
 	}
 	else
 	{
 		// ensure the sensor value is reasonable to send to the motor
-		filter_sensor_data(adc_buffer[THROTTLE], &filtered_throttle, &acceleration, throttle_threshold);
-		duty_cycle = map(filtered_throttle, throttle_min, throttle_max, 0, 100);
+		filter_sensor_data(adc_buffer[THROTTLE], &filtered_throttle, &acceleration, ee.throttle_threshold);
+		duty_cycle = map(filtered_throttle, ee.throttle_min, ee.throttle_max, 0, 100);
 
 		sprintf(uart_tx, "%d\r\n", duty_cycle);
 		HAL_UART_Transmit(&huart3, (uint8_t*)uart_tx, sizeof(uart_tx), HAL_MAX_DELAY);
@@ -136,10 +131,10 @@ void motorTask_poll()
 		}
 	}
 	// handle_the analog brake sensor
-	if(analog_brake_active)
+	if(ee.analog_brake_active)
 	{
-		filter_sensor_data(adc_buffer[BRAKE], &filtered_brake, &acceleration, brake_threshold);
-		duty_cycle = map(filtered_brake, brake_min, brake_max, 0, 100);
+		filter_sensor_data(adc_buffer[BRAKE], &filtered_brake, &acceleration, ee.brake_threshold);
+		duty_cycle = map(filtered_brake, ee.brake_min, ee.brake_max, 0, 100);
 		if(acceleration > 0)
 		{
 			// Activate the regen brake to accelerate to the desired brake magnitude
@@ -165,13 +160,13 @@ void handle_motor_timing()
 		int8_t status = osMutexAcquire(settingMutexHandle, osWaitForever);
 		if(status == osOK)
 		{
-			// Safety Check, ensure that an invalid value doesn't result in no delay
-			if(motor_frequency < 0 || motor_frequency > 1000)
+			// Safety Check, ensure that an invalid value doesn't result in no motor_delay
+			if(ee.motor_frequency < 0 || ee.motor_frequency > 1000)
 			{
-				motor_frequency = 1.0;
+				ee.motor_frequency = 1.0;
 
-				// Setup the delay variable regardless of EE is written properly
-				delay = (uint32_t) (1000 / motor_frequency);
+				// Setup the motor_delay variable regardless of EE is written properly
+				motor_delay = (uint32_t) (1000 / ee.motor_frequency);
 
 				if(EE_Write())
 				{
@@ -182,17 +177,17 @@ void handle_motor_timing()
 				else
 				{
 					// Ensure the next iteration will attempt the EE_Write operation again
-					motor_frequency = 0;
+					ee.motor_frequency = 0;
 				}
 			}
 			else
 			{
-				delay = (uint32_t)(1000 / motor_frequency);
+				motor_delay = (uint32_t)(1000 / ee.motor_frequency);
 
 				osSemaphoreAcquire(motor_timing_modifiedHandle, 0);
 			}
 			osMutexRelease(settingMutexHandle);
 		}
 	}
-	osDelayUntil(osKernelGetTickCount() + (delay / portTICK_PERIOD_MS));
+	osDelayUntil(osKernelGetTickCount() + (motor_delay / portTICK_PERIOD_MS));
 }

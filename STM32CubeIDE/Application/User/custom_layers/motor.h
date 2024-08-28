@@ -188,7 +188,9 @@ uint8_t comm_can_ping(uint8_t controller_id);
  * Sensor Collection and Filtering Commands
  *
  */
-void filter_sensor_data(uint32_t sensor_data, uint32_t *filtered_data, int32_t *acceleration, uint16_t threshold);
-void handle_digital_brake(uint32_t t, float *brake_magnitude);
+void filter_sensor_data(uint16_t sensor_data, uint16_t *filtered_data, int32_t *acceleration, uint16_t threshold);
+void handle_digital_brake(uint32_t t, float *brake_magnitude, float brake_rate);
+
+int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 
 #endif /* APPLICATION_USER_MOTOR_H_ */
